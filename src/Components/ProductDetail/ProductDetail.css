@@ -1,0 +1,119 @@
+.container-product-info{
+  display: flex;
+  margin-top: 1rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 454px;
+  margin-bottom: 100px;
+}
+
+.container-product-info input{
+  max-width: 80px;
+  outline: none;
+  color: black;
+  height: 90%;
+  padding-left: 0.5rem;
+  border-radius: 10px;
+  margin-right: 1rem;
+  border: 1px solid #c2c2c2;
+  transition: 0.4s;
+}
+
+.container-product-info input:focus{
+  border: 1px solid blue;
+}
+
+.container-product-info .container-input-area button{
+  height: 100%;
+  border-radius: 60px;
+  background-color: transparent;
+  padding: 0 2rem ;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.78rem;  
+  border: 1px solid #c2c2c2;
+  outline: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.container-product-info .container-input-area button:hover{
+  background-color: blue;
+  color: white;
+}
+
+.container-product-info .container-compare-area{
+  margin-top: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.container-product-info .container-compare-area:hover{
+  color: blue;
+}
+
+.container-product-info .container-compare-area i{
+  margin-right: 1rem;
+}
+
+.container-area-title{
+  flex: 1 1 auto;
+  max-width: 700px;
+}
+
+.container-area-title .title{
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.container-area-title .description{
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 1rem;
+  line-height: 1.8rem;
+}
+
+.container-input-area{
+  height: 43px;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.container-tag-category{
+  display: flex;
+  margin-top: 1.2rem;
+}
+
+.container-tag-category .category-tag{
+  position: relative;
+  top: 6px;
+}
+
+.container-tag-category td, .container-tag-category th{
+  text-align: start;
+  line-height: 2rem;
+}
+
+.container-tag-category th{
+  padding-right: 2rem;
+}
+
+.container-tag-category .label-table{
+  display: flex;
+  flex-direction: column;
+  width:150px;
+}
+
+.container-tag-category .label-table{
+  font-weight: 600;
+  line-height: 2rem;
+}
+
+.container-tag-category .value-table{
+  line-height: 2rem;
+}

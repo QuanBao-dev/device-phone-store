@@ -1,0 +1,38 @@
+.news-item-contain{
+  text-decoration: none;
+  color: black;
+  margin: 0 10px;
+}
+.news-item{
+  width: 100%;
+}
+
+.news-item .title{
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+
+.news-item .image{
+  width: 100%;
+  object-fit: contain;
+  border-radius: 15px;
+}
+
+.news-item .container-category-area{
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.news-item .category{
+  color: blue;
+}
+
+.news-item .container-category-area .number-comments{
+  color: grey;
+}
+
+.news-item .published-at{
+  color: grey;
+}

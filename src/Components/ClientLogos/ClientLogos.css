@@ -1,0 +1,22 @@
+.client-logos-container{
+  width: 100%;
+  overflow: hidden;
+  margin: 4rem auto;
+  max-width: 1210px;
+}
+
+.client-logos{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: max-content;
+}
+
+.client-logos .image-container{
+  width: 242px;
+  text-align: center;
+}
+
+.client-logos img{
+  width: 100%;
+}

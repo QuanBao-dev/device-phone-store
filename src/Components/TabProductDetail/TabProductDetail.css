@@ -1,0 +1,9 @@
+.container-reviews-container{
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transition: 0.4s;
+}

@@ -1,0 +1,9 @@
+.fas.fa-star{
+  color: rgba(128, 128, 128, 0.596);
+  cursor: pointer;
+}
+
+.fas.fa-star.active{
+  color: rgb(238, 199, 71);
+  cursor: pointer;
+}

@@ -1,0 +1,14 @@
+.container-products-list-filter{
+  position: relative;
+  width: 100%;
+}
+
+.container-product-item--absolute{
+  position: absolute;
+  top: 100%;
+  transition: 0.4s;
+}
+
+.container-product-item--absolute.active{
+  top: 0;
+}

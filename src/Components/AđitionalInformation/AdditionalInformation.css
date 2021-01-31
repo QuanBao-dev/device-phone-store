@@ -1,0 +1,13 @@
+.additional-information-container{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.additional-information-container .table-item-container{
+  line-height: 2.5rem;
+}
+
+.additional-information-container .table-item-container .label-name{
+  padding-right: 2rem;
+  width: 23%;
+}

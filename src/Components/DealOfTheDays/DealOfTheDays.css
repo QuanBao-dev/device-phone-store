@@ -1,0 +1,16 @@
+.container-deal-of-the-day{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  height: 300px;
+}
+
+.background-deal-of-the-day{
+  background-image: url(https://devicer.cmsmasters.net/wp-content/uploads/2017/12/subtle_dots-95-5-2.jpg);
+}
+
+.background-deal-of-the-day h1{
+  font-weight: 300;
+  margin-top: 0;
+}

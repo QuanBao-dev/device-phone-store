@@ -1,0 +1,85 @@
+.hover-cart-nav-wrapper{
+  position: absolute;
+  top: 200%;
+  right: 0;
+  padding-top: 50px;
+  z-index: -1;
+  opacity: 0;
+  transition: 0.4s ease-in-out;
+  width: 350px;
+}
+
+.hover-cart-nav-container{
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 3px 1px rgb(201, 201, 201);
+  padding: 1rem;
+}
+
+.hover-cart-nav-item-container{
+  display: flex;
+  align-items: center;
+}
+
+.hover-cart-nav-item{
+  display: flex;
+  margin: 0.8rem 0;
+  padding: 10px;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.hover-cart-nav-item-container a{
+  text-decoration: none;
+  color: black;
+}
+
+.hover-cart-nav-item:hover{
+  background-color: rgba(228, 228, 228, 0.788);
+}
+
+
+
+.hover-cart-nav-item img{
+  width: 50px;
+  height: 50px;
+}
+
+.hover-cart-nav-item .nav-text{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.hover-cart-nav-item .nav-text span{
+  margin-right: 1rem;
+}
+
+.hover-cart-nav-container .container-button{
+  margin-top: 1rem;
+  display: flex;
+  margin-left: 0;
+}
+
+.hover-cart-nav-container .container-button-item{
+  border-radius: 50px;
+  color: black;
+  height: 40px;
+  width: 100%;
+  border: 1px solid rgb(201, 201, 201);
+  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hover-cart-nav-container .container-button a{
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.8rem;
+  flex: 1 1 auto;
+  margin-right: 1rem;
+}

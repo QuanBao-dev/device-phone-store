@@ -1,0 +1,60 @@
+.tab-name-container{
+  display: flex;
+  justify-content: center;
+  font-weight: 550;
+}
+
+.tab-name-item{
+  margin: 0 1rem;
+  cursor: pointer;
+  transition: 0.4s;
+  background-size: 0 4px;
+  background-repeat: no-repeat;
+  display: inline;
+  background-image: linear-gradient(to right, red, blue);
+}
+
+.tab-name-item.active{
+  background-size: 100% 4px;
+}
+
+.container-content-tab{
+  position: relative;
+  border-bottom: 1px solid rgb(209, 209, 209);
+  padding-bottom: 2rem;
+  overflow: hidden;
+  background-color: white;
+  transition: 0.4s;
+  height: 2000px;
+}
+
+.container-additional-information{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  width: 100%;
+  overflow: hidden;
+  transition: 0.4s;
+  height: 100%;
+}
+
+.container-related-product .title-related-product{
+  font-weight: 300;
+}
+
+.list-related-product{
+  display: flex;
+  justify-content: space-between;
+  transition: 0.4s;
+}
+
+.container-description{
+  line-height: 2rem;
+  background-color: white; 
+}
+
+.container-related-product{
+  margin-bottom: 2rem;
+  overflow: hidden;
+}

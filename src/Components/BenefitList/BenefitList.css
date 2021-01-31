@@ -1,0 +1,43 @@
+.benefit-list-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(https://devicer.cmsmasters.net/wp-content/uploads/2017/12/subtle_dots-95-5-2.jpg);
+}
+
+.benefit-list{
+  padding: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style-type: none;
+  width: 100%;
+  max-width: 1210px;
+}
+
+.benefit-item{
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  background-color: white;
+  border: 1px solid rgba(128, 128, 128, 0.479);
+  padding: 2rem 4rem;
+  padding-left: 1.5rem;
+  padding-right: 0;
+}
+
+.benefit-item i{
+  color: rgb(74, 74, 199);
+}
+
+.benefit-item .symbol{
+  font-size: 2rem;
+  margin-right: 2rem;
+  margin-top: 10px;
+}
+
+.benefit-item .title{
+  font-size: large;
+  margin: 0;
+  line-height: 3rem;
+}

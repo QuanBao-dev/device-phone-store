@@ -1,0 +1,28 @@
+.title-popular-news{
+  font-weight: 400;
+}
+
+.title-popular-news-area-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title-popular-news-area-container .fa-circle{
+  color: rgba(175, 175, 175, 0.397);
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.title-popular-news-area-container .fa-circle.active{
+  color: black;
+}
+
+.popular-news-layer{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}

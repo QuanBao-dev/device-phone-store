@@ -1,0 +1,114 @@
+.header__phone-login-container{
+  display: flex;
+  justify-content: center;
+  background-color: #F2F2F2;
+  padding: 0.5rem 0;
+}
+
+.header__phone-login{
+  max-width:1210px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__phone-area{
+  display: flex;
+  align-items: center;
+}
+
+.header__phone-number a{
+  text-decoration: none;
+  color: grey;
+}
+
+.header__phone-area div{
+  margin-right: 1rem;
+}
+
+.header__login-area a{
+  margin-left: 1rem;
+}
+
+.header__area-logo{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width:1210px;
+  margin: auto;
+  align-items: center;
+  margin: 2rem auto;
+}
+
+.header__area-logo .header__logo{
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.header__select-search{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 50px;
+  border: 2px solid blue;
+  overflow: hidden;
+  position: relative;
+}
+
+.header__select-search select{
+  padding: 1rem;
+  border: none;
+  border-right: 1px solid rgb(226, 224, 224);
+  width: 300px;
+}
+
+.header__select-search input{
+  padding: 1rem;
+  width: 100%;
+  border: none;
+  padding-right: 50px;
+  outline: none;
+}
+
+.header__select-search i{
+  position: absolute;
+  top: 10;
+  font-size: 1.2rem;
+  right: 14px;
+  cursor: pointer;
+}
+
+.header__nav-bar{
+  display: flex;
+  max-width: 1210px;
+  width: 100%;
+  margin: auto;
+}
+
+.header__nav-bar a{
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
+
+.header__nav-bar a.active{
+  color: blue;
+}
+
+.header__nav-bar div{
+  margin-right: 2rem;
+}
+
+.header__login-area a{
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+}
+
+.header__login-area a:hover{
+  color: blue;
+}

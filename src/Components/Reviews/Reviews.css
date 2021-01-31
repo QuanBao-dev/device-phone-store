@@ -1,0 +1,47 @@
+.review-list{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.review-list-container h4{
+  font-size: 1.1rem;
+}
+
+.header-review{
+  display: flex;
+}
+
+.review-item{
+  display: flex;
+  align-items: flex-start;
+}
+
+.review-item .image{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.review-item .container-review-text{
+  margin-left: 1rem;
+}
+
+.review-item .container-review-text .username{
+  margin: 0;
+  margin-right: 1rem;
+}
+
+.review-item .container-review-text .created-at{
+  color: grey;
+  margin: 0.7rem 0 0.3rem 0;
+}
+
+.review-item .container-review-text .content{
+  margin-top: 0;
+}
+
+.review-list-container{
+  display: flex;
+  justify-content: space-between;
+}

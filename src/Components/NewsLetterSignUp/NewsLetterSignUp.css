@@ -1,0 +1,42 @@
+.news-letter-sign-up-container{
+  background-image: url(https://devicer.cmsmasters.net/wp-content/uploads/2017/12/subtle_dots-95-5-2.jpg);
+}
+
+.news-letter-sign-up{
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.news-letter-sign-up .title{
+  font-weight: 300;
+}
+
+.news-letter-sign-up .form-submit{
+  border-radius: 50px;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid rgba(128, 128, 128, 0.521);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.3rem;
+}
+
+.news-letter-sign-up .form-submit input{
+  border: none;
+  width: 300px;
+  outline: none;
+}
+
+.news-letter-sign-up .form-submit button{
+  border: none;
+  background-color: transparent;
+  height: 100%;
+  cursor: pointer;
+  color: blue;
+  outline: none;
+  font-weight: 550;
+}
