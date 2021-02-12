@@ -18,7 +18,12 @@ const FormAddReview = ({ addReview }) => {
       <input placeholder="Email" type="text" ref={inputEmailRef} required />
       <div className="form-checkbox">
         <input type="checkbox" ref={inputCheckBoxRef} />
-        <label>
+        <label
+          onClick={() => {
+            inputCheckBoxRef.current.checked = !inputCheckBoxRef.current
+              .checked;
+          }}
+        >
           Save my name, email, and website in this browser for the next time I
           comment.
         </label>

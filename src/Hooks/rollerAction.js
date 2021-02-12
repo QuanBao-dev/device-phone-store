@@ -84,15 +84,16 @@ export const useRollerScroll = (
         }
         const startPrice = parseInt((rollLeftOffset * maxPrice) / 100);
         const endPrice = parseInt((rollRightOffset * maxPrice) / 100);
-        if (category === "") {
-          history.push(
-            `/shop/page/1?max_price=${endPrice}&min_price=${startPrice}`
-          );
-        } else {
-          history.push(
-            `/shop/page/1?category=${category}&max_price=${endPrice}&min_price=${startPrice}`
-          );
-        }
+        if (startPrice !== 0 || endPrice !== maxPrice)
+          if (category === "") {
+            history.push(
+              `/shop/page/1?max_price=${endPrice}&min_price=${startPrice}`
+            );
+          } else {
+            history.push(
+              `/shop/page/1?category=${category}&max_price=${endPrice}&min_price=${startPrice}`
+            );
+          }
         posX1 = 0;
         posX2 = 0;
         delta = 0;

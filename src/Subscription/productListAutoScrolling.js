@@ -99,14 +99,16 @@ export const mouseMoveSub = (
       productListStream.updateDataQuick({
         posX1: e.clientX,
       });
-      const newOffsetLeft =
-        productListStream.currentState().offsetLeft +
-        productListStream.currentState().delta *
-          productListStream.currentState().speed;
-      cardProductListRef.current.style.transition = "0s";
-      cardProductListRef.current.style.transform = `translateX(-${newOffsetLeft}px)`;
-      if (layerNoWrapRef && layerNoWrapRef.current)
-        layerNoWrapRef.current.style.zIndex = 10;
+      if (productListStream.currentState().delta !== 0) {
+        const newOffsetLeft =
+          productListStream.currentState().offsetLeft +
+          productListStream.currentState().delta *
+            productListStream.currentState().speed;
+        cardProductListRef.current.style.transition = "0s";
+        cardProductListRef.current.style.transform = `translateX(-${newOffsetLeft}px)`;
+        if (layerNoWrapRef && layerNoWrapRef.current)
+          layerNoWrapRef.current.style.zIndex = 10;
+      }
     }
   });
 };

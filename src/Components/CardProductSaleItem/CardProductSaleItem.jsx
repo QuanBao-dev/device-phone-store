@@ -3,6 +3,7 @@ import "./CardProductSaleItem.css";
 import React from "react";
 import { Link } from "react-router-dom";
 import { parseUrlTitle } from "../../Epics/Share";
+import TimeCountDown from "../TimeCountDown/TimeCountDown";
 
 const CardProductSaleItem = ({
   title,
@@ -45,6 +46,9 @@ const CardProductSaleItem = ({
             <span className="new-price">{newPrice}</span>
           </div>
           {description && <p>{description}</p>}
+          <div>
+            <TimeCountDown timeSecond={86400 * 2} />
+          </div>
         </div>
       </li>
     </Link>

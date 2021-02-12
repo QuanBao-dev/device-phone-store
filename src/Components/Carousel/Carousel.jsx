@@ -1,8 +1,8 @@
-import "./Carousel.css";
+import './Carousel.css';
 
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { timer } from "rxjs";
+import React, { useEffect,  useState } from 'react';
+import { Link } from 'react-router-dom';
+import { timer } from 'rxjs';
 
 const dataCarousel = [
   {
@@ -30,7 +30,7 @@ const dataCarousel = [
 const Carousel = () => {
   const [page, setPage] = useState(0);
   useEffect(() => {
-    const subscription = timer(4000, 4000).subscribe((v) => {
+    const subscription = timer(4000, 5000).subscribe((v) => {
       if(page + 1 <  dataCarousel.length){
         setPage(page + 1)
       } else {

@@ -1,0 +1,17 @@
+.register-button{
+  background-color: transparent;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid grey;
+  border-radius: 20px;
+  margin: 1rem 0;
+  cursor: pointer;
+  transition: 0.4s;
+  text-transform: uppercase;
+  font-weight: 500;
+  outline: none;
+}
+
+.register-button:hover{
+  background-color: blue;
+  color: white;
+}

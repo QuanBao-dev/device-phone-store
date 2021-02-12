@@ -5,4 +5,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  opacity: 0;
+  transition: 1s;
+  transform: translateY(20px);
 }

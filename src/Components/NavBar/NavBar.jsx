@@ -1,11 +1,15 @@
 import "./NavBar.css";
 
-import React from "react";
-import { NavLink as Link } from "react-router-dom";
+import React, { useRef } from "react";
+import { NavLink as Link, useHistory } from "react-router-dom";
 
+import { optionSelect } from "../../Epics/Share";
 import CartShoppingNav from "../CartShoppingNav/CartShoppingNav";
 
 const NavBar = () => {
+  const history = useHistory();
+  const selectRef = useRef();
+  const inputRef = useRef();
   return (
     <header>
       <div className="header__phone-login-container">
@@ -18,8 +22,8 @@ const NavBar = () => {
             </div>
           </div>
           <div className="header__login-area">
-            <Link to="/">Sign Up</Link>
-            <Link to="/">Log in</Link>
+            <Link to="/register">Sign Up</Link>
+            <Link to="/login">Log in</Link>
           </div>
         </div>
       </div>
@@ -29,11 +33,27 @@ const NavBar = () => {
             <h1 className="header__logo">Device</h1>
           </Link>
           <div className="header__select-search">
-            <select>
+            <select ref={selectRef} style={{ outline: "none" }}>
               <option value="">All Categories</option>
+              {optionSelect.map((data, key) => (
+                <option key={key}>{data}</option>
+              ))}
             </select>
-            <input placeholder="Search for products" />
-            <i className="fas fa-search"></i>
+            <input
+              placeholder="Search for products"
+              ref={inputRef}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  searchSubmit(inputRef, selectRef, history);
+                }
+              }}
+            />
+            <i
+              className="fas fa-search"
+              onClick={() => {
+                searchSubmit(inputRef, selectRef, history);
+              }}
+            ></i>
           </div>
           <CartShoppingNav />
         </div>
@@ -49,5 +69,38 @@ const NavBar = () => {
     </header>
   );
 };
+
+function searchSubmit(inputRef, selectRef, history) {
+  if (
+    ![inputRef.current.value.trim(), selectRef.current.value.trim()].includes(
+      ""
+    )
+  ) {
+    history.push(
+      "/shop/page/1?category=" +
+        selectRef.current.value.replace(/ /g, "-") +
+        "&key=" +
+        inputRef.current.value.replace(/ /g, "-")
+    );
+    selectRef.current.value = "";
+    inputRef.current.value = "";  
+    return;
+  }
+  if (inputRef.current.value.trim() !== "") {
+    history.push(
+      "/shop/page/1?key=" + inputRef.current.value.replace(/ /g, "-")
+    );
+    selectRef.current.value = "";
+    inputRef.current.value = "";  
+    return;
+  }
+  if (selectRef.current.value.trim() !== "") {
+    history.push(
+      "/shop/page/1?category=" + selectRef.current.value.replace(/ /g, "-")
+    );
+  }
+  selectRef.current.value = "";
+  inputRef.current.value = "";
+}
 
 export default NavBar;

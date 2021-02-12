@@ -4,26 +4,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 const footerData = [
   {
-    title: "Products",
-    dataList: [
-      {
-        name: "Apple Watch Series",
-      },
-      {
-        name: "Refurbished iPad 4th",
-      },
-      {
-        name: "Apple 9.7″ iPad",
-      },
-      {
-        name: "Apple iPhone 6s 16GB",
-      },
-      {
-        name: "Apple Magic Mouse",
-      },
-    ],
-  },
-  {
     title: "Customer Service",
     dataList: [
       {

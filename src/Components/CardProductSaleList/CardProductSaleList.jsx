@@ -1,11 +1,14 @@
 import "./CardProductSaleList.css";
 
-import React from "react";
+import React, { useRef } from "react";
 import CardProductSaleItem from "../CardProductSaleItem/CardProductSaleItem";
+import { useAnimationViewport } from "../../Hooks/AnimationViewport";
 
 const CardProductSaleList = ({dataList}) => {
+  const cardProductSaleListRef = useRef();
+  useAnimationViewport(cardProductSaleListRef);
   return (
-    <ul className="card-product-sale-list">
+    <ul className="card-product-sale-list" ref={cardProductSaleListRef}>
       {dataList.map(
         ({ star, imageUrl, title, originalPrice, newPrice }, key) => (
           <CardProductSaleItem

@@ -1,5 +1,8 @@
 .news-letter-sign-up-container{
   background-image: url(https://devicer.cmsmasters.net/wp-content/uploads/2017/12/subtle_dots-95-5-2.jpg);
+  transition: 1s;
+  transform: translateY(20px);
+  opacity: 0;
 }
 
 .news-letter-sign-up{

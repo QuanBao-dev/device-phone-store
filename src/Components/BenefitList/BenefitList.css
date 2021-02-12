@@ -3,6 +3,9 @@
   justify-content: center;
   align-items: center;
   background-image: url(https://devicer.cmsmasters.net/wp-content/uploads/2017/12/subtle_dots-95-5-2.jpg);
+  opacity: 0;
+  transition: 1s;
+  transform: translateY(20px);
 }
 
 .benefit-list{

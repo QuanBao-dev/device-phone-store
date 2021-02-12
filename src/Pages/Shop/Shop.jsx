@@ -1,78 +1,31 @@
 import "./Shop.css";
 
 import React, { useEffect, useRef, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 
 import HeadLine from "../../Components/HeadLine/HeadLine";
 import PaginationProducts from "../../Components/PaginationProducts/PaginationProducts";
-import { useInitStream } from "../../Hooks/InitStream";
-import { cartStream, removeFromCart } from "../../Epics/Cart";
-import { Link, useHistory } from "react-router-dom";
-import { useProductFilterBySelect } from "../../Hooks/productFilterBySelect";
-import { filterByQuery, shopStream } from "../../Epics/Shop";
 import PriceAdjust from "../../Components/PriceAdjust/PriceAdjust";
+import { cartStream, removeFromCart } from "../../Epics/Cart";
+import {
+  dataListProduct,
+  filterSearchProduct,
+  optionSelect,
+  parseUrlTitle,
+} from "../../Epics/Share";
+import { filterByQuery, shopStream } from "../../Epics/Shop";
+import { useInitStream } from "../../Hooks/InitStream";
+import { useProductFilterBySelect } from "../../Hooks/productFilterBySelect";
 import { useSearchProduct } from "../../Hooks/searchProduct";
-import { dataListProduct } from "../../Epics/Share";
-const optionSelect = [
-  "Acoustics",
-  "Action Camcorders",
-  "Apple",
-  "Apple iMac",
-  "Apple iPads",
-  "Apple iPads Mini",
-  "Apple LED TVs",
-  "Apple Macbook",
-  "Asus",
-  "Cameras",
-  "Cell Phones",
-  "Computer Hardware",
-  "Daydream View",
-  "Dell Laptop",
-  "Dell LED TVs",
-  "Digital Camcorders",
-  "Ear Headphones",
-  "HTC",
-  "IPhone",
-  "Keyboards",
-  "Laptops",
-  "LED TVs ",
-  "Meizu",
-  "Mice",
-  "Monitors",
-  "Motorola",
-  "Nintendo Switch",
-  "Nokia",
-  "OnePlus",
-  "Over-Ear & On-Ear Headphones",
-  "Powerbank",
-  "Samsung",
-  "Smart Watches",
-  "Sony",
-  "Tablets",
-  "Televisions",
-  "Uncategorized",
-  "Video Games",
-  "Xbox PlayStation",
-  "Xiaomi",
-];
 
 const maxPrice = 1120;
 const Shop = (props) => {
-  const maxPriceAdjust = props.location.search.match(/max_price=[0-9]+/)
-    ? parseInt(
-        props.location.search.match(/max_price=[0-9]+/)[0].match(/[0-9]+/)[0]
-      )
-    : 1120;
-  const minPriceAdjust = props.location.search.match(/min_price=[0-9]+/)
-    ? parseInt(
-        props.location.search.match(/min_price=[0-9]+/)[0].match(/[0-9]+/)[0]
-      )
-    : 0;
-  const categoryQuery = props.location.search.match(/category=[A-Za-z0-9 -]+/)
-    ? props.location.search
-        .match(/category=[A-Za-z0-9 -]+/)[0]
-        .replace("category=", "")
-        .replace(/-/g, " ")
-    : "";
+  const {
+    maxPriceAdjust,
+    minPriceAdjust,
+    categoryQuery,
+    keySearch,
+  } = extractQuery(props);
   const inputSearchRef = useRef();
   const history = useHistory();
   const [shopState, setShopState] = useState(shopStream.currentState());
@@ -90,13 +43,23 @@ const Shop = (props) => {
     });
   }, []);
 
-  useSearchProduct(inputSearchRef, shopStream);
+  useSearchProduct(inputSearchRef, {
+    maxPriceAdjust,
+    minPriceAdjust,
+    categoryQuery,
+  });
 
   useEffect(() => {
     selectRef.current.value = categoryQuery;
-    filterByQuery(shopStream, categoryQuery, history);
-  }, [history, categoryQuery]);
+    filterByQuery(shopStream, categoryQuery);
+  }, [categoryQuery]);
 
+  useEffect(() => {
+    inputSearchRef.current.value = keySearch;
+    setTimeout(() => {
+      filterSearchProduct(keySearch);
+    }, 100);
+  }, [keySearch]);
   return (
     <div style={{ maxWidth: 1200, margin: "auto" }}>
       <HeadLine pathLocation={props.location.pathname} />
@@ -109,8 +72,10 @@ const Shop = (props) => {
                 props.match.params.page ? parseInt(props.match.params.page) : 1
               }
               maxPage={Math.ceil(shopState.dataList.length / 9)}
-              query={`?category=${categoryQuery.replace(/ /g, "-"
-              )}&min_price=${minPriceAdjust}&max_price=${maxPriceAdjust}`}
+              query={`?category=${categoryQuery.replace(
+                / /g,
+                "-"
+              )}&key=${keySearch}&min_price=${minPriceAdjust}&max_price=${maxPriceAdjust}`}
             />
           )}
           {shopState.dataList.length === 0 && (
@@ -123,6 +88,7 @@ const Shop = (props) => {
               type="text"
               placeholder="Search Products"
               ref={inputSearchRef}
+              defaultValue={keySearch}
             />
             <i className="fas fa-search"></i>
           </div>
@@ -174,14 +140,12 @@ const Shop = (props) => {
                               justifyContent: "space-between",
                             }}
                           >
-                            <Link to="#">
+                            <Link to={`/product/${parseUrlTitle(title)}`}>
                               <h5>{title}</h5>
                             </Link>
                             <span
                               style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                removeFromCart(title);
-                              }}
+                              onClick={() => removeFromCart(title)}
                             >
                               <i className="fas fa-times"></i>
                             </span>
@@ -205,3 +169,25 @@ const Shop = (props) => {
 };
 
 export default Shop;
+function extractQuery(props) {
+  const keySearch = props.location.search.match(/key=[a-zA-Z0-9]+/)
+    ? props.location.search.match(/key=[a-zA-Z0-9]+/)[0].replace("key=", "")
+    : "";
+  const maxPriceAdjust = props.location.search.match(/max_price=[0-9]+/)
+    ? parseInt(
+        props.location.search.match(/max_price=[0-9]+/)[0].match(/[0-9]+/)[0]
+      )
+    : 1120;
+  const minPriceAdjust = props.location.search.match(/min_price=[0-9]+/)
+    ? parseInt(
+        props.location.search.match(/min_price=[0-9]+/)[0].match(/[0-9]+/)[0]
+      )
+    : 0;
+  const categoryQuery = props.location.search.match(/category=[A-Za-z0-9 -]+/)
+    ? props.location.search
+        .match(/category=[A-Za-z0-9 -]+/)[0]
+        .replace("category=", "")
+        .replace(/-/g, " ")
+    : "";
+  return { maxPriceAdjust, minPriceAdjust, categoryQuery, keySearch };
+}

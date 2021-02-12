@@ -1,8 +1,7 @@
-import "./BlackCardProductItem.css";
+import './BlackCardProductItem.css';
 
-import React from "react";
-import { Link } from "react-router-dom";
-import { parseUrlTitle } from "../../Epics/Share";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const BlackCardProductItem = ({
   imageUrl,

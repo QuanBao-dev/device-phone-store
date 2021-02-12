@@ -1,3 +1,15 @@
+import { cartStream } from "./Cart";
+import { shopStream } from "./Shop";
+export const filterSearchProduct = (text) => {
+  const { dataTemp } = shopStream.currentState();
+  shopStream.updateData({
+    dataList: dataTemp.filter(({ title }) => {
+      const keyReg = new RegExp(text, "i");
+      return title.match(keyReg);
+    }),
+  });
+};
+
 export const parseCurrency = (string) => {
   const number = parseInt(string.replace(",", "")).toString();
   const length = number.length;
@@ -20,6 +32,73 @@ export const parseUrlTitle = (title) => {
     .replace(/[″!@#$%^&*.]/g, "")
     .replace(/ /g, "-");
 };
+
+export const parseFloatCurrency = (string) => {
+  return parseFloat(string.replace("$", ""));
+};
+
+export const convertFloatToCurrency = (float, numberOfProduct) => {
+  return parseCurrency(
+    (parseFloatCurrency(float) * numberOfProduct).toFixed(2).toString()
+  );
+};
+
+export const currentTotalCart = () => {
+  return cartStream.currentState().dataCart.reduce((ans, curr) => {
+    const { newPrice, originalPrice, title } = curr;
+    const numberOfProducts = cartStream.currentState().cartNumberOfProduct[
+      title
+    ];
+    const price =
+      parseFloat((!newPrice ? originalPrice : newPrice).replace("$", "")) *
+      numberOfProducts;
+    ans += price;
+    return ans;
+  }, 0);
+};
+
+export const optionSelect = [
+  "Acoustics",
+  "Action Camcorders",
+  "Apple",
+  "Apple iMac",
+  "Apple iPads",
+  "Apple iPads Mini",
+  "Apple LED TVs",
+  "Apple Macbook",
+  "Asus",
+  "Cameras",
+  "Cell Phones",
+  "Computer Hardware",
+  "Daydream View",
+  "Dell Laptop",
+  "Dell LED TVs",
+  "Digital Camcorders",
+  "Ear Headphones",
+  "HTC",
+  "IPhone",
+  "Keyboards",
+  "Laptops",
+  "LED TVs ",
+  "Meizu",
+  "Mice",
+  "Monitors",
+  "Motorola",
+  "Nintendo Switch",
+  "Nokia",
+  "OnePlus",
+  "Over-Ear & On-Ear Headphones",
+  "Powerbank",
+  "Samsung",
+  "Smart Watches",
+  "Sony",
+  "Tablets",
+  "Televisions",
+  "Uncategorized",
+  "Video Games",
+  "Xbox PlayStation",
+  "Xiaomi",
+];
 
 export const dataListProduct = [
   {
@@ -736,7 +815,14 @@ export const dataListProduct = [
     originalPrice: "$170.00",
     star: 5,
     isSale: false,
-    description: "lorem",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tristique nibh ac ligula dapibus, quis ornare felis malesuada. Cras in feugiat diam. Donec euismod purus lorem, vel euismod sem pharetra at. Integer elit nulla, aliquet eget nisi lobortis, varius accumsan dui. Quisque semper dolor nibh, ac aliquet quam vehicula a. Aenean id consequat sapien, venenatis feugiat neque. Donec sit amet elit non ante eleifend sagittis sit amet eget mauris. Vestibulum nec pretium leo, sed lacinia odio. Vestibulum et tempor nunc. Etiam mattis porttitor lectus, vel egestas nunc dignissim ut. Sed mollis nisi nisl, porta egestas lectus porttitor quis. Sed arcu neque, consectetur ut bibendum at, tincidunt ut elit.
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Cras sodales nisi pretium placerat tempus.
+    Pellentesque id erat sodales, mollis turpis sed, bibendum justo.
+    Nunc condimentum tortor non fringilla congue.
+    Donec tempus odio eu libero mattis, in posuere nisl vulputate.
+    Imperdiet mi. Suspendisse mollis leo in sapien venenatis, ac congue ex auctor. Donec dapibus ipsum ex, eu fringilla arcu elementum at. Nulla quis urna pharetra, tincidunt sem a, pharetra mauris. Duis vel posuere tortor. Integer at porttitor quam. Sed consequat nec dui ut feugiat. Phasellus feugiat non ante a lacinia. Sed accumsan magna eu dapibus tempus. Etiam euismod nulla sed ex ultrices gravida.`,
     newPrice: null,
     additionalInformation: {
       "Native Resolution": "720p",

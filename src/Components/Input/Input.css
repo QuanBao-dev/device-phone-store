@@ -1,0 +1,49 @@
+.checkout-label-input{
+  display: block;
+}
+
+.checkout-input, 
+.checkout-textarea,
+.checkout-select{
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  border-radius: 8px;
+  outline: none;
+  border: 1px solid rgb(182, 182, 182);
+  margin: 0.8rem 0;
+  font-size: 1.2rem;
+  max-width: 96%;
+  font-size: smaller;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.checkout-textarea{
+  resize: none;
+  height: 150px;
+}
+
+.checkout-select{
+  width: 100%;
+  max-width: 99%;
+}
+
+.checkout-input:focus, 
+.checkout-textarea:focus,
+.checkout-select:focus{
+  border: 1px solid blue;
+}
+
+.star-require{
+  color: blue;
+}
+
+.checkbox-container{
+  max-height: 20px;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.checkbox-label a{
+  text-decoration: none;
+  color: blue;
+}

@@ -11,6 +11,7 @@ import {
 } from "../../Hooks/productListAutoScrolling";
 import CardProductNewList from "../CardProductNewList/CardProductNewList";
 import { getDataByTitle } from "../../Epics/Share";
+import { useAnimationViewport } from "../../Hooks/AnimationViewport";
 
 const dataBestSeller = [
   getDataByTitle("Tesla Generation"),
@@ -28,6 +29,7 @@ const BestSeller = () => {
   );
   const bestSellerRef = useRef();
   const bestSellerLayerRef = useRef();
+  useAnimationViewport(bestSellerRef);
   useInitStream(setBestSellerState, bestSellerStream);
   useProductWidthHandle(bestSellerStream, bestSellerRef, dataBestSeller);
   useProductResizeHandle(bestSellerStream, bestSellerRef, dataBestSeller);
@@ -45,6 +47,9 @@ const BestSeller = () => {
         margin: "4rem auto 4rem auto",
         maxWidth: "1228px",
         position: "relative",
+        opacity: 0,
+        transform: "translateY(20px)",
+        transition: "1s"
       }}
       ref={bestSellerRef}
     >

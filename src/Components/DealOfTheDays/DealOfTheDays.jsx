@@ -1,12 +1,15 @@
 import "./DealOfTheDays.css";
 
-import React from "react";
+import React, { useRef } from "react";
 import CardProductSaleItem from "../CardProductSaleItem/CardProductSaleItem";
 import BlackCardProductItem from "../BlackCardProductItem/BlackCardProductItem";
+import { useAnimationViewport } from "../../Hooks/AnimationViewport";
 
 const DealOfTheDays = ({ dataProduct }) => {
+  const backgroundDealOfTheDayRef = useRef();
+  useAnimationViewport(backgroundDealOfTheDayRef)
   return (
-    <div className="background-deal-of-the-day">
+    <div className="background-deal-of-the-day" ref={backgroundDealOfTheDayRef}>
       <div
         style={{
           maxWidth: "1210px",

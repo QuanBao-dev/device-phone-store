@@ -72,14 +72,6 @@ const HoverCart = ({ cartState, subTotal }) => {
         {cartState.dataCart.length === 0 && (
           <div>
             <div>No Products</div>
-            <div className="container-button">
-              <Link to={"/cart"}>
-                <div className="container-button-item">View Cart</div>
-              </Link>
-              <Link to={"/checkout"}>
-                <div className="container-button-item">Check Out</div>
-              </Link>
-            </div>
           </div>
         )}
       </div>

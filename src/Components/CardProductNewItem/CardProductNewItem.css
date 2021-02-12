@@ -130,11 +130,10 @@
   transition: 0.4s;
   font-size: 0.9rem;
   cursor: pointer;
-  color: white;
-  background-color: blue;
+  color: black;
 }
 
-.button-add-to-cart:hover{
+.button-add-to-cart:hover, .button-view-cart:hover{
   background-color: blue;
   color: white;
 }

@@ -1,0 +1,14 @@
+.time-count-down-container{
+  display: flex;
+  margin: 1rem 0;
+}
+
+.time-count-down-item{
+  margin-right: 1rem;
+  text-align: center;
+}
+
+.time-count-down-container span{
+  font-weight: 600;
+  font-size: larger;
+}

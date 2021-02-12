@@ -45,7 +45,7 @@
 
 .list-related-product{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   transition: 0.4s;
 }
 

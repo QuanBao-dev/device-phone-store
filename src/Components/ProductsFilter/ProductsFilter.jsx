@@ -1,8 +1,9 @@
 import "./ProductFilter.css";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import TabFilter from "../TabFilter/TabFilter";
 import CardProductNewList from "../CardProductNewList/CardProductNewList";
+import { useAnimationViewport } from "../../Hooks/AnimationViewport";
 
 const ProductsFilter = ({
   dataListRecent,
@@ -11,16 +12,21 @@ const ProductsFilter = ({
   dataListSale,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
-
+  const productsFilterRef = useRef();
+  useAnimationViewport(productsFilterRef)
   return (
     <div
+      ref={productsFilterRef}
       style={{
         overflow: "hidden",
         padding: "0 5px",
         maxWidth: "1230px",
         width: "100%",
         margin:"auto",
-        marginBottom:"5rem"
+        marginBottom:"5rem",
+        opacity: 0,
+        transform:"translateY(20px)",
+        transition: "1s"
       }}
     >
       <TabFilter tabIndex={tabIndex} setTabIndex={setTabIndex} />

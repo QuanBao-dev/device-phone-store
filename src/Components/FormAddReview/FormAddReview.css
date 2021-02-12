@@ -34,6 +34,7 @@
 .form-add-review input[type=checkbox]{
   float: left;
   transform: translateY(3px);
+  margin-right: 0.5rem;
 }
 
 .form-add-review textarea:focus{

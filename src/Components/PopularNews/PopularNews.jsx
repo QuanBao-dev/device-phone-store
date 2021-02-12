@@ -10,6 +10,7 @@ import {
   useProductWidthHandle,
 } from "../../Hooks/productListAutoScrolling";
 import NewsList from "../NewsList/NewsList";
+import { useAnimationViewport } from "../../Hooks/AnimationViewport";
 
 const dataList = [
   {
@@ -93,6 +94,7 @@ const PopularNews = () => {
         popularNewsStream.currentState().margin) *
       popularNewsStream.currentState().currentPage,
   });
+  useAnimationViewport(popularNewsRef);
   return (
     <div
       style={{
@@ -101,6 +103,9 @@ const PopularNews = () => {
         maxWidth: "1220px",
         margin: "auto",
         position: "relative",
+        opacity: 0,
+        transition: "1s",
+        transform: "translateY(20px)",
       }}
       ref={popularNewsRef}
     >

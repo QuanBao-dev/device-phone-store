@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 
 import { cartStream, removeFromCart } from "../../Epics/Cart";
 import { useInitStream } from "../../Hooks/InitStream";
-import { parseCurrency } from "../../Epics/Share";
+import { currentTotalCart, parseCurrency } from "../../Epics/Share";
 
 const TableProductsCart = () => {
   const [tableProductCartState, setTableProductCartState] = useState(
@@ -13,20 +13,12 @@ const TableProductsCart = () => {
   const inputTableItemRef = useRef();
   useInitStream(setTableProductCartState, cartStream);
   const { dataCart, cartNumberOfProduct } = tableProductCartState;
-  const cartTotal = dataCart.reduce((ans, curr) => {
-    const { newPrice, originalPrice, title } = curr;
-    const numberOfProducts = cartNumberOfProduct[title];
-    const price =
-      parseFloat((!newPrice ? originalPrice : newPrice).replace("$", "")) *
-      numberOfProducts;
-    ans += price;
-    return ans;
-  }, 0);
+  const cartTotal = currentTotalCart();
   return (
     <div>
       <div className="table-products-cart-container">
         <table className="table-products-cart">
-          <tbody>
+          <thead>
             <tr
               style={{
                 backgroundColor: "#3452FF",
@@ -42,6 +34,8 @@ const TableProductsCart = () => {
               <th style={{ fontWeight: "500" }}>Quantity</th>
               <th style={{ fontWeight: "500" }}>Subtotal</th>
             </tr>
+          </thead>
+          <tbody>
             {dataCart.map(
               ({ title, newPrice, originalPrice, imageUrl }, key) => (
                 <tr key={key}>
@@ -83,9 +77,7 @@ const TableProductsCart = () => {
                       defaultValue={cartNumberOfProduct[title]}
                       onChange={(e) => {
                         if (parseInt(e.target.value) < 0) {
-                          inputTableItemRef.current.value = Math.abs(
-                            e.target.value
-                          );
+                          e.target.value = 0;
                           return;
                         }
                         cartStream.updateData({

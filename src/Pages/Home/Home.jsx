@@ -1,18 +1,18 @@
-import "./Home.css";
+import './Home.css';
 
-import React from "react";
+import React from 'react';
 
-import BenefitList from "../../Components/BenefitList/BenefitList";
-import BestSeller from "../../Components/BestSeller/BestSeller";
-import BlackCardProductList from "../../Components/BlackCardProductList/BlackCardProductList";
-import CardProductSaleList from "../../Components/CardProductSaleList/CardProductSaleList";
-import Carousel from "../../Components/Carousel/Carousel";
-import ClientLogos from "../../Components/ClientLogos/ClientLogos";
-import DealOfTheDays from "../../Components/DealOfTheDays/DealOfTheDays";
-import NewsLetterSignUp from "../../Components/NewsLetterSignUp/NewsLetterSignUp";
-import PopularNews from "../../Components/PopularNews/PopularNews";
-import ProductsFilter from "../../Components/ProductsFilter/ProductsFilter";
-import { dataListProduct, getDataByTitle } from "../../Epics/Share";
+import BenefitList from '../../Components/BenefitList/BenefitList';
+import BestSeller from '../../Components/BestSeller/BestSeller';
+import BlackCardProductList from '../../Components/BlackCardProductList/BlackCardProductList';
+import CardProductSaleList from '../../Components/CardProductSaleList/CardProductSaleList';
+import Carousel from '../../Components/Carousel/Carousel';
+import ClientLogos from '../../Components/ClientLogos/ClientLogos';
+import DealOfTheDays from '../../Components/DealOfTheDays/DealOfTheDays';
+import NewsLetterSignUp from '../../Components/NewsLetterSignUp/NewsLetterSignUp';
+import PopularNews from '../../Components/PopularNews/PopularNews';
+import ProductsFilter from '../../Components/ProductsFilter/ProductsFilter';
+import { dataListProduct, getDataByTitle } from '../../Epics/Share';
 
 const dataBlackCardList = [
   {
@@ -82,7 +82,7 @@ const Home = () => {
         dataListSale={dataSaleList}
         dataListTop={dataTopList}
       />
-      <DealOfTheDays dataProduct={getDataByTitle("Polaroid Cube+")}/>
+      <DealOfTheDays dataProduct={getDataByTitle("Polaroid Cube+")} />
       <BestSeller />
       <PopularNews />
       <ClientLogos />

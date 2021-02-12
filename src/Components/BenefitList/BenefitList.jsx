@@ -1,6 +1,7 @@
 import './BenefitList.css';
 
-import React from 'react';
+import React, { useRef } from 'react';
+import { useAnimationViewport } from '../../Hooks/AnimationViewport';
 
 const dataList = [
   {
@@ -25,8 +26,10 @@ const dataList = [
   },
 ];
 const BenefitList = () => {
+  const benefitListContainerRef = useRef();
+  useAnimationViewport(benefitListContainerRef)
   return (
-    <div className="benefit-list-container">
+    <div className="benefit-list-container" ref={benefitListContainerRef}>
       <ul className="benefit-list">
         {dataList.map(({ title, description, symbol }, key) => (
           <li key={key} className="benefit-item">

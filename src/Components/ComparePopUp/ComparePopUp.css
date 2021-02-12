@@ -36,8 +36,10 @@
 }
 
 .compare-pop-up table{
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   overflow: auto;
+  border: 1px solid #e7e7e7;
 }
 
 .compare-pop-up th{

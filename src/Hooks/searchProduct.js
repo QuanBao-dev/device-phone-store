@@ -1,23 +1,32 @@
 import { useEffect } from "react";
+import { useHistory } from "react-router";
 import { fromEvent } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 
-export const useSearchProduct = (searchRef, stream) => {
+export const useSearchProduct = (
+  searchRef,
+  { maxPriceAdjust, minPriceAdjust, categoryQuery }
+) => {
+  const history = useHistory();
   useEffect(() => {
-    const subscription = fromEvent(searchRef.current, "input")
-      .pipe(debounceTime(500))
+    const subscription = fromEvent(searchRef.current, "keydown")
+      .pipe(filter((e) => e.keyCode === 13))
       .subscribe((e) => {
-        const { dataTemp } = stream.currentState();
-        stream.updateData({
-          dataList: dataTemp.filter(({ title }) => {
-            const keyReg = new RegExp(e.target.value, "i");
-            return title.match(keyReg);
-          }),
-        });
+        history.push(
+          `/shop/page/1?${
+            categoryQuery !== ""
+              ? "category=" + categoryQuery.replace(/ /g, "-")
+              : ""
+          }${categoryQuery !== "" ? "&" : ""}${
+            e.target.value.trim() !== ""
+              ? "key=" + e.target.value.trim() + "&"
+              : ""
+          }max_price=${maxPriceAdjust}&min_price=${minPriceAdjust}`
+        );
       });
     return () => {
       subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [categoryQuery, maxPriceAdjust, minPriceAdjust]);
 };

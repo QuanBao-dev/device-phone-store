@@ -15,11 +15,13 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
     setTabIndex(0);
   }, [productData.id]);
   useEffect(() => {
-    if (tabIndex === 0)
-      containerTabRef.current.style.maxHeight = `${
-        containerDescriptionRef.current.offsetHeight + 30
-      }px`;
-  }, [tabIndex]);
+    setTimeout(() => {
+      if (tabIndex === 0)
+        containerTabRef.current.style.maxHeight = `${
+          containerDescriptionRef.current.offsetHeight + 30
+        }px`;
+    }, 100);
+  }, [tabIndex, productData.id]);
   return (
     <div>
       <div className="tab-name-container">
