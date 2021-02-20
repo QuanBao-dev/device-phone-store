@@ -1,6 +1,7 @@
 .time-count-down-container{
   display: flex;
   margin: 1rem 0;
+  color: black;
 }
 
 .time-count-down-item{

@@ -69,6 +69,30 @@
   margin-bottom: 1rem;
 }
 
+.container-area-title .price-container{
+  margin: 1rem 0;
+}
+
+.container-area-title .price-container .price-new{
+  color: blue;
+  font-weight: 450;
+  font-size: 2rem;
+}
+
+.container-area-title .price-container .price-original{
+  position: relative;
+  margin-left: 0.2rem;
+  bottom: 10px;
+  text-decoration: line-through;
+  color: grey;
+}
+
+.container-area-title .price-container .price-product{
+  color: black;
+  font-weight: 450;
+  font-size: 2rem;
+}
+
 .container-area-title .description{
   display: -webkit-box;
   -webkit-line-clamp: 5;

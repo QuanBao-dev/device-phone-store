@@ -1,51 +1,85 @@
 import "./ProductDetail.css";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import { addToCompare } from "../../Epics/Compare";
 import Stars from "../Stars/Stars";
 import { addToCart } from "../../Epics/Cart";
 import ImageZoom from "../ImageZoom/ImageZoom";
+import { parseCurrency } from "../../Epics/Share";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ProductDetail = ({ productData }) => {
   const inputNumberRef = useRef();
+  const [isAdded, setIsAdded] = useState(false);
+  const history = useHistory();
   return (
     <div className="container-product-info">
       <ImageZoom imageUrl={productData.imageUrl} />
       <div className="container-area-title">
         <h3 className="title">{productData.title}</h3>
         <Stars star={productData.star} />
+        <div className="price-container">
+          {!productData.newPrice && productData.originalPrice && (
+            <span className="price-product">
+              ${parseCurrency(productData.originalPrice.replace("$", ""))}
+            </span>
+          )}
+          {productData.newPrice && productData.originalPrice && (
+            <span className="price-new">
+              ${parseCurrency(productData.newPrice.replace("$", ""))}
+            </span>
+          )}
+          {productData.originalPrice && productData.newPrice && (
+            <span className="price-original">
+              ${parseCurrency(productData.originalPrice.replace("$", ""))}
+            </span>
+          )}
+        </div>
         <div className="description">{productData.description}</div>
         <form className="container-input-area">
           <input type="number" defaultValue="1" ref={inputNumberRef} min="1" />
-          <button
-            onClick={(e) => {
-              if (parseInt(inputNumberRef.current.value) >= 1) {
+          {!isAdded && (
+            <button
+              onClick={(e) => {
+                if (parseInt(inputNumberRef.current.value) >= 1) {
+                  e.preventDefault();
+                } else {
+                  return;
+                }
+                const {
+                  title,
+                  description,
+                  star,
+                  originalPrice,
+                  newPrice,
+                  imageUrl,
+                } = productData;
+                addToCart(
+                  title,
+                  description,
+                  star,
+                  originalPrice,
+                  newPrice,
+                  imageUrl,
+                  parseInt(inputNumberRef.current.value)
+                );
+                setIsAdded(true);
+              }}
+            >
+              Add to cart
+            </button>
+          )}
+          {isAdded && (
+            <button
+              onClick={(e) => {
                 e.preventDefault();
-              } else {
-                return;
-              }
-              const {
-                title,
-                description,
-                star,
-                originalPrice,
-                newPrice,
-                imageUrl,
-              } = productData;
-              addToCart(
-                title,
-                description,
-                star,
-                originalPrice,
-                newPrice,
-                imageUrl,
-                parseInt(inputNumberRef.current.value)
-              );
-            }}
-          >
-            Add to cart
-          </button>
+                history.push("/cart");
+              }}
+            >
+              View cart
+            </button>
+          )}
         </form>
         <table className="container-tag-category">
           <tbody>

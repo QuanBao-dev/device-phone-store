@@ -89,6 +89,7 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
         <h1 className="title-related-product">Related products</h1>
         <div className="list-related-product">
           {Object.keys(dataRelatedProduct)
+            .filter((title) => dataRelatedProduct[title].id !== productData.id)
             .slice(0, 4)
             .map((title, key) => (
               <CardProductNewItem

@@ -34,6 +34,7 @@ const PaginationProducts = ({
             key={pageItem}
             style={{
               color: page === pageItem + 1 ? "blue" : "black",
+              fontWeight: page === pageItem + 1 ? 600 : null,
             }}
           >
             {pageItem + 1}

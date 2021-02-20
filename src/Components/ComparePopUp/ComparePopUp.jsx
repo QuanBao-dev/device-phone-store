@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { addToCart } from "../../Epics/Cart";
 import { compareStream, removeFromCompare } from "../../Epics/Compare";
 import { useInitStream } from "../../Hooks/InitStream";
+import { parseCurrency } from "../../Epics/Share";
 
 const dataKey = [
   "title",
@@ -60,7 +61,7 @@ const ComparePopUp = () => {
                       onClick={() => {
                         removeFromCompare(title);
                         const { dataCompare } = compareStream.currentState();
-                        if(dataCompare.length === 0){
+                        if (dataCompare.length === 0) {
                           compareStream.updateData({ isActive: false });
                         }
                       }}
@@ -119,9 +120,13 @@ const ComparePopUp = () => {
                             marginRight: newPrice ? "5px" : null,
                           }}
                         >
-                          {originalPrice}
+                          ${parseCurrency(originalPrice.replace("$", ""))}
                         </span>
-                        <span>{newPrice}</span>
+                        {newPrice && (
+                          <span>
+                            ${parseCurrency(newPrice.replace("$", ""))}
+                          </span>
+                        )}
                       </td>
                     )
                   )}

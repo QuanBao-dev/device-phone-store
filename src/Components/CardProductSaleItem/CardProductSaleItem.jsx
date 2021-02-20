@@ -45,7 +45,7 @@ const CardProductSaleItem = ({
             <span className="original-price">{originalPrice}</span>
             <span className="new-price">{newPrice}</span>
           </div>
-          {description && <p>{description}</p>}
+          {description && <p style={{ color: "black" }}>{description}</p>}
           <div>
             <TimeCountDown timeSecond={86400 * 2} />
           </div>
