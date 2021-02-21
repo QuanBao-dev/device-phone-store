@@ -1,10 +1,10 @@
-import './PriceAdjust.css';
+import "./PriceAdjust.css";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-import { parseCurrency } from '../../Epics/Share';
-import { shopStream } from '../../Epics/Shop';
-import { useRollerScroll } from '../../Hooks/rollerAction';
+import { parseCurrency } from "../../Epics/Share";
+import { filterByQuery, shopStream } from "../../Epics/Shop";
+import { useRollerScroll } from "../../Hooks/rollerAction";
 
 const PriceAdjust = ({
   maxPriceAdjust,
@@ -12,6 +12,7 @@ const PriceAdjust = ({
   maxPrice,
   category,
   stream = shopStream,
+  keySearch,
 }) => {
   const [offsetRollLeft, setOffsetRollLeft] = useState(
     (minPriceAdjust / maxPrice) * 100
@@ -38,7 +39,9 @@ const PriceAdjust = ({
     setStartPrice,
     setStartTempPrice,
     maxPrice,
-    category
+    category,
+    keySearch,
+    stream
   );
   useRollerScroll(
     priceAdjustRef,
@@ -51,24 +54,18 @@ const PriceAdjust = ({
     setEndPrice,
     setEndTempPrice,
     maxPrice,
-    category
+    category,
+    keySearch,
+    stream
   );
-  const { dataTemp } = stream.currentState();
   useEffect(() => {
     const rollLeftOffset = parseFloat(rollerLeftRef.current.style.left);
     const rollRightOffset = parseFloat(rollerRightRef.current.style.left);
     priceAdjustRef.current.style.left = rollLeftOffset + "%";
     priceAdjustRef.current.style.width = rollRightOffset - rollLeftOffset + "%";
-    stream.updateData({
-      dataList: dataTemp.filter(({ newPrice, originalPrice }) => {
-        const priceDisplay = parseFloat(
-          (newPrice ? newPrice : originalPrice).replace("$", "")
-        );
-        return startPrice <= priceDisplay && priceDisplay <= endPrice;
-      }),
-    });
+    filterByQuery(stream, category, keySearch, minPriceAdjust, maxPriceAdjust);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startPrice, endPrice, dataTemp.length]);
+  }, [startPrice, endPrice, minPriceAdjust, maxPriceAdjust]);
   useEffect(() => {
     setStartPrice(minPriceAdjust);
     setEndPrice(maxPriceAdjust);
@@ -78,7 +75,11 @@ const PriceAdjust = ({
     setEndPrice(maxPriceAdjust);
     setOffsetRollLeft((minPriceAdjust / maxPrice) * 100);
     setOffsetRollRight((maxPriceAdjust / maxPrice) * 100);
-  }, [category, maxPrice, maxPriceAdjust, minPriceAdjust]);
+    stream.updateDataQuick({
+      maxPriceAdjust,
+      minPriceAdjust,
+    });
+  }, [category, maxPrice, maxPriceAdjust, minPriceAdjust, stream]);
   return (
     <>
       <div className="price-adjust-container">

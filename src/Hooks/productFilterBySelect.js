@@ -5,7 +5,8 @@ export const useProductFilterBySelect = (
   selectRef,
   history,
   maxPriceAdjust,
-  minPriceAdjust
+  minPriceAdjust,
+  keySearch
 ) => {
   useEffect(() => {
     let subscription;
@@ -16,18 +17,23 @@ export const useProductFilterBySelect = (
             history.push("/shop/page/1");
           } else {
             history.push(
-              `/shop/page/1?max_price=${maxPriceAdjust}&min_price=${minPriceAdjust}`
+              `/shop/page/1?${
+                keySearch !== "" ? `key=${keySearch}&` : ""
+              }max_price=${maxPriceAdjust}&min_price=${minPriceAdjust}`
             );
           }
         } else {
           if (!maxPriceAdjust && !minPriceAdjust) {
             history.push(
-              "/shop/page/1?category=" +
-                e.target.value.trim().replace(/ /g, "-")
+              `/shop/page/1?${
+                keySearch !== "" ? `key=${keySearch}&` : ""
+              }category=${e.target.value.trim().replace(/ /g, "-")}`
             );
           } else {
             history.push(
-              `/shop/page/1?category=${e.target.value
+              `/shop/page/1?${
+                keySearch !== "" ? `key=${keySearch}&` : ""
+              }category=${e.target.value
                 .trim()
                 .replace(
                   / /g,
@@ -41,6 +47,6 @@ export const useProductFilterBySelect = (
     return () => {
       subscription && subscription.unsubscribe();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [maxPriceAdjust, minPriceAdjust]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxPriceAdjust, minPriceAdjust, keySearch]);
 };

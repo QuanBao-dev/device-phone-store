@@ -17,7 +17,9 @@ export const useRollerScroll = (
   setPrice,
   setTempPrice,
   maxPrice,
-  category
+  category,
+  keySearch,
+  stream
 ) => {
   const isMouseDown = useRef(false);
   const history = useHistory();
@@ -27,7 +29,7 @@ export const useRollerScroll = (
       .subscribe((e) => {
         isMouseDown.current = true;
         posX2 = posX1 - e.clientX;
-        if (posX1 !== 0) delta -= posX2 * 0.4;
+        if (posX1 !== 0) delta -= posX2 * 0.37;
         posX1 = e.clientX;
         if (limitOffsetLeft && offsetLeft + delta < limitOffsetLeft)
           rollerRef.current.style.left = limitOffsetLeft + "%";
@@ -84,14 +86,24 @@ export const useRollerScroll = (
         }
         const startPrice = parseInt((rollLeftOffset * maxPrice) / 100);
         const endPrice = parseInt((rollRightOffset * maxPrice) / 100);
-        if (startPrice !== 0 || endPrice !== maxPrice)
+        if (
+          startPrice !== stream.currentState().minPriceAdjust ||
+          endPrice !== stream.currentState().maxPriceAdjust
+        )
           if (category === "") {
             history.push(
-              `/shop/page/1?max_price=${endPrice}&min_price=${startPrice}`
+              `/shop/page/1?${
+                keySearch !== "" ? `key=${keySearch}&` : ""
+              }max_price=${endPrice}&min_price=${startPrice}`
             );
           } else {
             history.push(
-              `/shop/page/1?category=${category}&max_price=${endPrice}&min_price=${startPrice}`
+              `/shop/page/1?${
+                keySearch !== "" ? `key=${keySearch}&` : ""
+              }category=${category.replace(
+                / /g,
+                "-"
+              )}&max_price=${endPrice}&min_price=${startPrice}`
             );
           }
         posX1 = 0;
@@ -102,7 +114,7 @@ export const useRollerScroll = (
       subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category]);
+  }, [category, keySearch, limitOffsetLeft, limitOffsetRight, stream]);
   useEffect(() => {
     const subscription = fromEvent(rollerRef.current, "mousedown").subscribe(
       (e) => {

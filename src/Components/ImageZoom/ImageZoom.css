@@ -30,8 +30,8 @@
   position: absolute;
   width: 100px;
   height: 100px;
-  background-color: rgba(184, 184, 184, 0.76);
   display: none;
+  border: 1px solid black;
 }
 
 .zoom-in-window{
@@ -45,6 +45,7 @@
   margin-left: 1rem;
   background-color: white;
   display: none;
+  border: 1px solid black;
 }
 
 .zoom-in-window img{

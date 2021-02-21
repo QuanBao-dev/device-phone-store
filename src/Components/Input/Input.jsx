@@ -1,6 +1,6 @@
 import "./Input.css";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 const options = [
   "Åland Islands",
@@ -254,14 +254,13 @@ const options = [
   "Zimbabwe",
 ];
 let timeout;
-const Input = ({ label, isRequired, type, placeholder, inputRef }) => {
+const Input = ({ label, isRequired, type, placeholder, inputRef, checkBoxRef }) => {
   const id =
     label.toLocaleLowerCase && label
       ? label.toLocaleLowerCase().replace(/ /g, "-")
       : null;
   const [isChecked, setIsChecked] = useState(false);
-  const checkBoxRef = useRef();
-  const passwordCreateRef = useRef();
+  const [isRequiredState, setIsRequiredState] = useState(isRequired);
   return (
     <div>
       {type !== "checkbox" && (
@@ -270,7 +269,7 @@ const Input = ({ label, isRequired, type, placeholder, inputRef }) => {
           {isRequired ? (
             <span className="star-require">{"*"}</span>
           ) : (
-            type === "input" && "(optional)"
+            (type === "input" || type === "textarea") && "(optional)"
           )}
         </label>
       )}
@@ -318,7 +317,7 @@ const Input = ({ label, isRequired, type, placeholder, inputRef }) => {
               />
             )}
             {label !== "Create an account?" && (
-              <input type="checkbox" ref={inputRef} />
+              <input type="checkbox" ref={inputRef} required={isRequired} />
             )}
             <span
               style={{
@@ -335,11 +334,15 @@ const Input = ({ label, isRequired, type, placeholder, inputRef }) => {
                   if (label === "Create an account?")
                     if (element.checked === false)
                       timeout = setTimeout(() => {
-                        passwordCreateRef.current.style.display = "none";
+                        inputRef.current.style.display = "none";
+                        inputRef.current.required = false;
+                        setIsRequiredState(false);
                       }, 500);
                     else {
                       clearTimeout(timeout);
-                      passwordCreateRef.current.style.display = "block";
+                      inputRef.current.style.display = "block";
+                      inputRef.current.required = true;
+                      setIsRequiredState(true);
                     }
                 }
               }}
@@ -347,12 +350,13 @@ const Input = ({ label, isRequired, type, placeholder, inputRef }) => {
               {label}
             </span>
             {label === "Create an account?" && (
-              <div style={{ marginTop: "1rem" }} ref={passwordCreateRef}>
+              <div style={{ marginTop: "1rem" }}>
                 <Input
                   placeholder={"Password"}
-                  isRequired={true}
+                  isRequired={isRequiredState}
                   label={"Create account Password"}
                   type={"input"}
+                  inputRef={inputRef}
                 />
               </div>
             )}

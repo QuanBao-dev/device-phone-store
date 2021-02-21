@@ -9,7 +9,6 @@ import PriceAdjust from "../../Components/PriceAdjust/PriceAdjust";
 import { cartStream, removeFromCart } from "../../Epics/Cart";
 import {
   dataListProduct,
-  filterSearchProduct,
   optionSelect,
   parseUrlTitle,
 } from "../../Epics/Share";
@@ -33,33 +32,45 @@ const Shop = (props) => {
   const selectRef = useRef();
   useInitStream(setCartState, cartStream);
   useInitStream(setShopState, shopStream);
-  useProductFilterBySelect(selectRef, history, maxPriceAdjust, minPriceAdjust);
+  useProductFilterBySelect(
+    selectRef,
+    history,
+    maxPriceAdjust,
+    minPriceAdjust,
+    keySearch
+  );
   useEffect(() => {
     window.scroll({ top: 0 });
     shopStream.updateData({
       dataList: dataListProduct,
       dataOriginalList: dataListProduct,
-      dataTemp: dataListProduct,
     });
   }, []);
 
-  useSearchProduct(inputSearchRef, {
+  useSearchProduct(
+    inputSearchRef,
     maxPriceAdjust,
     minPriceAdjust,
     categoryQuery,
-  });
+    shopStream
+  );
 
   useEffect(() => {
     selectRef.current.value = categoryQuery;
-    filterByQuery(shopStream, categoryQuery);
-  }, [categoryQuery]);
-
-  useEffect(() => {
     inputSearchRef.current.value = keySearch;
-    setTimeout(() => {
-      filterSearchProduct(keySearch);
-    }, 100);
-  }, [keySearch]);
+    filterByQuery(
+      shopStream,
+      categoryQuery,
+      keySearch,
+      minPriceAdjust,
+      maxPriceAdjust
+    );
+    shopStream.updateDataQuick({
+      keySearch,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryQuery, keySearch]);
+
   return (
     <div style={{ maxWidth: 1200, margin: "auto" }}>
       <HeadLine pathLocation={props.location.pathname} />
@@ -116,6 +127,7 @@ const Shop = (props) => {
                 maxPrice={maxPrice}
                 category={categoryQuery}
                 stream={shopStream}
+                keySearch={keySearch}
               />
             </div>
             <div>
@@ -171,7 +183,10 @@ const Shop = (props) => {
 export default Shop;
 function extractQuery(props) {
   const keySearch = props.location.search.match(/key=[a-zA-Z0-9]+/)
-    ? props.location.search.match(/key=[a-zA-Z0-9]+/)[0].replace("key=", "")
+    ? props.location.search
+        .match(/key=[a-zA-Z0-9 -]+/)[0]
+        .replace("key=", "")
+        .replace(/-/g, " ")
     : "";
   const maxPriceAdjust = props.location.search.match(/max_price=[0-9]+/)
     ? parseInt(

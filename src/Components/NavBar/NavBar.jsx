@@ -61,7 +61,7 @@ const NavBar = () => {
           <Link to="/" activeClassName="active" exact>
             <div>Home</div>
           </Link>
-          <Link to="/shop" activeClassName="active" exact>
+          <Link to="/shop" activeClassName="active">
             <div>Shop</div>
           </Link>
         </nav>
@@ -78,9 +78,9 @@ function searchSubmit(inputRef, selectRef, history) {
   ) {
     history.push(
       "/shop/page/1?category=" +
-        selectRef.current.value.replace(/ /g, "-") +
+        selectRef.current.value.trim().replace(/ /g, "-") +
         "&key=" +
-        inputRef.current.value.replace(/ /g, "-")
+        inputRef.current.value.trim().replace(/ /g, "-")
     );
     selectRef.current.value = "";
     inputRef.current.value = "";  
@@ -88,7 +88,7 @@ function searchSubmit(inputRef, selectRef, history) {
   }
   if (inputRef.current.value.trim() !== "") {
     history.push(
-      "/shop/page/1?key=" + inputRef.current.value.replace(/ /g, "-")
+      "/shop/page/1?key=" + inputRef.current.value.trim().replace(/ /g, "-")
     );
     selectRef.current.value = "";
     inputRef.current.value = "";  
@@ -96,7 +96,7 @@ function searchSubmit(inputRef, selectRef, history) {
   }
   if (selectRef.current.value.trim() !== "") {
     history.push(
-      "/shop/page/1?category=" + selectRef.current.value.replace(/ /g, "-")
+      "/shop/page/1?category=" + selectRef.current.value.trim().replace(/ /g, "-")
     );
   }
   selectRef.current.value = "";

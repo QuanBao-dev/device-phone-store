@@ -1,14 +1,4 @@
 import { cartStream } from "./Cart";
-import { shopStream } from "./Shop";
-export const filterSearchProduct = (text) => {
-  const { dataTemp } = shopStream.currentState();
-  shopStream.updateData({
-    dataList: dataTemp.filter(({ title }) => {
-      const keyReg = new RegExp(text, "i");
-      return title.match(keyReg);
-    }),
-  });
-};
 
 export const parseCurrency = (string) => {
   const number = parseInt(string.replace(",", "")).toString();

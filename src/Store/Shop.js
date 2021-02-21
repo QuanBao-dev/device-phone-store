@@ -3,7 +3,10 @@ const initialState = {
   dataList: [],
   dataOriginalList: [],
   searchFilter: "",
-  dataTemp: []
+  dataTemp: [],
+  maxPriceAdjust: null,
+  minPriceAdjust: null,
+  keySearch: null
 };
 const behaviorSubject = new BehaviorSubject(initialState);
 
@@ -36,6 +39,5 @@ const shopStore = {
     });
   },
 };
-
 
 export default shopStore;

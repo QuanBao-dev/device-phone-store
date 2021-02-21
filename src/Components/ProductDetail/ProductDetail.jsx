@@ -1,18 +1,22 @@
-import "./ProductDetail.css";
+import './ProductDetail.css';
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { addToCompare } from "../../Epics/Compare";
-import Stars from "../Stars/Stars";
-import { addToCart } from "../../Epics/Cart";
-import ImageZoom from "../ImageZoom/ImageZoom";
-import { parseCurrency } from "../../Epics/Share";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { addToCart } from '../../Epics/Cart';
+import { addToCompare } from '../../Epics/Compare';
+import { parseCurrency } from '../../Epics/Share';
+import ImageZoom from '../ImageZoom/ImageZoom';
+import Stars from '../Stars/Stars';
 
 const ProductDetail = ({ productData }) => {
   const inputNumberRef = useRef();
   const [isAdded, setIsAdded] = useState(false);
   const history = useHistory();
+  useEffect(() => {
+    setIsAdded(false)
+  },[productData.id])
   return (
     <div className="container-product-info">
       <ImageZoom imageUrl={productData.imageUrl} />
