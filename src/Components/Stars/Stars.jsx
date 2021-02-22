@@ -11,7 +11,7 @@ const Stars = ({ star, isEdit, setStarValue, error }) => {
   return (
     <div
       style={{ display: "flex" }}
-      onMouseLeave={() => {
+      onMouseOut={() => {
         setAmountStar(amountStarBegin);
       }}
     >

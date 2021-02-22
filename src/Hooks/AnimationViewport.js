@@ -10,7 +10,7 @@ export const useAnimationViewport = (elementRef) => {
         if (
           elementRef.current.getBoundingClientRect().y -
             window.innerHeight +
-            elementRef.current.getBoundingClientRect().height <
+            elementRef.current.getBoundingClientRect().height / 3 <
           0
         ) {
           elementRef.current.style.opacity = 1;

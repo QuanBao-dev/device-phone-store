@@ -1,8 +1,9 @@
-import './Carousel.css';
+import "./Carousel.css";
 
-import React, { useEffect,  useState } from 'react';
-import { Link } from 'react-router-dom';
-import { timer } from 'rxjs';
+import React, { useEffect, useState } from "react";
+import { interval } from "rxjs";
+
+import CarouselItem from "../CarouselItem/CarouselItem";
 
 const dataCarousel = [
   {
@@ -30,42 +31,53 @@ const dataCarousel = [
 const Carousel = () => {
   const [page, setPage] = useState(0);
   useEffect(() => {
-    const subscription = timer(4000, 5000).subscribe((v) => {
-      if(page + 1 <  dataCarousel.length){
-        setPage(page + 1)
+    const subscription = interval(8000).subscribe(() => {
+      if (page + 1 < dataCarousel.length) {
+        setPage(page + 1);
       } else {
-        setPage(0)
+        setPage(0);
       }
-    })
+    });
     return () => {
       subscription.unsubscribe();
-    }
-  },[page]);
+    };
+  }, [page]);
   return (
     <div className="carousel-product-container">
       <div className="carousel-product-list">
+        <span
+          className="carousel-chevron-container left"
+          onClick={() => {
+            if (page > 0) {
+              setPage(page - 1);
+            } else {
+              setPage(dataCarousel.length - 1);
+            }
+          }}
+        >
+          <i className="fas fa-chevron-left" />
+        </span>
+        <span
+          className="carousel-chevron-container right"
+          onClick={() => {
+            if (page + 1 < dataCarousel.length) {
+              setPage(page + 1);
+            } else {
+              setPage(0);
+            }
+          }}
+        >
+          <i className="fas fa-chevron-right" />
+        </span>
         {dataCarousel.map(({ title, url, description }, key) => (
-          <div
-            className={`carousel-product-item-container${
-              key === page ? " show" : ""
-            }`}
+          <CarouselItem
+            pageId={key}
             key={key}
-          >
-            <div className={`carousel-product-item`} key={key}>
-              <img
-                className="carousel-product-item__image"
-                src={url}
-                alt="NOT FOUND"
-              />
-              <div className="carousel-product-item__area-title">
-                <h1 className="title">{title}</h1>
-                <div className="description">{description}</div>
-                <Link className="link" to="/">
-                  Read more
-                </Link>
-              </div>
-            </div>
-          </div>
+            title={title}
+            url={url}
+            description={description}
+            page={page}
+          />
         ))}
       </div>
     </div>
