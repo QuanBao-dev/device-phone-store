@@ -3,6 +3,11 @@
   color: black;
   margin: 0 10px;
 }
+
+.news-item-contain:first-child{
+  margin-left: 0;
+}
+
 .news-item{
   width: 100%;
 }

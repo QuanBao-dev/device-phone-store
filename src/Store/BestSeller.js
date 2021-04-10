@@ -10,7 +10,7 @@ const initialState = {
   posX2: 0,
   delta: 0,
   speed: 1,
-  margin: 23,
+  margin: 22,
   transition:"1s"
 };
 const behaviorSubject = new BehaviorSubject(initialState);

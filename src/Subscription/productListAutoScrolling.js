@@ -7,7 +7,7 @@ export const mouseUpSub = (
   layerNoWrapRef
 ) => {
   return fromEvent(window, "mouseup").subscribe(() => {
-    if (!isWrap) {
+    if (!isWrap && productListStream) {
       cardProductListRef.current.style.transition = "0.3s";
       const newOffsetLeft =
         productListStream.currentState().offsetLeft +
@@ -21,21 +21,24 @@ export const mouseUpSub = (
       if (newPage < 0) newPage = 0;
       else {
         const previousPage = newPage - 1;
-        const nextPage = newPage;
-        const distancePrev = Math.abs(
-          previousPage *
-            (productListStream.currentState().widthItem +
-              productListStream.currentState().margin) -
-            newOffsetLeft
-        );
-        const distanceNext = Math.abs(
-          nextPage *
-            (productListStream.currentState().widthItem +
-              productListStream.currentState().margin) -
-            newOffsetLeft
-        );
-        if (distancePrev < distanceNext) newPage = previousPage;
-        if (distancePrev > distanceNext) newPage = nextPage;
+        const delta =
+          newOffsetLeft - productListStream.currentState().offsetLeft;
+        if (delta < 0) {
+          if (
+            Math.abs(delta) >
+            productListStream.currentState().widthItem / 2
+          ) {
+            newPage = previousPage;
+          }
+        } else if (delta > 0) {
+          if (
+            Math.abs(delta) <
+            productListStream.currentState().widthItem / 2
+          ) {
+            newPage -= 1;
+          }
+        }
+        if (newPage < 0) newPage = 0;
         if (newPage > productListStream.currentState().maxPage)
           newPage = productListStream.currentState().maxPage;
       }
@@ -43,16 +46,21 @@ export const mouseUpSub = (
         cardProductListRef.current.style.transform = `translateX(-${
           productListStream.currentState().offsetLeft
         }px)`;
-      productListStream.updateData({
-        currentPage: newPage,
-        offsetLeft: newOffsetLeft,
-      });
+      if (
+        productListStream.currentState().currentPage !== newPage &&
+        productListStream.currentState().offsetLeft !== newOffsetLeft
+      )
+        productListStream.updateData({
+          currentPage: newPage,
+          offsetLeft: newOffsetLeft,
+        });
       productListStream.updateDataQuick({
         posX1: 0,
         posX2: 0,
         delta: 0,
       });
-      productListStream.updateData({ mode: "interval" });
+      if (productListStream.currentState().mode !== "interval")
+        productListStream.updateData({ mode: "interval" });
       setTimeout(() => {
         layerNoWrapRef &&
           layerNoWrapRef.current &&
@@ -66,7 +74,7 @@ export const mouseUpSub = (
 
 export const mouseDownSub = (isWrap, cardProductListRef, productListStream) => {
   return fromEvent(cardProductListRef.current, "mousedown").subscribe((e) => {
-    if (!isWrap) {
+    if (!isWrap && productListStream) {
       e.preventDefault();
       productListStream.updateDataQuick({
         posX1: 0,
@@ -85,7 +93,11 @@ export const mouseMoveSub = (
   layerNoWrapRef
 ) => {
   return fromEvent(window, "mousemove").subscribe((e) => {
-    if (productListStream.currentState().mode === "mousedown" && !isWrap) {
+    if (
+      productListStream &&
+      productListStream.currentState().mode === "mousedown" &&
+      !isWrap
+    ) {
       productListStream.updateDataQuick({
         posX2: productListStream.currentState().posX1 - e.clientX,
       });
@@ -115,7 +127,7 @@ export const mouseMoveSub = (
 
 export const touchEndSub = (isWrap, cardProductListRef, productListStream) => {
   return fromEvent(window, "touchend").subscribe(() => {
-    if (!isWrap) {
+    if (!isWrap && productListStream) {
       cardProductListRef.current.style.transition = "0.3s";
       const newOffsetLeft =
         productListStream.currentState().offsetLeft +
@@ -129,21 +141,18 @@ export const touchEndSub = (isWrap, cardProductListRef, productListStream) => {
       if (newPage < 0) newPage = 0;
       else {
         const previousPage = newPage - 1;
-        const nextPage = newPage;
-        const distancePrev = Math.abs(
-          previousPage *
-            (productListStream.currentState().widthItem +
-              productListStream.currentState().margin) -
-            newOffsetLeft
-        );
-        const distanceNext = Math.abs(
-          nextPage *
-            (productListStream.currentState().widthItem +
-              productListStream.currentState().margin) -
-            newOffsetLeft
-        );
-        if (distancePrev < distanceNext) newPage = previousPage;
-        if (distancePrev > distanceNext) newPage = nextPage;
+        const delta =
+          newOffsetLeft - productListStream.currentState().offsetLeft;
+        if (delta < 0) {
+          if (Math.abs(delta) > 60) {
+            newPage = previousPage;
+          }
+        } else if (delta > 0) {
+          if (Math.abs(delta) < 60) {
+            newPage -= 1;
+          }
+        }
+        if (newPage < 0) newPage = 0;
         if (newPage > productListStream.currentState().maxPage)
           newPage = productListStream.currentState().maxPage;
       }
@@ -162,7 +171,8 @@ export const touchEndSub = (isWrap, cardProductListRef, productListStream) => {
       });
       productListStream.updateData({ mode: "interval" });
       setTimeout(() => {
-        cardProductListRef.current.style.transition = productListStream.currentState().transition;
+        if (cardProductListRef.current)
+          cardProductListRef.current.style.transition = productListStream.currentState().transition;
       }, 300);
     }
   });
@@ -174,7 +184,7 @@ export const touchStartSub = (
   productListStream
 ) => {
   return fromEvent(cardProductListRef.current, "touchstart").subscribe((e) => {
-    if (!isWrap) {
+    if (!isWrap && productListStream) {
       productListStream.updateDataQuick({
         posX1: 0,
         posX2: 0,
@@ -189,7 +199,7 @@ export const touchStartSub = (
 
 export const touchMoveSub = (isWrap, cardProductListRef, productListStream) => {
   return fromEvent(cardProductListRef.current, "touchmove").subscribe((e) => {
-    if (!isWrap) {
+    if (!isWrap && productListStream) {
       productListStream.updateDataQuick({
         posX2: productListStream.currentState().posX1 - e.touches[0].clientX,
       });
@@ -203,6 +213,9 @@ export const touchMoveSub = (isWrap, cardProductListRef, productListStream) => {
       productListStream.updateDataQuick({
         posX1: e.touches[0].clientX,
       });
+      if (Math.abs(productListStream.currentState().delta) < 50) {
+        return;
+      }
       const newOffsetLeft =
         productListStream.currentState().offsetLeft +
         productListStream.currentState().delta *

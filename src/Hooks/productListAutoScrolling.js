@@ -20,7 +20,7 @@ export const useProductWidthHandle = (
       maxPage: dataList.length - stream.currentState().numberOfProductPerPage,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stream]);
 };
 
 export const useProductResizeHandle = (
@@ -44,7 +44,7 @@ export const useProductResizeHandle = (
       subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stream]);
 };
 
 export const useModeChangeHandle = (stream, state) => {
@@ -67,5 +67,5 @@ export const useModeChangeHandle = (stream, state) => {
       subscription && subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.mode, state.currentPage]);
+  }, [stream, state.mode, state.currentPage]);
 };

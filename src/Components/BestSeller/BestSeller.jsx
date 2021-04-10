@@ -106,6 +106,7 @@ const BestSeller = () => {
           dataList={dataBestSeller}
           isWrap={false}
           layerNoWrapRef={bestSellerLayerRef}
+          stream={bestSellerStream}
         />
       </div>
     </div>
