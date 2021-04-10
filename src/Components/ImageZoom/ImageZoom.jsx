@@ -1,7 +1,8 @@
 import "./ImageZoom.css";
 
 import React, { useEffect, useRef } from "react";
-const ratio = 2 ;
+import { fromEvent } from "rxjs";
+const ratio = 2;
 const widthSquare = 220;
 const heightSquare = 220;
 const ImageZoom = ({ imageUrl }) => {
@@ -13,6 +14,16 @@ const ImageZoom = ({ imageUrl }) => {
     zoomInImageRef.current.style.width = `${
       containerImageProductRef.current.offsetWidth * ratio
     }px`;
+  }, []);
+  useEffect(() => {
+    const subscription = fromEvent(window, "resize").subscribe(() => {
+      zoomInImageRef.current.style.width = `${
+        containerImageProductRef.current.offsetWidth * ratio
+      }px`;
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
   return (
     <div className="container-image-product" ref={containerImageProductRef}>

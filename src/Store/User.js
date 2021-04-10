@@ -1,20 +1,14 @@
 import { BehaviorSubject } from "rxjs";
 const initialState = {
-  dataList: [],
-  dataOriginalList: [],
-  searchFilter: "",
-  dataTemp: [],
-  maxPriceAdjust: null,
-  minPriceAdjust: null,
-  keySearch: null,
-  page: null,
-  tabIndex: null
+  innerWidth: window.innerWidth,
+  userData: null,
+  scrollY: 0,
 };
 const behaviorSubject = new BehaviorSubject(initialState);
 
 let state = initialState;
 
-const shopStore = {
+const userStore = {
   initialState,
   subscribe: (setState) => behaviorSubject.subscribe((v) => setState(v)),
   currentState: () => {
@@ -42,4 +36,4 @@ const shopStore = {
   },
 };
 
-export default shopStore;
+export default userStore;

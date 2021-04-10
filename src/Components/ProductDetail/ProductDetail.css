@@ -3,8 +3,7 @@
   margin-top: 1rem;
   align-items: flex-start;
   justify-content: flex-start;
-  height: 454px;
-  margin-bottom: 100px;
+  margin-bottom: 2rem;
 }
 
 .container-product-info input{
@@ -94,9 +93,6 @@
 }
 
 .container-area-title .description{
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
   overflow: hidden;
   margin-top: 1rem;
   line-height: 1.8rem;
@@ -140,4 +136,10 @@
 
 .container-tag-category .value-table{
   line-height: 2rem;
+}
+
+@media(max-width: 769px){
+  .container-product-info{
+    flex-direction: column;
+  }
 }

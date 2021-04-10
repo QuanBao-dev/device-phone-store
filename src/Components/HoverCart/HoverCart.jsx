@@ -47,6 +47,7 @@ const HoverCart = ({ cartState, subTotal }) => {
                     fontSize: "1.1rem",
                     color: "red",
                     cursor: "pointer",
+                    marginRight:"1rem"
                   }}
                   onClick={() => removeFromCart(title)}
                 >

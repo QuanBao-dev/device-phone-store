@@ -12,7 +12,7 @@ const BlackCardProductItem = ({
   subClassName,
 }) => {
   return (
-    <li
+    <div
       className={`black-card-product-item${
         subClassName ? " " + subClassName : ""
       }`}
@@ -26,7 +26,7 @@ const BlackCardProductItem = ({
         <div className="start-at">{originalPrice || "Starting at"}</div>
         <div className="price">{startingAt}</div>
       </div>
-    </li>
+    </div>
   );
 };
 

@@ -66,3 +66,37 @@
   background-color: blue;
   color: white;
 }
+
+.container-group-1{
+  display: flex; 
+}
+
+.additional-information-area{
+  flex: 1 1 400px;
+  margin-left: 30px;
+}
+
+.billing-details-area{
+  flex: 1 1 500px
+}
+
+.term-and-condition{
+  color: blue;
+  cursor: pointer;
+}
+
+.detail-term-of-use{
+  max-height: 92px;
+  overflow: auto;
+  transition: 0.5s;
+}
+
+@media(max-width: 930px){
+  .container-group-1{
+    flex-direction: column;
+  }
+
+  .additional-information-area{
+    margin-left: 0;
+  }
+}

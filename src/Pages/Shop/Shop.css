@@ -1,21 +1,21 @@
 .container-shop-pagination{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .container-shop-pagination .card-product-new-item{
   width: 31%!important;
   padding-bottom: 2rem;
-  margin-left: 0!important;
-  margin-right: 19px!important;
 }
 
 .first-aside-shop{
-  width: 900px;
+  flex: 1 1 900px;
 }
 
 .second-aside-shop{
-  width: 272px;
+  flex: 1 1 272px;
+  margin: 5rem 1rem;
 }
 
 .container-shop-pagination .input-container{
@@ -26,6 +26,7 @@
   display: flex;
   align-items: center;
   justify-content:flex-start;
+  cursor: text;
 }
 
 .container-shop-pagination .input-container input{
@@ -49,11 +50,18 @@
   border: 1px solid rgb(196, 196, 196);
 }
 
+.cart-list-product{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
 .cart-item-product{
   display: flex;
   align-items: flex-start;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
+  width: fit-content;
+  min-width: 300px;
 }
 
 .cart-item-product h5{

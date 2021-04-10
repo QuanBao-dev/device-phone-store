@@ -3,7 +3,6 @@
   display: flex;
   justify-content: space-between;
   margin: auto;
-  height: 300px;
 }
 
 .background-deal-of-the-day{
@@ -16,4 +15,15 @@
 .background-deal-of-the-day h1{
   font-weight: 300;
   margin-top: 0;
+}
+
+@media(max-width:864px){
+  .container-deal-of-the-day{
+    flex-direction: column;
+  }
+
+  .container-deal-of-the-day .black-card-product-item.small{
+    max-width: 100%;
+    width: 98.5%;
+  }
 }

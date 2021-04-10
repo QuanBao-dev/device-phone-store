@@ -43,3 +43,9 @@
   outline: none;
   font-weight: 550;
 }
+
+@media(max-width: 478px){
+  .news-letter-sign-up .form-submit input{
+    width: 200px;
+  }
+}

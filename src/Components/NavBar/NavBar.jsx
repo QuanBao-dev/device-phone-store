@@ -1,61 +1,110 @@
 import "./NavBar.css";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink as Link, useHistory } from "react-router-dom";
+import { fromEvent } from "rxjs";
+import { filter } from "rxjs/operators";
 
-import { optionSelect } from "../../Epics/Share";
+import { userStream } from "../../Epics/User";
+import { useInitStream } from "../../Hooks/InitStream";
 import CartShoppingNav from "../CartShoppingNav/CartShoppingNav";
+import HeaderPhoneLogin from "../HeaderPhoneLogin/HeaderPhoneLogin";
+import HeaderSearch from "../HeaderSearch/HeaderSearch";
+import SearchMobile from "../SearchMobile/SearchMobile";
 
 const NavBar = () => {
   const history = useHistory();
   const selectRef = useRef();
   const inputRef = useRef();
+  const menuContainerRef = useRef();
+  const headerRef = useRef();
+  const [isActiveMenu, setIsActiveMenu] = useState(false);
+  const [isActiveSearch, setIsActiveSearch] = useState(false);
+  const [userState, setUserState] = useState(userStream.currentState());
+  useInitStream(setUserState, userStream);
+  useEffect(() => {
+    const subscription = fromEvent(window, "resize").subscribe(() => {
+      userStream.updateData({ innerWidth: window.innerWidth });
+      headerRef.current.style.boxShadow = "none";
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+  const { innerWidth } = userState;
+  useEffect(() => {
+    const subscription = fromEvent(window, "scroll")
+      .pipe(filter(() => innerWidth <= 1069))
+      .subscribe(() => {
+        if (window.scrollY === 0) {
+          headerRef.current.style.boxShadow = "none";
+        } else {
+          headerRef.current.style.boxShadow = "0 0 20px 1px black";
+        }
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [innerWidth]);
   return (
-    <header>
-      <div className="header__phone-login-container">
-        <div className="header__phone-login">
-          <div className="header__phone-area">
-            <div>Welcome to Device</div>
-            <div>Custom Care</div>
-            <div className="header__phone-number">
-              <Link to="tel:1-800-123-4567">1-800-123-4567</Link>
-            </div>
-          </div>
-          <div className="header__login-area">
-            <Link to="/register">Sign Up</Link>
-            <Link to="/login">Log in</Link>
-          </div>
-        </div>
-      </div>
+    <header ref={headerRef}>
+      {innerWidth <= 1169 && (
+        <SearchMobile
+          isActive={isActiveSearch}
+          setIsActive={setIsActiveSearch}
+        />
+      )}
+      <HeaderPhoneLogin
+        isMobile={innerWidth <= 1169}
+        isActiveMenu={isActiveMenu}
+      />
+      {isActiveMenu && (
+        <div
+          className="header__block-background"
+          onClick={() => setIsActiveMenu(!isActiveMenu)}
+        ></div>
+      )}
       <div className="header__area-logo-container">
         <div className="header__area-logo">
           <Link to="/" style={{ textDecoration: "none", color: "black" }}>
             <h1 className="header__logo">Device</h1>
           </Link>
-          <div className="header__select-search">
-            <select ref={selectRef} style={{ outline: "none" }}>
-              <option value="">All Categories</option>
-              {optionSelect.map((data, key) => (
-                <option key={key}>{data}</option>
-              ))}
-            </select>
-            <input
-              placeholder="Search for products"
-              ref={inputRef}
-              onKeyDown={(e) => {
-                if (e.keyCode === 13) {
-                  searchSubmit(inputRef, selectRef, history);
-                }
-              }}
+          {innerWidth >= 1114 && (
+            <HeaderSearch
+              selectRef={selectRef}
+              inputRef={inputRef}
+              history={history}
             />
-            <i
-              className="fas fa-search"
-              onClick={() => {
-                searchSubmit(inputRef, selectRef, history);
-              }}
-            ></i>
+          )}
+          <div className="cart-shopping-nav-container">
+            {innerWidth < 1114 && (
+              <div className="search-symbol-container">
+                <Link to={"/checkout"} style={{ color: "black" }}>
+                  <i className="fa fa-money-check-alt fa-2x"></i>
+                </Link>
+              </div>
+            )}
+            {innerWidth < 1114 && (
+              <div
+                className="search-symbol-container"
+                onClick={() => setIsActiveSearch(!isActiveSearch)}
+              >
+                <i className="fa fa-search fa-2x"></i>
+              </div>
+            )}
+            <CartShoppingNav />
+            {innerWidth <= 1169 && (
+              <div
+                className={`menu-container${isActiveMenu ? " active" : ""}`}
+                ref={menuContainerRef}
+                onClick={() => setIsActiveMenu(!isActiveMenu)}
+              >
+                <span className="one"></span>
+                <span className="two"></span>
+                <span className="three"></span>
+              </div>
+            )}
           </div>
-          <CartShoppingNav />
         </div>
         <nav className="header__nav-bar">
           <Link to="/" activeClassName="active" exact>
@@ -69,38 +118,5 @@ const NavBar = () => {
     </header>
   );
 };
-
-function searchSubmit(inputRef, selectRef, history) {
-  if (
-    ![inputRef.current.value.trim(), selectRef.current.value.trim()].includes(
-      ""
-    )
-  ) {
-    history.push(
-      "/shop/page/1?category=" +
-        selectRef.current.value.trim().replace(/ /g, "-") +
-        "&key=" +
-        inputRef.current.value.trim().replace(/ /g, "-")
-    );
-    selectRef.current.value = "";
-    inputRef.current.value = "";  
-    return;
-  }
-  if (inputRef.current.value.trim() !== "") {
-    history.push(
-      "/shop/page/1?key=" + inputRef.current.value.trim().replace(/ /g, "-")
-    );
-    selectRef.current.value = "";
-    inputRef.current.value = "";  
-    return;
-  }
-  if (selectRef.current.value.trim() !== "") {
-    history.push(
-      "/shop/page/1?category=" + selectRef.current.value.trim().replace(/ /g, "-")
-    );
-  }
-  selectRef.current.value = "";
-  inputRef.current.value = "";
-}
 
 export default NavBar;

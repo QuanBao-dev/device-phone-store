@@ -1,8 +1,11 @@
 .price-adjust-container{
-  height: 2px;
+  height: 5px;
   position: relative;
   width: 100%;
   background-color: grey;
+  border-radius: 2px;
+  max-width: 500px;
+  cursor: pointer;
 }
 
 .price-adjust{
@@ -13,6 +16,7 @@
   left: 0;
   z-index: 4;
   width: 100%;
+  transition: 0.3s;
 }
 
 .price-adjust-container span{
@@ -25,4 +29,27 @@
   z-index: 5;
   background-color: black;
   cursor: pointer;
+}
+
+.button-filter-product{
+  border-radius: 10px;
+  background-color: rgb(67, 67, 255);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.button-filter-product:active{
+  background-color: rgb(75, 75, 187);
+}
+
+.container-price-display{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 1rem;
 }

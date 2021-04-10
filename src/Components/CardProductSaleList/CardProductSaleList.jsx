@@ -18,10 +18,6 @@ const CardProductSaleList = ({dataList}) => {
             title={title}
             originalPrice={originalPrice}
             newPrice={newPrice}
-            styleMargin={{
-              marginRight: key === dataList.length - 1 ? 0 : null,
-              marginLeft: key === 0 ? 0 : null,
-            }}
           />
         )
       )}

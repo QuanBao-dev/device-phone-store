@@ -2,6 +2,9 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  margin-right: 1rem;
+  max-width: 700px;
+  word-break: break-all;
 }
 
 .review-list-container h4{
@@ -44,4 +47,15 @@
 .review-list-container{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.review-page-container{
+  display: flex;
+  justify-content: center;
+}
+
+.review-page-container span{
+  margin: 1rem;
+  cursor: pointer;
 }

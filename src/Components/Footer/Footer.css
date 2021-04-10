@@ -5,10 +5,15 @@
   padding: 5rem 0;
 }
 
+.footer-item-container{
+  margin: 0 2rem;
+}
+
 .footer .footer-list-container{
   display: flex;
   justify-content: space-between;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .footer .footer-item-container h4{

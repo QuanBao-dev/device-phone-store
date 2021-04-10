@@ -17,6 +17,7 @@ import {
   touchMoveSub,
   touchStartSub,
 } from "../../Subscription/productListAutoScrolling";
+import { userStream } from "../../Epics/User";
 
 const dataList = [
   {
@@ -50,6 +51,20 @@ const ClientLogos = () => {
   const [clientLogosState, setClientLogosState] = useState(
     clientLogoStream.currentState()
   );
+  const [userState, setUserState] = useState(userStream.currentState());
+  useInitStream(setUserState, userStream);
+  const { innerWidth } = userState;
+  useEffect(() => {
+    if (innerWidth > 505) {
+      clientLogoStream.updateData({
+        numberOfProductPerPage: 3,
+      });
+    } else {
+      clientLogoStream.updateData({
+        numberOfProductPerPage: 2,
+      });
+    }
+  }, [innerWidth]);
   useEffect(() => {
     const subscription = mouseDownSub(false, clientLogosRef, clientLogoStream);
     const subscription2 = mouseMoveSub(false, clientLogosRef, clientLogoStream);

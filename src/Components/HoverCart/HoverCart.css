@@ -10,11 +10,10 @@
 }
 
 .hover-cart-nav-container{
-  width: 100%;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 3px 1px rgb(201, 201, 201);
-  padding: 1rem;
+  padding: 1rem 0;
 }
 
 .hover-cart-nav-item-container{
@@ -82,4 +81,10 @@
   font-size: 0.8rem;
   flex: 1 1 auto;
   margin-right: 1rem;
+}
+
+@media(max-width: 1113px){
+  .hover-cart-nav-wrapper{
+    display: none;
+  }
 }

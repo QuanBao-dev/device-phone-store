@@ -90,7 +90,7 @@ export const optionSelect = [
   "Xiaomi",
 ];
 
-export const dataListProduct = [
+export let dataListProduct = [
   {
     title: "12-inch Intel Core",
     imageUrl:
@@ -723,7 +723,7 @@ export const dataListProduct = [
     },
   },
   {
-    title: "Nokia 6 Dual Sim Tempered Blue",
+    title: "Nokia 6 Dual Sim",
     imageUrl:
       "https://devicer.cmsmasters.net/wp-content/uploads/2017/09/21-3-540x540.jpg",
     tags: ["Cell Phones", "Motorola"],
@@ -1128,4 +1128,29 @@ export const getAllDataByTags = (tagsProductData = []) => {
     });
     return ans;
   }, {});
+};
+
+export const postNewReview = (
+  id,
+  review = {
+    imageUrl: "",
+    username: "",
+    star: 0,
+    createdAt: "",
+    content: "",
+  }
+) => {
+  dataListProduct = dataListProduct.reduce((ans, data) => {
+    if (data.id !== id) {
+      ans.push(data);
+      return ans;
+    }
+    if(data.reviews){
+      data.reviews.push(review);
+    } else {
+      data.reviews = [review];
+    }
+    ans.push(data)
+    return ans;
+  }, []);
 };

@@ -1,6 +1,6 @@
 import "./Checkout.css";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import HeadLine from "../../Components/HeadLine/HeadLine";
 import Input from "../../Components/Input/Input";
@@ -10,7 +10,6 @@ import {
   currentTotalCart,
   parseCurrency,
 } from "../../Epics/Share";
-import { Link } from "react-router-dom";
 
 const Checkout = (props) => {
   const { dataCart, cartNumberOfProduct } = cartStream.currentState();
@@ -28,12 +27,18 @@ const Checkout = (props) => {
   const createAccountRef = useRef();
   const orderNotesRef = useRef();
   const checkBoxCreateAccountRef = useRef();
+  const [termOfUseState, setTermOfUseState] = useState(false);
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+    });
+  }, []);
   return (
-    <div style={{ maxWidth: "1210px", margin: "auto" }}>
+    <div style={{ maxWidth: "1210px", margin: "auto", padding: "0 10px" }}>
       <HeadLine pathLocation={props.location.pathname} />
       <form action="#">
-        <div style={{ display: "flex" }}>
-          <div style={{ width: "50%" }}>
+        <div className="container-group-1">
+          <div className="billing-details-area">
             <h1>Billing details</h1>
             <Input
               label={"First Name"}
@@ -103,7 +108,7 @@ const Checkout = (props) => {
               checkBoxRef={checkBoxCreateAccountRef}
             />
           </div>
-          <div style={{ marginLeft: "60px", flex: "1 1 auto" }}>
+          <div className="additional-information-area">
             <h1>Additional information</h1>
             <Input
               label={"Order notes"}
@@ -150,12 +155,49 @@ const Checkout = (props) => {
             state. Please contact us if you require assistance or wish to make
             alternate arrangements.
           </div>
+          <p
+            className="detail-term-of-use"
+            style={{
+              maxHeight: termOfUseState ? 92 : 0,
+            }}
+          >
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique,
+            ratione minima, sit debitis omnis beatae voluptatum vel est
+            obcaecati, sapiente placeat accusantium. Iure, corrupti illum
+            accusamus sint corporis commodi at! Lorem ipsum dolor sit amet,
+            consectetur adipisicing elit. Quasi, tempora incidunt aut sunt
+            obcaecati repellat saepe, expedita ut mollitia dolorem, voluptas
+            provident reprehenderit maxime quibusdam dignissimos impedit
+            laudantium voluptatum vel. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Similique, ratione minima, sit debitis omnis
+            beatae voluptatum vel est obcaecati, sapiente placeat accusantium.
+            Iure, corrupti illum accusamus sint corporis commodi at! Lorem ipsum
+            dolor sit amet, consectetur adipisicing elit. Quasi, tempora
+            incidunt aut sunt obcaecati repellat saepe, expedita ut mollitia
+            dolorem, voluptas provident reprehenderit maxime quibusdam
+            dignissimos impedit laudantium voluptatum vel. Lorem ipsum dolor sit
+            amet consectetur adipisicing elit. Similique, ratione minima, sit
+            debitis omnis beatae voluptatum vel est obcaecati, sapiente placeat
+            accusantium. Iure, corrupti illum accusamus sint corporis commodi
+            at! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi,
+            tempora incidunt aut sunt obcaecati repellat saepe, expedita ut
+            mollitia dolorem, voluptas provident reprehenderit maxime quibusdam
+            dignissimos impedit laudantium voluptatum vel.
+          </p>
           <Input
             type={"checkbox"}
             label={
               <span className="checkbox-label">
                 I have read and agree to the website
-                <Link to="#"> terms and conditions *</Link>
+                <span
+                  className="term-and-condition"
+                  onClick={() => {
+                    setTermOfUseState(!termOfUseState);
+                  }}
+                >
+                  {" "}
+                  terms and conditions *
+                </span>
               </span>
             }
             checkBoxRef={termOfUseCheckBoxRef}

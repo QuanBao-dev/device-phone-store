@@ -15,7 +15,7 @@ const TableProductsCart = () => {
   const { dataCart, cartNumberOfProduct } = tableProductCartState;
   const cartTotal = currentTotalCart();
   return (
-    <div>
+    <div style={{ overflow: "auto", width: "100%" }}>
       <div className="table-products-cart-container">
         <table className="table-products-cart">
           <thead>

@@ -1,0 +1,71 @@
+.header__phone-login-container{
+  display: flex;
+  justify-content: center;
+  background-color: #F2F2F2;
+  padding: 0.5rem 0;
+  z-index: 10000;
+}
+
+.header__phone-login-container.mobile{
+  position: fixed;
+  top: 0;
+  left: -900px;
+  padding: 10px;
+  transition: 0.5s;
+  height: 100%;
+}
+
+.header__phone-login-container.mobile.active{
+  left: 0;
+}
+
+.header__phone-login-container.mobile .header__phone-login, 
+.header__phone-login-container.mobile .header__phone-area,
+.header__phone-login-container.mobile .header__login-area{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  line-height: 2rem;
+}
+
+.header__phone-login-container.mobile .header__login-area a{
+  margin: 0;
+}
+
+.header__phone-login-container.mobile a.active{
+  color: blue;
+}
+
+.header__phone-login{
+  max-width:1210px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__phone-area{
+  display: flex;
+  align-items: center;
+}
+
+.header__phone-number a{
+  text-decoration: none;
+  color: grey;
+}
+
+.header__phone-area div{
+  margin-right: 1rem;
+}
+
+.header__login-area a{
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+.header__login-area a:hover{
+  color: blue;
+}

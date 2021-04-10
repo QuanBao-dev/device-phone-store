@@ -3,7 +3,7 @@
   margin-left: 10px;
 }
 
-.tab-name-item{
+.tab-name-list .tab-name-item{
   background-image: linear-gradient(to right, rgb(0, 162, 255), blue);
   background-repeat: no-repeat;
   background-size: 0 4px;
@@ -14,6 +14,21 @@
   font-size: larger;
   transition: 0.4s ease-in-out;
   cursor: pointer;
+  line-height: 2.3rem;
+}
+
+.tab-name-container .tab-name-item{
+  background-image: linear-gradient(to right, rgb(0, 162, 255), blue);
+  background-repeat: no-repeat;
+  background-size: 0 4px;
+  background-position: 0 33px;
+  padding-bottom: 1rem;
+  padding-right: 2px;
+  margin-right: 1rem;
+  font-size: larger;
+  transition: 0.4s ease-in-out;
+  cursor: pointer;
+  line-height: 2.3rem;
 }
 
 .tab-name-item.active{

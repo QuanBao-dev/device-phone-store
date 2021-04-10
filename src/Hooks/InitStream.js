@@ -7,6 +7,5 @@ export const useInitStream = (setState, stream) => {
     return () => {
       subscription.unsubscribe();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setState, stream]);
 };

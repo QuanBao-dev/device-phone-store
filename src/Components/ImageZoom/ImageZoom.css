@@ -6,7 +6,7 @@
   height: 100%;
   width: 100%;
   flex: 1 1 auto;
-  max-width: 454px;
+  min-width: 454px;
   position: relative;
 }
 
@@ -52,4 +52,19 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+@media(max-width: 895px){
+  .container-image-product{
+    height: 311px;
+    min-width: 311px;
+    margin-right: 30px;
+  }
+}
+
+@media(max-width: 769px){
+  .container-image-product{
+    width: fit-content;
+    height: fit-content;
+  }
 }

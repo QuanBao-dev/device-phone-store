@@ -1,6 +1,6 @@
 import "./PopularNews.css";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { popularNewsStream } from "../../Epics/PopularNews";
 import { useInitStream } from "../../Hooks/InitStream";
@@ -11,6 +11,7 @@ import {
 } from "../../Hooks/productListAutoScrolling";
 import NewsList from "../NewsList/NewsList";
 import { useAnimationViewport } from "../../Hooks/AnimationViewport";
+import { userStream } from "../../Epics/User";
 
 const dataList = [
   {
@@ -82,9 +83,11 @@ const PopularNews = () => {
   const [popularNewsState, setPopularState] = useState(
     popularNewsStream.currentState()
   );
+  const [userState, setUserState] = useState(userStream.currentState());
   const popularNewsRef = useRef();
   const popularNewsLayerRef = useRef();
   useInitStream(setPopularState, popularNewsStream);
+  useInitStream(setUserState, userStream);
   useProductWidthHandle(popularNewsStream, popularNewsRef, dataList);
   useProductResizeHandle(popularNewsStream, popularNewsRef, dataList);
   useModeChangeHandle(popularNewsStream, popularNewsState);
@@ -95,6 +98,16 @@ const PopularNews = () => {
       popularNewsStream.currentState().currentPage,
   });
   useAnimationViewport(popularNewsRef);
+  const { innerWidth } = userState;
+  useEffect(() => {
+    if (innerWidth > 800) {
+      popularNewsStream.updateData({ numberOfProductPerPage: 3 });
+    } else if(innerWidth > 468) {
+      popularNewsStream.updateData({ numberOfProductPerPage: 2 });
+    } else {
+      popularNewsStream.updateData({ numberOfProductPerPage: 1 });
+    }
+  }, [innerWidth]);
   return (
     <div
       style={{

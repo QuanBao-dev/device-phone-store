@@ -1,8 +1,7 @@
 import "./CardProductNewList.css";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { bestSellerStream } from "../../Epics/BestSeller";
 import {
   mouseDownSub,
   mouseMoveSub,
@@ -12,43 +11,36 @@ import {
   touchStartSub,
 } from "../../Subscription/productListAutoScrolling";
 import CardProductNewItem from "../CardProductNewItem/CardProductNewItem";
+import { useInitStream } from "../../Hooks/InitStream";
+import { userStream } from "../../Epics/User";
 
-const CardProductNewList = ({ dataList, isWrap = true, layerNoWrapRef }) => {
+const CardProductNewList = ({
+  dataList,
+  isWrap = true,
+  layerNoWrapRef,
+  stream,
+}) => {
   const cardProductListRef = useRef();
+  const [userState, setUserState] = useState(userStream.currentState());
+  useInitStream(setUserState, userStream);
   useEffect(() => {
     const subscription = mouseUpSub(
       isWrap,
       cardProductListRef,
-      bestSellerStream,
+      stream,
       layerNoWrapRef
     );
-    const subscription2 = mouseDownSub(
-      isWrap,
-      cardProductListRef,
-      bestSellerStream
-    );
+    const subscription2 = mouseDownSub(isWrap, cardProductListRef, stream);
     const subscription3 = mouseMoveSub(
       isWrap,
       cardProductListRef,
-      bestSellerStream,
+      stream,
       layerNoWrapRef
     );
 
-    const subscription4 = touchStartSub(
-      isWrap,
-      cardProductListRef,
-      bestSellerStream
-    );
-    const subscription5 = touchMoveSub(
-      isWrap,
-      cardProductListRef,
-      bestSellerStream
-    );
-    const subscription6 = touchEndSub(
-      isWrap,
-      cardProductListRef,
-      bestSellerStream
-    );
+    const subscription4 = touchStartSub(isWrap, cardProductListRef, stream);
+    const subscription5 = touchMoveSub(isWrap, cardProductListRef, stream);
+    const subscription6 = touchEndSub(isWrap, cardProductListRef, stream);
 
     return () => {
       subscription.unsubscribe();
@@ -58,16 +50,31 @@ const CardProductNewList = ({ dataList, isWrap = true, layerNoWrapRef }) => {
       subscription5.unsubscribe();
       subscription6.unsubscribe();
     };
-  }, [isWrap, layerNoWrapRef]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isWrap]);
+  const { innerWidth } = userState;
+  useEffect(() => {
+    if (stream)
+      if (innerWidth >= 1130) {
+        stream.updateData({ numberOfProductPerPage: 4 });
+      } else if (innerWidth >= 826) {
+        stream.updateData({ numberOfProductPerPage: 3 });
+      } else if (innerWidth >= 486) {
+        stream.updateData({ numberOfProductPerPage: 2 });
+      } else {
+        stream.updateData({ numberOfProductPerPage: 1 });
+      }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [innerWidth]);
   return (
     <div
       ref={cardProductListRef}
       className={`card-product-new-list${isWrap ? "" : " nowrap"}`}
       style={{
         transform: !isWrap
-          ? `translateX(-${bestSellerStream.currentState().offsetLeft}px)`
+          ? `translateX(-${stream.currentState().offsetLeft}px)`
           : null,
-        transition: bestSellerStream.currentState().transition,
+        transition: stream && stream.currentState().transition,
       }}
     >
       {dataList.map(
@@ -95,7 +102,8 @@ const CardProductNewList = ({ dataList, isWrap = true, layerNoWrapRef }) => {
             description={description}
             key={key}
             style={{
-              width: !isWrap ? bestSellerStream.currentState().widthItem : null,
+              width: !isWrap ? stream.currentState().widthItem : null,
+              minWidth: !isWrap ? "auto" : null,
             }}
           />
         )

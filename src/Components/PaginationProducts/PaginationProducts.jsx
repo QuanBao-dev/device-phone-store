@@ -28,18 +28,19 @@ const PaginationProducts = ({
         dataList={dataListProduct.slice((page - 1) * 9, page * 9)}
       />
       <div className="page-list-container">
-        {pageList.map((pageItem) => (
-          <Link
-            to={"/shop/page/" + (pageItem + 1) + query}
-            key={pageItem}
-            style={{
-              color: page === pageItem + 1 ? "blue" : "black",
-              fontWeight: page === pageItem + 1 ? 600 : null,
-            }}
-          >
-            {pageItem + 1}
-          </Link>
-        ))}
+        {pageList.length > 1 &&
+          pageList.map((pageItem) => (
+            <Link
+              to={"/shop/page/" + (pageItem + 1) + query}
+              key={pageItem}
+              style={{
+                color: page === pageItem + 1 ? "blue" : "black",
+                fontWeight: page === pageItem + 1 ? 600 : null,
+              }}
+            >
+              {pageItem + 1}
+            </Link>
+          ))}
       </div>
     </div>
   );

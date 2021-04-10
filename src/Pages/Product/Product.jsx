@@ -1,11 +1,11 @@
-import './Product.css';
+import "./Product.css";
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from "react";
 
-import HeadLineProduct from '../../Components/HeadLineProduct/HeadLineProduct';
-import ProductDetail from '../../Components/ProductDetail/ProductDetail';
-import TabProductDetail from '../../Components/TabProductDetail/TabProductDetail';
-import { getAllDataByTags, getDataById } from '../../Epics/Share';
+import HeadLineProduct from "../../Components/HeadLineProduct/HeadLineProduct";
+import ProductDetail from "../../Components/ProductDetail/ProductDetail";
+import TabProductDetail from "../../Components/TabProductDetail/TabProductDetail";
+import { getAllDataByTags, getDataById } from "../../Epics/Share";
 
 const tabNameList = ["Description", "Additional information", "Reviews"];
 const Product = (props) => {
@@ -19,7 +19,14 @@ const Product = (props) => {
   }, [id]);
 
   return (
-    <div style={{ width: "1210px", margin: "auto", marginTop: "3rem" }}>
+    <div
+      style={{
+        maxWidth: "1210px",
+        margin: "auto",
+        marginTop: "3rem",
+        width: "95%",
+      }}
+    >
       <HeadLineProduct productData={productData} />
       <ProductDetail productData={productData} />
       <TabProductDetail

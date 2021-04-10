@@ -1,0 +1,35 @@
+.header__select-search{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 50px;
+  border: 2px solid blue;
+  overflow: hidden;
+  position: relative;
+}
+
+.header__select-search select{
+  padding: 1rem;
+  border: none;
+  border-right: 1px solid rgb(226, 224, 224);
+  width: 300px;
+}
+
+.header__select-search input{
+  padding: 1rem;
+  width: 100%;
+  border: none;
+  padding-right: 50px;
+  outline: none;
+}
+
+.header__select-search i{
+  position: absolute;
+  top: 10;
+  font-size: 1.2rem;
+  right: 14px;
+  cursor: pointer;
+}

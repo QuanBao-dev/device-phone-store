@@ -48,7 +48,7 @@ const dataFeaturedList = [
   getDataByTitle("Misfit Shine 2"),
   getDataByTitle("Bluetooth Keyboard"),
   getDataByTitle("Sony Watch Series F"),
-  getDataByTitle("Nokia 6 Dual Sim Tempered Blue"),
+  getDataByTitle("Nokia 6 Dual Sim"),
 ];
 
 const dataTopList = [
@@ -58,7 +58,7 @@ const dataTopList = [
   getDataByTitle("JBL Pulse 3"),
 ];
 
-const dataSaleList = dataListProduct.filter(({ isSale }) => isSale).slice(0, 5);
+const dataSaleList = dataListProduct.filter(({ isSale }) => isSale).slice(0, 4);
 
 const Home = () => {
   return (

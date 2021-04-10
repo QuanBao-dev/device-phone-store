@@ -30,6 +30,9 @@ const Shop = (props) => {
   const [shopState, setShopState] = useState(shopStream.currentState());
   const [cartState, setCartState] = useState(cartStream.currentState());
   const selectRef = useRef();
+  useEffect(() => {
+    shopStream.updateData({ page: props.match.params.page });
+  }, [props.match.params.page]);
   useInitStream(setCartState, cartStream);
   useInitStream(setShopState, shopStream);
   useProductFilterBySelect(
@@ -72,7 +75,7 @@ const Shop = (props) => {
   }, [categoryQuery, keySearch]);
 
   return (
-    <div style={{ maxWidth: 1200, margin: "auto" }}>
+    <div style={{ maxWidth: 1210, margin: "auto", width: "100%" }}>
       <HeadLine pathLocation={props.location.pathname} />
       <div className="container-shop-pagination">
         <aside className="first-aside-shop">
@@ -83,10 +86,17 @@ const Shop = (props) => {
                 props.match.params.page ? parseInt(props.match.params.page) : 1
               }
               maxPage={Math.ceil(shopState.dataList.length / 9)}
-              query={`?category=${categoryQuery.replace(
-                / /g,
-                "-"
-              )}&key=${keySearch}&min_price=${minPriceAdjust}&max_price=${maxPriceAdjust}`}
+              query={`?${
+                categoryQuery.replace(/ /g, "-") !== ""
+                  ? "category=" + categoryQuery.replace(/ /g, "-")
+                  : ""
+              }${
+                keySearch !== ""
+                  ? (categoryQuery.replace(/ /g, "-") !== "" ? "&" : "") +
+                    "key=" +
+                    keySearch
+                  : ""
+              }&min_price=${minPriceAdjust}&max_price=${maxPriceAdjust}`}
             />
           )}
           {shopState.dataList.length === 0 && (
@@ -94,7 +104,12 @@ const Shop = (props) => {
           )}
         </aside>
         <aside className="second-aside-shop">
-          <div className="input-container">
+          <div
+            className="input-container"
+            onClick={() => {
+              inputSearchRef.current.focus();
+            }}
+          >
             <input
               type="text"
               placeholder="Search Products"
@@ -132,11 +147,14 @@ const Shop = (props) => {
             </div>
             <div>
               <h4>Carts</h4>
-              <div>
-                {cartState.dataCart.map(
-                  ({ title, originalPrice, newPrice, imageUrl }, key) => (
-                    <div key={key}>
-                      <div className="cart-item-product">
+              {cartState.dataCart.length === 0 && (
+                <div>No Products in the cart</div>
+              )}
+              <div className="cart-list-product">
+                {cartState.dataCart.length > 0 &&
+                  cartState.dataCart.map(
+                    ({ title, originalPrice, newPrice, imageUrl }, key) => (
+                      <div className="cart-item-product" key={key}>
                         <div className="image-container">
                           <img
                             src={imageUrl}
@@ -168,9 +186,8 @@ const Shop = (props) => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )
-                )}
+                    )
+                  )}
               </div>
             </div>
           </div>

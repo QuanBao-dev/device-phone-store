@@ -1,9 +1,10 @@
 import "./CardProductSaleItem.css";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { parseUrlTitle } from "../../Epics/Share";
 import TimeCountDown from "../TimeCountDown/TimeCountDown";
+import { fromEvent } from "rxjs";
 
 const CardProductSaleItem = ({
   title,
@@ -11,21 +12,70 @@ const CardProductSaleItem = ({
   star,
   originalPrice,
   newPrice,
-  styleMargin = {},
   description,
   isBigSize,
 }) => {
+  const cardProductSaleItemRef = useRef();
+  const imageProductRef = useRef();
+  useEffect(() => {
+    if (window.innerWidth < 1116) {
+      if (
+        cardProductSaleItemRef.current &&
+        cardProductSaleItemRef.current.offsetWidth > 800
+      ) {
+        imageProductRef.current.style.width = "500px";
+        return;
+      }
+      if (
+        cardProductSaleItemRef.current &&
+        cardProductSaleItemRef.current.offsetWidth <= 800 &&
+        cardProductSaleItemRef.current.offsetWidth >= 280
+      ) {
+        imageProductRef.current.style.width = "300px";
+        return;
+      }
+    } else {
+      imageProductRef.current.style.width = "170px";
+    }
+  }, []);
+  useEffect(() => {
+    const subscription = fromEvent(window, "resize").subscribe(() => {
+      // console.log(cardProductSaleItemRef.current);
+      if (window.innerWidth < 1116) {
+        if (
+          cardProductSaleItemRef.current &&
+          cardProductSaleItemRef.current.offsetWidth > 800
+        ) {
+          imageProductRef.current.style.width = "500px";
+          return;
+        }
+        if (
+          cardProductSaleItemRef.current &&
+          cardProductSaleItemRef.current.offsetWidth <= 800 &&
+          cardProductSaleItemRef.current.offsetWidth > 280
+        ) {
+          imageProductRef.current.style.width = "300px";
+          return;
+        }
+      } else {
+        imageProductRef.current.style.width = "170px";
+      }
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
   return (
     <Link
       className={`card-product-sale-item${isBigSize ? " large" : ""}`}
       to={"/product/" + parseUrlTitle(title)}
-      style={{ display: "block", textDecoration: "none", ...styleMargin }}
+      style={{ display: "block", textDecoration: "none" }}
     >
       {isBigSize && <div className="large-sale-active">Sale!</div>}
-      <li>
+      <li ref={cardProductSaleItemRef}>
         <div className="container-image-sale">
           {!isBigSize && <span className="sale-active">Sale</span>}
-          <img src={imageUrl} alt="Not found" />
+          <img src={imageUrl} alt="Not found" ref={imageProductRef} />
         </div>
         <div className="container-text">
           <div className="rating-star">

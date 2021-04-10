@@ -1,6 +1,9 @@
-import React, { useRef, useState } from "react";
-import Stars from "../Stars/Stars";
 import "./FormAddReview.css";
+
+import React, { useRef, useState } from "react";
+
+import Stars from "../Stars/Stars";
+
 const FormAddReview = ({ addReview }) => {
   const inputNameRef = useRef();
   const inputEmailRef = useRef();
@@ -12,7 +15,12 @@ const FormAddReview = ({ addReview }) => {
     <form className="form-add-review">
       <h4>Add a review</h4>
       <div>Your rating</div>
-      <Stars isEdit={true} star={0} setStarValue={setStarValue} error={error} />
+      <Stars
+        isEdit={true}
+        star={starValue}
+        setStarValue={setStarValue}
+        error={error}
+      />
       <textarea placeholder="Your review" ref={textareaReviewRef} required />
       <input placeholder="Name" type="text" ref={inputNameRef} required />
       <input placeholder="Email" type="text" ref={inputEmailRef} required />
@@ -46,6 +54,7 @@ const FormAddReview = ({ addReview }) => {
           if (starValue === 0) {
             console.error("Star is required");
             checkValidate = false;
+            e.preventDefault();
             setError(true);
           } else {
             setError(false);
@@ -66,6 +75,7 @@ const FormAddReview = ({ addReview }) => {
               inputEmailRef.current.value = "";
             }
             textareaReviewRef.current.value = "";
+            setStarValue(0);
           }
         }}
       >

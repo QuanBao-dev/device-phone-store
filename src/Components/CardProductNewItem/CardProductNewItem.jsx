@@ -1,12 +1,16 @@
-import './CardProductNewItem.css';
+import "./CardProductNewItem.css";
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
-import { addToCart } from '../../Epics/Cart';
-import { addToCompare } from '../../Epics/Compare';
-import { parseCurrency, parseUrlTitle } from '../../Epics/Share';
-import Stars from '../Stars/Stars';
+import { addToCart } from "../../Epics/Cart";
+import { addToCompare } from "../../Epics/Compare";
+import { parseCurrency, parseUrlTitle } from "../../Epics/Share";
+import Stars from "../Stars/Stars";
+import { useInitStream } from "../../Hooks/InitStream";
+import { shopStream } from "../../Epics/Shop";
+import { fromEvent } from "rxjs";
+import { bestSellerStream } from "../../Epics/BestSeller";
 
 const CardProductNewItem = ({
   title,
@@ -21,8 +25,39 @@ const CardProductNewItem = ({
 }) => {
   const [triggerChangeState, setTriggerChangeState] = useState(false);
   const [isViewCart, setIsViewCart] = useState(false);
+  const [shopState, setShopState] = useState(shopStream.currentState());
+  const [widthItem, setWidthItem] = useState();
+  const cardProductNewItemRef = useRef();
+
+  const bestSellerProductsAmountPerPage = bestSellerStream.currentState()
+    .numberOfProductPerPage;
+  useInitStream(setShopState, shopStream);
+  useEffect(() => {
+    setWidthItem(cardProductNewItemRef.current.offsetWidth);
+  }, [
+    shopState.dataList.length,
+    bestSellerProductsAmountPerPage,
+    shopState.page,
+    shopState.tabIndex
+  ]);
+
+  useEffect(() => {
+    const subscription = fromEvent(window, "resize").subscribe(() => {
+      setWidthItem(cardProductNewItemRef.current.offsetWidth);
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
   return (
-    <div className="card-product-new-item" style={{ ...style }}>
+    <div
+      className="card-product-new-item"
+      style={{
+        ...style,
+        lineHeight: widthItem && widthItem > 320 ? "3rem" : null,
+      }}
+      ref={cardProductNewItemRef}
+    >
       {isSale && <div className="sale-active">Sale!</div>}
       <div className="menu-control-container">
         <div
@@ -39,14 +74,33 @@ const CardProductNewItem = ({
         >
           <i className="fas fa-sync"></i>
         </div>
+        <div
+          onClick={() => {
+            console.log(title);
+          }}
+        >
+          <i className="fa fa-search"></i>
+        </div>
       </div>
       <Link
         to={`/product/${parseUrlTitle(title)}`}
         style={{ width: "95%", textAlign: "center" }}
       >
-        <img className="product-image" src={imageUrl} alt={"Product"} />
+        <img
+          className="product-image"
+          src={imageUrl}
+          alt={"Product"}
+          style={{
+            maxWidth: widthItem && widthItem > 320 ? "600px" : null,
+          }}
+        />
       </Link>
-      <div className="tags-container">
+      <div
+        className="tags-container"
+        style={{
+          fontSize: widthItem && widthItem > 320 ? "1.5rem" : null,
+        }}
+      >
         {tags.map((tag, key) => (
           <span key={key}>
             <Link to={"/shop/page/1?category=" + tag.replace(/ /g, "-")}>
@@ -56,7 +110,16 @@ const CardProductNewItem = ({
           </span>
         ))}
       </div>
-      <div className="title">{title}</div>
+      <div
+        className="title"
+        style={{
+          fontSize: widthItem && widthItem > 380 ? "2rem" : "1.4rem",
+          margin: "0.6rem",
+          textAlign: "center",
+        }}
+      >
+        {title}
+      </div>
       <div
         className={`container-price${
           newPrice && originalPrice ? " discount" : ""
@@ -68,7 +131,16 @@ const CardProductNewItem = ({
           </span>
         )}
         {originalPrice && (
-          <span className="original-price">
+          <span
+            className="original-price"
+            style={{
+              fontSize:
+                cardProductNewItemRef.current &&
+                cardProductNewItemRef.current.offsetWidth > 450
+                  ? "1.9rem"
+                  : null,
+            }}
+          >
             ${parseCurrency(originalPrice.replace("$", ""))}
           </span>
         )}

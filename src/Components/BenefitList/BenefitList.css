@@ -15,18 +15,20 @@
   justify-content: center;
   list-style-type: none;
   width: 100%;
+  flex-wrap: wrap;
   max-width: 1210px;
 }
 
 .benefit-item{
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 250px;
   align-items: center;
   background-color: white;
   border: 1px solid rgba(128, 128, 128, 0.479);
   padding: 2rem 4rem;
   padding-left: 1.5rem;
   padding-right: 0;
+  min-width: 240px;
 }
 
 .benefit-item i{
@@ -43,4 +45,10 @@
   font-size: large;
   margin: 0;
   line-height: 3rem;
+}
+
+@media(max-width: 1002){
+  .benefit-item{
+
+  }
 }

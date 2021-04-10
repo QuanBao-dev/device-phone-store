@@ -2,10 +2,11 @@
   display: flex;
   justify-content: center;
   font-weight: 550;
+  flex-wrap: wrap;
 }
 
 .tab-name-item{
-  margin: 0 1rem;
+  margin-right: 2rem;
   cursor: pointer;
   transition: 0.4s;
   background-size: 0 4px;
@@ -24,7 +25,7 @@
   padding-bottom: 2rem;
   overflow: hidden;
   background-color: white;
-  transition: 0.4s;
+  transition: 1s;
   height: 2000px;
 }
 
@@ -46,6 +47,7 @@
 .list-related-product{
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   transition: 0.4s;
 }
 
@@ -57,4 +59,11 @@
 .container-related-product{
   margin-bottom: 2rem;
   overflow: hidden;
+}
+
+@media (max-width:455px){
+  .tab-name-container{
+    flex-direction: column;
+    align-items: center;
+  }
 }

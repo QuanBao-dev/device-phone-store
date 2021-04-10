@@ -1,6 +1,8 @@
 import "./TabProductDetail.css";
 
 import React, { useEffect, useRef, useState } from "react";
+
+import { getDataById } from "../../Epics/Share";
 import AdditionalInformation from "../AđitionalInformation/AdditionalInformation";
 import CardProductNewItem from "../CardProductNewItem/CardProductNewItem";
 import Reviews from "../Reviews/Reviews";
@@ -11,8 +13,17 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
   const containerAdditionalInformationRef = useRef();
   const containerDescriptionRef = useRef();
   const containerTabRef = useRef();
+  const [numberOfReviews, setNumberOfReviews] = useState(0);
+  const updateNumberOfReviews = (reviews) => {
+    setNumberOfReviews(reviews.length);
+  };
   useEffect(() => {
     setTabIndex(0);
+    if (getDataById(productData.id).reviews)
+      setNumberOfReviews(getDataById(productData.id).reviews.length);
+    return () => {
+      updateNumberOfReviews([])
+    }
   }, [productData.id]);
   useEffect(() => {
     setTimeout(() => {
@@ -31,7 +42,8 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
             onClick={() => setTabIndex(index)}
             className={`tab-name-item${tabIndex === index ? " active" : ""}`}
           >
-            {tabName}
+            {tabName}{" "}
+            {tabName === "Reviews" ? "(" + numberOfReviews + ")" : null}
           </span>
         ))}
       </div>
@@ -47,6 +59,7 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
               : tabIndex === 2 && reviewsRef.current
               ? reviewsRef.current.offsetHeight + 30
               : 313,
+          height: "1000px",
         }}
       >
         <div
@@ -81,31 +94,39 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
             reviewsData={productData.reviews}
             reviewsRef={reviewsRef}
             title={productData.title}
+            id={productData.id}
             containerTabRef={containerTabRef}
+            updateNumberOfReviews={updateNumberOfReviews}
           />
         </div>
       </div>
-      <div className="container-related-product">
-        <h1 className="title-related-product">Related products</h1>
-        <div className="list-related-product">
-          {Object.keys(dataRelatedProduct)
-            .filter((title) => dataRelatedProduct[title].id !== productData.id)
-            .slice(0, 4)
-            .map((title, key) => (
-              <CardProductNewItem
-                title={title}
-                description={dataRelatedProduct[title].description}
-                imageUrl={dataRelatedProduct[title].imageUrl}
-                isSale={dataRelatedProduct[title].isSale}
-                newPrice={dataRelatedProduct[title].newPrice}
-                originalPrice={dataRelatedProduct[title].originalPrice}
-                star={dataRelatedProduct[title].star}
-                tags={dataRelatedProduct[title].tags}
-                key={key}
-              />
-            ))}
+      {Object.keys(dataRelatedProduct).filter(
+        (title) => dataRelatedProduct[title].id !== productData.id
+      ).length > 0 && (
+        <div className="container-related-product">
+          <h1 className="title-related-product">Related products</h1>
+          <div className="list-related-product">
+            {Object.keys(dataRelatedProduct)
+              .filter(
+                (title) => dataRelatedProduct[title].id !== productData.id
+              )
+              .slice(0, 4)
+              .map((title, key) => (
+                <CardProductNewItem
+                  title={title}
+                  description={dataRelatedProduct[title].description}
+                  imageUrl={dataRelatedProduct[title].imageUrl}
+                  isSale={dataRelatedProduct[title].isSale}
+                  newPrice={dataRelatedProduct[title].newPrice}
+                  originalPrice={dataRelatedProduct[title].originalPrice}
+                  star={dataRelatedProduct[title].star}
+                  tags={dataRelatedProduct[title].tags}
+                  key={key}
+                />
+              ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

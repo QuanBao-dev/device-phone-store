@@ -1,5 +1,6 @@
 .title-popular-news{
   font-weight: 400;
+  min-width: 230px;
 }
 
 .title-popular-news-area-container{
