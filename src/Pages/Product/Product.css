@@ -3,6 +3,7 @@
   justify-content: center;
   font-weight: 550;
   flex-wrap: wrap;
+  background-color: white;
 }
 
 .tab-name-item{
@@ -42,6 +43,7 @@
 
 .container-related-product .title-related-product{
   font-weight: 300;
+  margin-left: 0.5rem;
 }
 
 .list-related-product{

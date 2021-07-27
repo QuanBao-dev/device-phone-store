@@ -18,6 +18,7 @@
   margin: 10px;
   flex: 1 1 250px;
   position: relative;
+  max-width: 432px;
 }
 
 .menu-control-container{

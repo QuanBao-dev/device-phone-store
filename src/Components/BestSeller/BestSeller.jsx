@@ -1,29 +1,15 @@
-import "./BestSeller.css";
+import './BestSeller.css';
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 
-import { bestSellerStream } from "../../Epics/BestSeller";
-import { useInitStream } from "../../Hooks/InitStream";
-import {
-  useModeChangeHandle,
-  useProductResizeHandle,
-  useProductWidthHandle,
-} from "../../Hooks/productListAutoScrolling";
-import CardProductNewList from "../CardProductNewList/CardProductNewList";
-import { getDataByTitle } from "../../Epics/Share";
-import { useAnimationViewport } from "../../Hooks/AnimationViewport";
+import { bestSellerStream } from '../../Epics/BestSeller';
+import { useAnimationViewport } from '../../Hooks/AnimationViewport';
+import { useInitStream } from '../../Hooks/InitStream';
+import { useModeChangeHandle, useProductResizeHandle, useProductWidthHandle } from '../../Hooks/productListAutoScrolling';
+import CardProductNewList from '../CardProductNewList/CardProductNewList';
 
-const dataBestSeller = [
-  getDataByTitle("Tesla Generation"),
-  getDataByTitle("Misfit Shine 2"),
-  getDataByTitle("Samsung Gear Blue"),
-  getDataByTitle("Apple Macbook"),
-  getDataByTitle("12-inch Intel Core"),
-  getDataByTitle("Samsung Galaxy S8"),
-  getDataByTitle("Samsung Galaxy J5 Black"),
-  getDataByTitle("Sony Watch 3 SWR50"),
-];
-const BestSeller = () => {
+
+const BestSeller = ({dataBestSeller}) => {
   const [bestSellerState, setBestSellerState] = useState(
     bestSellerStream.currentState()
   );
@@ -49,7 +35,8 @@ const BestSeller = () => {
         position: "relative",
         opacity: 0,
         transform: "translateY(20px)",
-        transition: "1s"
+        transition: "1s",
+        touchAction: "pan-y",
       }}
       ref={bestSellerRef}
     >

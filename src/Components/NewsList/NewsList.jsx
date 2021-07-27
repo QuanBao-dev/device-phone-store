@@ -10,6 +10,7 @@ import {
   touchStartSub,
   touchMoveSub,
   touchEndSub,
+  scrollAllowSlidingHandle,
 } from "../../Subscription/productListAutoScrolling";
 import { userStream } from "../../Epics/User";
 import { useInitStream } from "../../Hooks/InitStream";
@@ -18,6 +19,13 @@ const NewsList = ({ dataList, layerRef }) => {
   const newsListRef = useRef();
   const [userState, setUserState] = useState(userStream.currentState());
   useInitStream(setUserState, userStream);
+  useEffect(() => {
+    const subscription = scrollAllowSlidingHandle(false, popularNewsStream);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   useEffect(() => {
     const subscription = mouseDownSub(false, newsListRef, popularNewsStream);
     const subscription2 = mouseMoveSub(
@@ -66,6 +74,7 @@ const NewsList = ({ dataList, layerRef }) => {
           popularNewsStream.currentState().offsetLeft
         }px)`,
         transition: popularNewsStream.currentState().transition,
+        touchAction: "pan-y",
       }}
     >
       {dataList.map((newItemData, key) => (

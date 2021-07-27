@@ -1,7 +1,6 @@
 .container-shop-pagination{
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .container-shop-pagination .card-product-new-item{
@@ -60,8 +59,7 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: 1rem;
-  width: fit-content;
-  min-width: 300px;
+  width: 100%;
 }
 
 .cart-item-product h5{
@@ -92,4 +90,10 @@
   border: 1px solid rgba(185, 185, 185, 0.884);
   border-radius: 10px;
   overflow: hidden;
+}
+
+@media (max-width: 1000px) {
+  .container-shop-pagination{
+    flex-wrap: wrap;
+  }
 }

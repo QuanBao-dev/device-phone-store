@@ -1,21 +1,17 @@
 import { BehaviorSubject } from "rxjs";
 const initialState = {
-  dataList: [],
-  dataOriginalList: [],
-  searchFilter: "",
-  dataTemp: [],
-  maxPriceAdjust: null,
-  minPriceAdjust: null,
-  keySearch: null,
-  tabIndex: null,
-  maxPage: null,
-  isLoading: true,
+  dataTopList: [],
+  dataFeaturedList: [],
+  dataRecentList: [],
+  dataSaleList: [],
+  dataSaleProductList: [],
+  dataBestSeller: []
 };
 const behaviorSubject = new BehaviorSubject(initialState);
 
 let state = initialState;
 
-const shopStore = {
+const productStore = {
   initialState,
   subscribe: (setState) => behaviorSubject.subscribe((v) => setState(v)),
   currentState: () => {
@@ -43,4 +39,4 @@ const shopStore = {
   },
 };
 
-export default shopStore;
+export default productStore;

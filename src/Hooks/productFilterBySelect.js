@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { fromEvent } from "rxjs";
+import { useEffect } from 'react';
+
+import { productFilterBySelectSubscription } from '../Subscription/shop';
 
 export const useProductFilterBySelect = (
   selectRef,
@@ -11,38 +12,13 @@ export const useProductFilterBySelect = (
   useEffect(() => {
     let subscription;
     if (selectRef.current) {
-      subscription = fromEvent(selectRef.current, "change").subscribe((e) => {
-        if (e.target.value.trim() === "") {
-          if (!maxPriceAdjust && !minPriceAdjust) {
-            history.push("/shop/page/1");
-          } else {
-            history.push(
-              `/shop/page/1?${
-                keySearch !== "" ? `key=${keySearch}&` : ""
-              }max_price=${maxPriceAdjust}&min_price=${minPriceAdjust}`
-            );
-          }
-        } else {
-          if (!maxPriceAdjust && !minPriceAdjust) {
-            history.push(
-              `/shop/page/1?${
-                keySearch !== "" ? `key=${keySearch}&` : ""
-              }category=${e.target.value.trim().replace(/ /g, "-")}`
-            );
-          } else {
-            history.push(
-              `/shop/page/1?${
-                keySearch !== "" ? `key=${keySearch}&` : ""
-              }category=${e.target.value
-                .trim()
-                .replace(
-                  / /g,
-                  "-"
-                )}&max_price=${maxPriceAdjust}&min_price=${minPriceAdjust}`
-            );
-          }
-        }
-      });
+      subscription = productFilterBySelectSubscription(
+        selectRef,
+        maxPriceAdjust,
+        history,
+        minPriceAdjust,
+        keySearch
+      );
     }
     return () => {
       subscription && subscription.unsubscribe();

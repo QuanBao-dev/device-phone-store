@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useHistory } from "react-router";
-import { fromEvent } from "rxjs";
-import { filter } from "rxjs/operators";
+import { useEffect } from 'react';
+import { useHistory } from 'react-router';
+
+import { searchProductShopSubscription } from '../Subscription/shop';
 
 export const useSearchProduct = (
   searchRef,
@@ -12,22 +12,14 @@ export const useSearchProduct = (
 ) => {
   const history = useHistory();
   useEffect(() => {
-    const subscription = fromEvent(searchRef.current, "keydown")
-      .pipe(filter((e) => e.keyCode === 13))
-      .subscribe((e) => {
-        if (stream.currentState().keySearch !== e.target.value.trim())
-          history.push(
-            `/shop/page/1?${
-              e.target.value.trim() !== ""
-                ? `key=${e.target.value.trim().replace(/ /g, "-")}&`
-                : ""
-            }${
-              categoryQuery !== ""
-                ? "category=" + categoryQuery.replace(/ /g, "-") + "&"
-                : ""
-            }max_price=${maxPriceAdjust}&min_price=${minPriceAdjust}`
-          );
-      });
+    const subscription = searchProductShopSubscription(
+      stream,
+      searchRef,
+      history,
+      categoryQuery,
+      maxPriceAdjust,
+      minPriceAdjust
+    );
     return () => {
       subscription.unsubscribe();
     };

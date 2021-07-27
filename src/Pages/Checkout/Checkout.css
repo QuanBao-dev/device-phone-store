@@ -14,7 +14,7 @@
   border-top-left-radius: 10px;
 }
 
-.your-order-table .title th:nth-child(2){
+.your-order-table .title th:nth-child(3){
   border-top-right-radius: 10px;
 }
 
@@ -30,6 +30,10 @@
 }
 
 .your-order-table td:nth-child(2){
+  border-bottom: 1px solid rgba(190, 190, 190, 0.767);
+}
+
+.your-order-table td:nth-child(3){
   border-right: 1px solid rgba(190, 190, 190, 0.767);
   border-bottom: 1px solid rgba(190, 190, 190, 0.767);
 }

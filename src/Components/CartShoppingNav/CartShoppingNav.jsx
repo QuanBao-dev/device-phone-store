@@ -1,6 +1,6 @@
 import "./CartShoppingNav.css";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { cartStream } from "../../Epics/Cart";
 import { useInitStream } from "../../Hooks/InitStream";
@@ -14,6 +14,14 @@ const CartShoppingNav = () => {
   const [userState, setUserState] = useState(userStream.currentState());
   useInitStream(setCartState, cartStream);
   useInitStream(setUserState, userStream);
+  useEffect(() => {
+    cartStream.updateData({
+      dataCart: JSON.parse(window.localStorage.getItem("myCart") || "[]"),
+      cartNumberOfProduct: JSON.parse(
+        window.localStorage.getItem("myNumberProductCart") || "[]"
+      ),
+    });
+  }, []);
   const subTotal = cartState.dataCart
     .map(({ newPrice, originalPrice, title }) => {
       let price = originalPrice;

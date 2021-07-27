@@ -21,6 +21,7 @@ const dataList = [
     category: "Hi-Tech",
     publishedAt: "JANUARY 10, 2017",
     numberComments: "0",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -29,6 +30,7 @@ const dataList = [
     category: "Hi-Tech",
     publishedAt: "JANUARY 27, 2017",
     numberComments: "1",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -37,6 +39,7 @@ const dataList = [
     category: "Business",
     publishedAt: "MARCH 20, 2017",
     numberComments: "0",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -45,6 +48,7 @@ const dataList = [
     category: "Business",
     publishedAt: "APRIL 15, 2017",
     numberComments: "0",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -53,6 +57,7 @@ const dataList = [
     category: "Business",
     publishedAt: "JUNE 6, 2017",
     numberComments: "1",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -61,6 +66,7 @@ const dataList = [
     category: "Business",
     publishedAt: "MARCH 20, 2017",
     numberComments: "0",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -69,6 +75,7 @@ const dataList = [
     category: "Business",
     publishedAt: "APRIL 15, 2017",
     numberComments: "0",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
   {
     imageUrl:
@@ -77,6 +84,7 @@ const dataList = [
     category: "Business",
     publishedAt: "JUNE 6, 2017",
     numberComments: "1",
+    content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, officiis. Nam vel totam nesciunt non? Ratione aut sunt, corrupti odit adipisci accusantium soluta, architecto aliquid, dolor obcaecati similique perferendis totam.`,
   },
 ];
 const PopularNews = () => {
@@ -102,7 +110,7 @@ const PopularNews = () => {
   useEffect(() => {
     if (innerWidth > 800) {
       popularNewsStream.updateData({ numberOfProductPerPage: 3 });
-    } else if(innerWidth > 468) {
+    } else if (innerWidth > 468) {
       popularNewsStream.updateData({ numberOfProductPerPage: 2 });
     } else {
       popularNewsStream.updateData({ numberOfProductPerPage: 1 });

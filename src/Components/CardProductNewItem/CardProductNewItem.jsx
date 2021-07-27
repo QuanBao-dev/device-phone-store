@@ -11,6 +11,7 @@ import { useInitStream } from "../../Hooks/InitStream";
 import { shopStream } from "../../Epics/Shop";
 import { fromEvent } from "rxjs";
 import { bestSellerStream } from "../../Epics/BestSeller";
+import { cardProductDetailStream } from "../../Epics/CardProductDetail";
 
 const CardProductNewItem = ({
   title,
@@ -77,6 +78,10 @@ const CardProductNewItem = ({
         <div
           onClick={() => {
             console.log(title);
+            cardProductDetailStream.updateData({
+              isActive: true,
+              currentId: parseUrlTitle(title)
+            })
           }}
         >
           <i className="fa fa-search"></i>

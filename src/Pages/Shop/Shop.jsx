@@ -7,34 +7,30 @@ import HeadLine from "../../Components/HeadLine/HeadLine";
 import PaginationProducts from "../../Components/PaginationProducts/PaginationProducts";
 import PriceAdjust from "../../Components/PriceAdjust/PriceAdjust";
 import { cartStream, removeFromCart } from "../../Epics/Cart";
+import { optionSelect, parseUrlTitle } from "../../Epics/Share";
 import {
-  dataListProduct,
-  optionSelect,
-  parseUrlTitle,
-} from "../../Epics/Share";
-import { filterByQuery, shopStream } from "../../Epics/Shop";
+  filterByQuery,
+  shopStream,
+  fetchShopProducts$,
+} from "../../Epics/Shop";
 import { useInitStream } from "../../Hooks/InitStream";
 import { useProductFilterBySelect } from "../../Hooks/productFilterBySelect";
 import { useSearchProduct } from "../../Hooks/searchProduct";
 
 const maxPrice = 1120;
 const Shop = (props) => {
-  const {
-    maxPriceAdjust,
-    minPriceAdjust,
-    categoryQuery,
-    keySearch,
-  } = extractQuery(props);
+  const { maxPriceAdjust, minPriceAdjust, categoryQuery, keySearch } =
+    extractQuery(props);
   const inputSearchRef = useRef();
   const history = useHistory();
   const [shopState, setShopState] = useState(shopStream.currentState());
   const [cartState, setCartState] = useState(cartStream.currentState());
   const selectRef = useRef();
-  useEffect(() => {
-    shopStream.updateData({ page: props.match.params.page });
-  }, [props.match.params.page]);
   useInitStream(setCartState, cartStream);
   useInitStream(setShopState, shopStream);
+  useEffect(() => {
+    shopStream.updateData({ page: props.match.params.page });
+  }, [maxPriceAdjust, minPriceAdjust, props.match.params.page]);
   useProductFilterBySelect(
     selectRef,
     history,
@@ -42,12 +38,27 @@ const Shop = (props) => {
     minPriceAdjust,
     keySearch
   );
+
   useEffect(() => {
-    window.scroll({ top: 0 });
-    shopStream.updateData({
-      dataList: dataListProduct,
-      dataOriginalList: dataListProduct,
+    fetchShopProducts$().subscribe((res) => {
+      if (!res.error) {
+        const { products } = res;
+        shopStream.updateData({
+          dataList: products,
+          dataOriginalList: products,
+          isLoading: false,
+        });
+        filterByQuery(
+          shopStream,
+          categoryQuery,
+          keySearch,
+          minPriceAdjust,
+          maxPriceAdjust
+        );    
+      }
     });
+    return () => {};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useSearchProduct(
@@ -72,14 +83,18 @@ const Shop = (props) => {
       keySearch,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryQuery, keySearch]);
+  }, [categoryQuery, keySearch, minPriceAdjust, maxPriceAdjust]);
 
   return (
     <div style={{ maxWidth: 1210, margin: "auto", width: "100%" }}>
       <HeadLine pathLocation={props.location.pathname} />
       <div className="container-shop-pagination">
         <aside className="first-aside-shop">
-          {shopState.dataList.length > 0 && (
+          {shopState.isLoading && (
+            <i className="fas fa-spinner fa-spin fa-4x"></i>
+          )}
+
+          {shopState.dataList.length > 0 && !shopState.isLoading && (
             <PaginationProducts
               dataListProduct={shopState.dataList}
               page={
@@ -99,7 +114,7 @@ const Shop = (props) => {
               }&min_price=${minPriceAdjust}&max_price=${maxPriceAdjust}`}
             />
           )}
-          {shopState.dataList.length === 0 && (
+          {shopState.dataList.length === 0 && !shopState.isLoading && (
             <div>No products were found matching your selection.</div>
           )}
         </aside>

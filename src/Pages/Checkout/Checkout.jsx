@@ -10,9 +10,10 @@ import {
   currentTotalCart,
   parseCurrency,
 } from "../../Epics/Share";
+import { useInitStream } from "../../Hooks/InitStream";
 
 const Checkout = (props) => {
-  const { dataCart, cartNumberOfProduct } = cartStream.currentState();
+  const [cartState, setCartState] = useState(cartStream.currentState());
   const termOfUseCheckBoxRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -28,6 +29,8 @@ const Checkout = (props) => {
   const orderNotesRef = useRef();
   const checkBoxCreateAccountRef = useRef();
   const [termOfUseState, setTermOfUseState] = useState(false);
+  const { dataCart, cartNumberOfProduct } = cartState;
+  useInitStream(setCartState, cartStream);
   useEffect(() => {
     window.scroll({
       top: 0,
@@ -124,6 +127,7 @@ const Checkout = (props) => {
             <thead>
               <tr className="title">
                 <th>Product</th>
+                <th>Quantity</th>
                 <th>Subtotal</th>
               </tr>
             </thead>
@@ -131,6 +135,7 @@ const Checkout = (props) => {
               {dataCart.map(({ title, originalPrice, newPrice }, key) => (
                 <tr key={key}>
                   <td>{title}</td>
+                  <td>{cartNumberOfProduct[title]}</td>
                   <td>
                     $
                     {convertFloatToCurrency(
@@ -142,6 +147,7 @@ const Checkout = (props) => {
               ))}
               <tr style={{ color: "blue" }}>
                 <td style={{ borderBottomLeftRadius: "10px" }}>Total</td>
+                <td></td>
                 <td style={{ borderBottomRightRadius: "10px" }}>
                   ${parseCurrency(currentTotalCart().toFixed(2).toString())}
                 </td>
@@ -226,20 +232,21 @@ const Checkout = (props) => {
                 return;
               }
               e.preventDefault();
-              console.log({
-                firstName: firstNameRef.current.value,
-                lastName: lastNameRef.current.value,
-                companyName: companyNameRef.current.value,
-                countryRegion: countryRegionRef.current.value,
-                streetAddress: streetAddressRef.current.value,
-                apartment: apartmentRef.current.value,
-                townCity: townCityRef.current.value,
-                postcode: postcodeRef.current.value,
-                phone: phoneRef.current.value,
-                emailAddress: emailAddressRef.current.value,
-                createAccount: createAccountRef.current.value,
-                isAgreed: termOfUseCheckBoxRef.current.checked,
-              });
+              alert("success");
+              // console.log({
+              //   firstName: firstNameRef.current.value,
+              //   lastName: lastNameRef.current.value,
+              //   companyName: companyNameRef.current.value,
+              //   countryRegion: countryRegionRef.current.value,
+              //   streetAddress: streetAddressRef.current.value,
+              //   apartment: apartmentRef.current.value,
+              //   townCity: townCityRef.current.value,
+              //   postcode: postcodeRef.current.value,
+              //   phone: phoneRef.current.value,
+              //   emailAddress: emailAddressRef.current.value,
+              //   createAccount: createAccountRef.current.value,
+              //   isAgreed: termOfUseCheckBoxRef.current.checked,
+              // });
             }}
           >
             Place order

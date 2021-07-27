@@ -10,10 +10,12 @@ import Product from "./Pages/Product/Product";
 import Checkout from "./Pages/Checkout/Checkout";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
+import CardProductDetail from "./Components/CardProductDetail/CardProductDetail";
 function App() {
   return (
     <BrowserRouter>
       <NavBar />
+      <CardProductDetail />
       <ComparePopUp />
       <Switch>
         <Route component={Home} path="/" exact/>

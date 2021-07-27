@@ -30,9 +30,7 @@ const ProductsFilter = ({
     >
       <TabFilter tabIndex={tabIndex} setTabIndex={setTabIndex} />
       <div className="container-products-list-filter">
-        <div>
-          <CardProductNewList dataList={dataListRecent} isWrap={true} />
-        </div>
+        <CardProductNewList dataList={dataListRecent} isWrap={true} />
         <div
           className={`container-product-item--absolute${
             tabIndex >= 1 ? " active" : ""

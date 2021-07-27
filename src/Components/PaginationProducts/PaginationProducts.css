@@ -6,9 +6,11 @@
   font-size: 1.1rem;
   justify-content: center;
   margin-top: 1rem;
+  align-items: center;
 }
 
-.page-list-container a{
+.page-list-container a,
+.page-list-container span{
   text-decoration: none;
   color: black;
   margin: 0 1.1rem;

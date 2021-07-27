@@ -1,18 +1,20 @@
-import "./CardProductNewList.css";
+import './CardProductNewList.css';
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
+import { bestSellerStream } from '../../Epics/BestSeller';
+import { userStream } from '../../Epics/User';
+import { useInitStream } from '../../Hooks/InitStream';
 import {
   mouseDownSub,
   mouseMoveSub,
   mouseUpSub,
+  scrollAllowSlidingHandle,
   touchEndSub,
   touchMoveSub,
   touchStartSub,
-} from "../../Subscription/productListAutoScrolling";
-import CardProductNewItem from "../CardProductNewItem/CardProductNewItem";
-import { useInitStream } from "../../Hooks/InitStream";
-import { userStream } from "../../Epics/User";
+} from '../../Subscription/productListAutoScrolling';
+import CardProductNewItem from '../CardProductNewItem/CardProductNewItem';
 
 const CardProductNewList = ({
   dataList,
@@ -23,6 +25,12 @@ const CardProductNewList = ({
   const cardProductListRef = useRef();
   const [userState, setUserState] = useState(userStream.currentState());
   useInitStream(setUserState, userStream);
+  useEffect(() => {
+    const subscription = scrollAllowSlidingHandle(isWrap, bestSellerStream);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [isWrap]);
   useEffect(() => {
     const subscription = mouseUpSub(
       isWrap,
@@ -50,7 +58,7 @@ const CardProductNewList = ({
       subscription5.unsubscribe();
       subscription6.unsubscribe();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWrap]);
   const { innerWidth } = userState;
   useEffect(() => {
@@ -64,7 +72,7 @@ const CardProductNewList = ({
       } else {
         stream.updateData({ numberOfProductPerPage: 1 });
       }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [innerWidth]);
   return (
     <div

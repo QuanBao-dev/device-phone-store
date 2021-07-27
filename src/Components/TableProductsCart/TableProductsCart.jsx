@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react";
 import { cartStream, removeFromCart } from "../../Epics/Cart";
 import { useInitStream } from "../../Hooks/InitStream";
 import { currentTotalCart, parseCurrency } from "../../Epics/Share";
+import { Link } from "react-router-dom";
 
 const TableProductsCart = () => {
   const [tableProductCartState, setTableProductCartState] = useState(
@@ -14,6 +15,9 @@ const TableProductsCart = () => {
   useInitStream(setTableProductCartState, cartStream);
   const { dataCart, cartNumberOfProduct } = tableProductCartState;
   const cartTotal = currentTotalCart();
+  if (dataCart.length === 0) {
+    return <div style={{ marginBottom: "1rem" }}>No products in cart</div>;
+  }
   return (
     <div style={{ overflow: "auto", width: "100%" }}>
       <div className="table-products-cart-container">
@@ -88,6 +92,17 @@ const TableProductsCart = () => {
                               : parseInt(e.target.value),
                           },
                         });
+                        const myCart = JSON.stringify(
+                          cartStream.currentState().dataCart
+                        );
+                        const myNumberProductCart = JSON.stringify(
+                          cartStream.currentState().cartNumberOfProduct
+                        );
+                        window.localStorage.setItem("myCart", myCart);
+                        window.localStorage.setItem(
+                          "myNumberProductCart",
+                          myNumberProductCart
+                        );
                       }}
                     />
                   </td>
@@ -113,6 +128,9 @@ const TableProductsCart = () => {
           <span className="title">Cart totals: </span>
           <span>${parseCurrency(cartTotal.toFixed(2))}</span>
         </div>
+        <Link to={"/checkout"}>
+          <button className="button-checkout">Go to checkout</button>
+        </Link>
       </div>
     </div>
   );

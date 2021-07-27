@@ -16,6 +16,7 @@ import {
   touchEndSub,
   touchMoveSub,
   touchStartSub,
+  scrollAllowSlidingHandle,
 } from "../../Subscription/productListAutoScrolling";
 import { userStream } from "../../Epics/User";
 
@@ -53,6 +54,13 @@ const ClientLogos = () => {
   );
   const [userState, setUserState] = useState(userStream.currentState());
   useInitStream(setUserState, userStream);
+  useEffect(() => {
+    const subscription = scrollAllowSlidingHandle(false, clientLogoStream);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const { innerWidth } = userState;
   useEffect(() => {
     if (innerWidth > 505) {
@@ -106,6 +114,7 @@ const ClientLogos = () => {
             clientLogoStream.currentState().offsetLeft
           }px)`,
           transition: clientLogoStream.currentState().transition,
+          touchAction: "pan-y",
         }}
       >
         {dataList.map(({ src, width }, key) => (

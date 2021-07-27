@@ -27,9 +27,19 @@ const PaginationProducts = ({
       <CardProductNewList
         dataList={dataListProduct.slice((page - 1) * 9, page * 9)}
       />
-      <div className="page-list-container">
-        {pageList.length > 1 &&
-          pageList.map((pageItem) => (
+      {pageList.length > 1 && (
+        <div className="page-list-container">
+          {parseInt(page) - 1 < 1 && (
+            <span>
+              <i className="fas fa-chevron-left"></i>
+            </span>
+          )}
+          {parseInt(page) - 1 >= 1 && (
+            <Link to={`/shop/page/${parseInt(page) - 1 + query}`}>
+              <i className="fas fa-chevron-left"></i>
+            </Link>
+          )}
+          {pageList.map((pageItem) => (
             <Link
               to={"/shop/page/" + (pageItem + 1) + query}
               key={pageItem}
@@ -41,7 +51,18 @@ const PaginationProducts = ({
               {pageItem + 1}
             </Link>
           ))}
-      </div>
+          {parseInt(page) + 1 > maxPage && (
+            <span>
+              <i className="fas fa-chevron-right"></i>
+            </span>
+          )}
+          {parseInt(page) + 1 <= maxPage && (
+            <Link to={`/shop/page/${parseInt(page) + 1 + query}`}>
+              <i className="fas fa-chevron-right"></i>
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 };

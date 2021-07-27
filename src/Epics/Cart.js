@@ -34,6 +34,12 @@ export const addToCart = (
     ];
   }
   cartStream.updateData(updateObject);
+  const myCart = JSON.stringify(cartStream.currentState().dataCart);
+  const myNumberProductCart = JSON.stringify(
+    cartStream.currentState().cartNumberOfProduct
+  );
+  window.localStorage.setItem("myCart", myCart);
+  window.localStorage.setItem("myNumberProductCart", myNumberProductCart);
 };
 
 export const removeFromCart = (title) => {
@@ -43,4 +49,10 @@ export const removeFromCart = (title) => {
     dataCart: dataCart.filter((data) => data.title !== title),
     cartNumberOfProduct,
   });
+  const myCart = JSON.stringify(cartStream.currentState().dataCart);
+  const myNumberProductCart = JSON.stringify(
+    cartStream.currentState().cartNumberOfProduct
+  );
+  window.localStorage.setItem("myCart", myCart);
+  window.localStorage.setItem("myNumberProductCart", myNumberProductCart);
 };

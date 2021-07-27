@@ -1,8 +1,7 @@
-import './HeaderSearch.css';
+import "./HeaderSearch.css";
 
-import { optionSelect } from '../../Epics/Share';
-import React from 'react';
-import { searchSubmit } from '../../Epics/User';
+import { optionSelect } from "../../Epics/Share";
+import { searchSubmit } from "../../Epics/User";
 
 function HeaderSearch({ selectRef, inputRef, history }) {
   return (
@@ -17,9 +16,7 @@ function HeaderSearch({ selectRef, inputRef, history }) {
         placeholder="Search for products"
         ref={inputRef}
         onKeyDown={(e) => {
-          if (e.code === "Enter") {
-            searchSubmit(inputRef, selectRef, history);
-          }
+          if (e.code === "Enter") searchSubmit(inputRef, selectRef, history);
         }}
       />
       <i

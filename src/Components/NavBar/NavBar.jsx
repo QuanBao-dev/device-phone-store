@@ -5,7 +5,7 @@ import { NavLink as Link, useHistory } from "react-router-dom";
 import { fromEvent } from "rxjs";
 import { filter } from "rxjs/operators";
 
-import { userStream } from "../../Epics/User";
+import { fetchUserVm$, userStream } from "../../Epics/User";
 import { useInitStream } from "../../Hooks/InitStream";
 import CartShoppingNav from "../CartShoppingNav/CartShoppingNav";
 import HeaderPhoneLogin from "../HeaderPhoneLogin/HeaderPhoneLogin";
@@ -46,6 +46,18 @@ const NavBar = () => {
       subscription.unsubscribe();
     };
   }, [innerWidth]);
+  useEffect(() => {
+    const subscription = fetchUserVm$().subscribe((result) => {
+      if (!result.error) {
+        userStream.updateData({ userVm: result });
+      } else {
+        userStream.updateData({ userVm: null });
+      }
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [userState.triggerFetchUser]);
   return (
     <header ref={headerRef}>
       {innerWidth <= 1169 && (
@@ -57,6 +69,7 @@ const NavBar = () => {
       <HeaderPhoneLogin
         isMobile={innerWidth <= 1169}
         isActiveMenu={isActiveMenu}
+        userVm={userState.userVm}
       />
       {isActiveMenu && (
         <div

@@ -254,7 +254,16 @@ const options = [
   "Zimbabwe",
 ];
 let timeout;
-const Input = ({ label, isRequired, type, placeholder, inputRef, checkBoxRef }) => {
+const Input = ({
+  label,
+  isRequired,
+  type,
+  placeholder,
+  inputRef,
+  checkBoxRef,
+  typeInput = "text",
+  errorMessage,
+}) => {
   const id =
     label.toLocaleLowerCase && label
       ? label.toLocaleLowerCase().replace(/ /g, "-")
@@ -269,15 +278,16 @@ const Input = ({ label, isRequired, type, placeholder, inputRef, checkBoxRef }) 
           {isRequired ? (
             <span className="star-require">{"*"}</span>
           ) : (
-            (type === "input" || type === "textarea") && "(optional)"
+            "(optional)"
           )}
         </label>
       )}
+      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       <div style={{ width: "100%" }}>
         {type === "input" && (
           <input
             className="checkout-input"
-            type="text"
+            type={typeInput}
             id={id}
             required={isRequired}
             placeholder={placeholder}
@@ -326,7 +336,7 @@ const Input = ({ label, isRequired, type, placeholder, inputRef, checkBoxRef }) 
               }}
               onClick={(e) => {
                 e.preventDefault();
-                let element = checkBoxRef.current;
+                let element = checkBoxRef ? checkBoxRef.current : undefined;
                 if (!element) element = inputRef.current;
                 if (element) {
                   element.checked = !element.checked;
@@ -357,6 +367,7 @@ const Input = ({ label, isRequired, type, placeholder, inputRef, checkBoxRef }) 
                   label={"Create account Password"}
                   type={"input"}
                   inputRef={inputRef}
+                  typeInput={"password"}
                 />
               </div>
             )}

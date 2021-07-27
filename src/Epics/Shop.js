@@ -1,4 +1,7 @@
 import shopStore from "../Store/Shop";
+import { ajax } from "rxjs/ajax";
+import { pluck, catchError, map, switchMapTo, takeWhile } from "rxjs/operators";
+import { of, timer } from "rxjs";
 
 export const shopStream = shopStore;
 
@@ -78,3 +81,20 @@ export function navigateQuery(
       );
     }
 }
+
+export const fetchShopProducts$ = () => {
+  return timer(0).pipe(
+    takeWhile(() => shopStream.currentState().dataOriginalList.length === 0),
+    switchMapTo(
+      ajax({ url: "/api/product" }).pipe(
+        pluck("response", "message"),
+        catchError((error) =>
+          of(error).pipe(
+            pluck("response", "error"),
+            map(() => ({ error }))
+          )
+        )
+      )
+    )
+  );
+};

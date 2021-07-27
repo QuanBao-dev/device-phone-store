@@ -1,4 +1,10 @@
 import { fromEvent } from "rxjs";
+import { debounceTime, filter, takeWhile, tap } from "rxjs/operators";
+import {
+  autoScrollSellerProductList$,
+  resizeHandle$,
+} from "../Epics/PopularNews";
+import { userStream } from "../Epics/User";
 
 export const mouseUpSub = (
   isWrap,
@@ -13,35 +19,14 @@ export const mouseUpSub = (
         productListStream.currentState().offsetLeft +
         productListStream.currentState().delta *
           productListStream.currentState().speed;
-      let newPage = Math.ceil(
+      let newPage = Math.round(
         newOffsetLeft /
           (productListStream.currentState().widthItem +
             productListStream.currentState().margin)
       );
       if (newPage < 0) newPage = 0;
-      else {
-        const previousPage = newPage - 1;
-        const delta =
-          newOffsetLeft - productListStream.currentState().offsetLeft;
-        if (delta < 0) {
-          if (
-            Math.abs(delta) >
-            productListStream.currentState().widthItem / 2
-          ) {
-            newPage = previousPage;
-          }
-        } else if (delta > 0) {
-          if (
-            Math.abs(delta) <
-            productListStream.currentState().widthItem / 2
-          ) {
-            newPage -= 1;
-          }
-        }
-        if (newPage < 0) newPage = 0;
-        if (newPage > productListStream.currentState().maxPage)
-          newPage = productListStream.currentState().maxPage;
-      }
+      if (newPage > productListStream.currentState().maxPage)
+        newPage = productListStream.currentState().maxPage;
       if (productListStream.currentState().currentPage === newPage)
         cardProductListRef.current.style.transform = `translateX(-${
           productListStream.currentState().offsetLeft
@@ -66,7 +51,8 @@ export const mouseUpSub = (
           layerNoWrapRef.current &&
           (layerNoWrapRef.current.style.zIndex = -1);
         if (cardProductListRef.current)
-          cardProductListRef.current.style.transition = productListStream.currentState().transition;
+          cardProductListRef.current.style.transition =
+            productListStream.currentState().transition;
       }, 300);
     }
   });
@@ -133,26 +119,27 @@ export const touchEndSub = (isWrap, cardProductListRef, productListStream) => {
         productListStream.currentState().offsetLeft +
         productListStream.currentState().delta *
           productListStream.currentState().speed;
-      let newPage = Math.ceil(
-        newOffsetLeft /
-          (productListStream.currentState().widthItem +
-            productListStream.currentState().margin)
-      );
+      const delta = productListStream.currentState().delta;
+      if (delta === 0) return;
+      let newPage;
+      if (delta > 0) {
+        newPage = Math.round(
+          newOffsetLeft /
+            (productListStream.currentState().widthItem +
+              productListStream.currentState().margin) +
+            0.3
+        );
+      }
+      if (delta < 0) {
+        newPage = Math.round(
+          newOffsetLeft /
+            (productListStream.currentState().widthItem +
+              productListStream.currentState().margin) -
+            0.3
+        );
+      }
       if (newPage < 0) newPage = 0;
       else {
-        const previousPage = newPage - 1;
-        const delta =
-          newOffsetLeft - productListStream.currentState().offsetLeft;
-        if (delta < 0) {
-          if (Math.abs(delta) > 60) {
-            newPage = previousPage;
-          }
-        } else if (delta > 0) {
-          if (Math.abs(delta) < 60) {
-            newPage -= 1;
-          }
-        }
-        if (newPage < 0) newPage = 0;
         if (newPage > productListStream.currentState().maxPage)
           newPage = productListStream.currentState().maxPage;
       }
@@ -172,7 +159,8 @@ export const touchEndSub = (isWrap, cardProductListRef, productListStream) => {
       productListStream.updateData({ mode: "interval" });
       setTimeout(() => {
         if (cardProductListRef.current)
-          cardProductListRef.current.style.transition = productListStream.currentState().transition;
+          cardProductListRef.current.style.transition =
+            productListStream.currentState().transition;
       }, 300);
     }
   });
@@ -198,30 +186,81 @@ export const touchStartSub = (
 };
 
 export const touchMoveSub = (isWrap, cardProductListRef, productListStream) => {
-  return fromEvent(cardProductListRef.current, "touchmove").subscribe((e) => {
-    if (!isWrap && productListStream) {
-      productListStream.updateDataQuick({
-        posX2: productListStream.currentState().posX1 - e.touches[0].clientX,
-      });
-      if (productListStream.currentState().posX1 !== 0) {
+  return fromEvent(cardProductListRef.current, "touchmove")
+    .pipe(
+      filter(
+        () =>
+          productListStream &&
+          productListStream.currentState().mode === "touchstart"
+      )
+    )
+    .subscribe((e) => {
+      if (!isWrap && productListStream) {
         productListStream.updateDataQuick({
-          delta:
-            productListStream.currentState().delta +
-            productListStream.currentState().posX2,
+          posX2: productListStream.currentState().posX1 - e.touches[0].clientX,
         });
+        if (productListStream.currentState().posX1 !== 0) {
+          productListStream.updateDataQuick({
+            delta:
+              productListStream.currentState().delta +
+              productListStream.currentState().posX2,
+          });
+        }
+        productListStream.updateDataQuick({
+          posX1: e.touches[0].clientX,
+        });
+        const newOffsetLeft =
+          productListStream.currentState().offsetLeft +
+          productListStream.currentState().delta *
+            productListStream.currentState().speed;
+        cardProductListRef.current.style.transition = "0s";
+        cardProductListRef.current.style.transform = `translateX(-${newOffsetLeft}px)`;
       }
-      productListStream.updateDataQuick({
-        posX1: e.touches[0].clientX,
+    });
+};
+
+export const scrollAllowSlidingHandle = (isWrap, productListStream) => {
+  return fromEvent(window, "scroll")
+    .pipe(
+      takeWhile(() => userStream.currentState().isMobile && !isWrap),
+      tap(() => {
+        productListStream.updateDataQuick({ mode: "not allow sliding" });
+      }),
+      debounceTime(1000)
+    )
+    .subscribe(() => {
+      productListStream.updateDataQuick({ mode: "interval" });
+    });
+};
+
+export const autoScrollSellerProductListSubscription = (stream) => {
+  return autoScrollSellerProductList$().subscribe(() => {
+    if (stream.currentState().currentPage < stream.currentState().maxPage) {
+      stream.updateData({
+        currentPage: stream.currentState().currentPage + 1,
       });
-      if (Math.abs(productListStream.currentState().delta) < 50) {
-        return;
-      }
-      const newOffsetLeft =
-        productListStream.currentState().offsetLeft +
-        productListStream.currentState().delta *
-          productListStream.currentState().speed;
-      cardProductListRef.current.style.transition = "0s";
-      cardProductListRef.current.style.transform = `translateX(-${newOffsetLeft}px)`;
+    } else {
+      stream.updateData({
+        currentPage: 0,
+      });
     }
+  });
+};
+
+export const resizeHandleSubscription = (
+  stream,
+  productListContainerRef,
+  dataList
+) => {
+  return resizeHandle$().subscribe(() => {
+    stream.updateData({
+      widthItem:
+        (productListContainerRef.current.offsetWidth -
+          stream.currentState().margin *
+            (stream.currentState().numberOfProductPerPage - 1)) /
+          stream.currentState().numberOfProductPerPage -
+        5,
+      maxPage: dataList.length - stream.currentState().numberOfProductPerPage,
+    });
   });
 };

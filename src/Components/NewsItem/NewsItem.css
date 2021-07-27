@@ -1,6 +1,7 @@
 .news-item-contain{
   text-decoration: none;
   color: black;
+  cursor: pointer;
   margin: 0 10px;
 }
 

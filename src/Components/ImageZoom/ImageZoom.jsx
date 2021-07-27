@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { fromEvent } from "rxjs";
 const ratio = 2;
 const widthSquare = 220;
-const heightSquare = 220;
+const heightSquare = 250;
 const ImageZoom = ({ imageUrl }) => {
   const zoomSquareRef = useRef();
   const zoomInImageRef = useRef();

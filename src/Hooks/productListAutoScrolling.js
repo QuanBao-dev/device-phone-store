@@ -1,8 +1,6 @@
-import { useEffect } from "react";
-import {
-  autoScrollSellerProductList$,
-  resizeHandle$,
-} from "../Epics/PopularNews";
+import { useEffect } from 'react';
+
+import { autoScrollSellerProductListSubscription, resizeHandleSubscription } from '../Subscription/productListAutoScrolling';
 
 export const useProductWidthHandle = (
   stream,
@@ -20,7 +18,7 @@ export const useProductWidthHandle = (
       maxPage: dataList.length - stream.currentState().numberOfProductPerPage,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream]);
+  }, [stream, dataList.length]);
 };
 
 export const useProductResizeHandle = (
@@ -29,39 +27,23 @@ export const useProductResizeHandle = (
   dataList
 ) => {
   useEffect(() => {
-    const subscription = resizeHandle$().subscribe(() => {
-      stream.updateData({
-        widthItem:
-          (productListContainerRef.current.offsetWidth -
-            stream.currentState().margin *
-              (stream.currentState().numberOfProductPerPage - 1)) /
-            stream.currentState().numberOfProductPerPage -
-          5,
-        maxPage: dataList.length - stream.currentState().numberOfProductPerPage,
-      });
-    });
+    const subscription = resizeHandleSubscription(
+      stream,
+      productListContainerRef,
+      dataList
+    );
     return () => {
       subscription.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stream]);
+  }, [stream, dataList.length]);
 };
 
 export const useModeChangeHandle = (stream, state) => {
   useEffect(() => {
     let subscription;
     if (state.mode === "interval") {
-      subscription = autoScrollSellerProductList$().subscribe(() => {
-        if (stream.currentState().currentPage < stream.currentState().maxPage) {
-          stream.updateData({
-            currentPage: stream.currentState().currentPage + 1,
-          });
-        } else {
-          stream.updateData({
-            currentPage: 0,
-          });
-        }
-      });
+      subscription = autoScrollSellerProductListSubscription(stream);
     }
     return () => {
       subscription && subscription.unsubscribe();

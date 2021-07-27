@@ -1,13 +1,11 @@
-import "./TabProductDetail.css";
+import './TabProductDetail.css';
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 
-import { getDataById } from "../../Epics/Share";
-import AdditionalInformation from "../AđitionalInformation/AdditionalInformation";
-import CardProductNewItem from "../CardProductNewItem/CardProductNewItem";
-import Reviews from "../Reviews/Reviews";
+import AdditionalInformation from '../AđitionalInformation/AdditionalInformation';
+import Reviews from '../Reviews/Reviews';
 
-const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
+const TabProductDetail = ({ tabNameList, productData }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const reviewsRef = useRef();
   const containerAdditionalInformationRef = useRef();
@@ -19,11 +17,12 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
   };
   useEffect(() => {
     setTabIndex(0);
-    if (getDataById(productData.id).reviews)
-      setNumberOfReviews(getDataById(productData.id).reviews.length);
+    if (productData.reviews)
+      setNumberOfReviews(productData.reviews.length);
     return () => {
       updateNumberOfReviews([])
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productData.id]);
   useEffect(() => {
     setTimeout(() => {
@@ -100,33 +99,6 @@ const TabProductDetail = ({ tabNameList, productData, dataRelatedProduct }) => {
           />
         </div>
       </div>
-      {Object.keys(dataRelatedProduct).filter(
-        (title) => dataRelatedProduct[title].id !== productData.id
-      ).length > 0 && (
-        <div className="container-related-product">
-          <h1 className="title-related-product">Related products</h1>
-          <div className="list-related-product">
-            {Object.keys(dataRelatedProduct)
-              .filter(
-                (title) => dataRelatedProduct[title].id !== productData.id
-              )
-              .slice(0, 4)
-              .map((title, key) => (
-                <CardProductNewItem
-                  title={title}
-                  description={dataRelatedProduct[title].description}
-                  imageUrl={dataRelatedProduct[title].imageUrl}
-                  isSale={dataRelatedProduct[title].isSale}
-                  newPrice={dataRelatedProduct[title].newPrice}
-                  originalPrice={dataRelatedProduct[title].originalPrice}
-                  star={dataRelatedProduct[title].star}
-                  tags={dataRelatedProduct[title].tags}
-                  key={key}
-                />
-              ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -18,7 +18,7 @@ const NewsItem = ({
         <div className="container-category-area">
           <div className="category">{category}</div>
           <div className="number-comments">
-            <span style={{marginRight: "5px"}}>
+            <span style={{ marginRight: "5px" }}>
               <i className="fas fa-comments"></i>
             </span>
             {numberComments}
