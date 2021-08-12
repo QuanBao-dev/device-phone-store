@@ -1,10 +1,10 @@
-import './Reviews.css';
+import "./Reviews.css";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from "react";
 
-import { fetchReviewsSubscription } from '../../Subscription/reviews';
-import FormAddReview from '../FormAddReview/FormAddReview';
-import ReviewItem from '../ReviewItem/ReviewItem';
+import { fetchReviewsSubscription } from "../../Subscription/reviews";
+import FormAddReview from "../FormAddReview/FormAddReview";
+import ReviewItem from "../ReviewItem/ReviewItem";
 
 const Reviews = ({
   reviewsData = [],
@@ -42,7 +42,6 @@ const Reviews = ({
     containerTabRef.current.style.maxHeight = `${reviewsRef.current.offsetHeight}px`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewsDataState.length, page]);
-
   return (
     <div className="review-list-container" ref={reviewsRef}>
       {reviewsDataState && (

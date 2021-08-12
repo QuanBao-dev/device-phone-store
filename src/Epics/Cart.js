@@ -3,6 +3,7 @@ import cartStore from "../Store/Cart";
 export const cartStream = cartStore;
 
 export const addToCart = (
+  productId,
   title,
   description,
   star,
@@ -30,10 +31,22 @@ export const addToCart = (
         originalPrice,
         newPrice,
         imageUrl,
+        productId,
       },
     ];
   }
-  cartStream.updateData(updateObject);
+  cartStream.updateData({
+    ...updateObject,
+    newLatestProduct: {
+      title,
+      description,
+      star,
+      originalPrice,
+      newPrice,
+      imageUrl,
+      productId,
+    },
+  });
   const myCart = JSON.stringify(cartStream.currentState().dataCart);
   const myNumberProductCart = JSON.stringify(
     cartStream.currentState().cartNumberOfProduct

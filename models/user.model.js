@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 const { nanoid } = require("nanoid");
 
 const userSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    require: true,
+  },
+  lastName: {
+    type: String,
+    require: true,
+  },
   userId: {
     type: String,
     default: nanoid,
@@ -9,10 +17,6 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "User",
-  },
-  username: {
-    type: String,
-    require: true,
   },
   password: {
     type: String,

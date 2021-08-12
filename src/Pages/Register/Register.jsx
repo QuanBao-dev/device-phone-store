@@ -7,20 +7,23 @@ import Input from "../../Components/Input/Input";
 import { registerHandling$ } from "../../Epics/User";
 import { useState } from "react";
 const Register = () => {
-  const usernameRef = useRef();
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const registerButtonRef = useRef();
 
   const [errorEmail, setErrorEmail] = useState();
   const [errorPassword, setErrorPassword] = useState();
-  const [errorUsername, setErrorUsername] = useState();
+  const [errorFirstName, setErrorFirstName] = useState();
+  const [errorLastName, setErrorLastName] = useState();
   useEffect(() => {
     const subscription = registerHandling$(
       registerButtonRef,
       emailRef,
       passwordRef,
-      usernameRef
+      firstNameRef,
+      lastNameRef
     ).subscribe((result) => {
       console.log(result);
       if (!result.error) {
@@ -31,8 +34,11 @@ const Register = () => {
           else setErrorEmail(null);
           if (result.error.includes("password")) setErrorPassword(result.error);
           else setErrorPassword(null);
-          if (result.error.includes("username")) setErrorUsername(result.error);
-          else setErrorUsername(null);
+          if (result.error.includes("firstName"))
+            setErrorFirstName(result.error);
+          else setErrorFirstName(null);
+          if (result.error.includes("lastName")) setErrorLastName(result.error);
+          else setErrorLastName(null);
         }
       }
     });
@@ -45,10 +51,17 @@ const Register = () => {
       <HeadLine pathLocation={window.location.pathname} />
       <Input
         isRequired={true}
-        label={"Username"}
+        label={"First name"}
         type={"input"}
-        errorMessage={errorUsername}
-        inputRef={usernameRef}
+        errorMessage={errorFirstName}
+        inputRef={firstNameRef}
+      />
+      <Input
+        isRequired={true}
+        label={"Last name"}
+        type={"input"}
+        errorMessage={errorLastName}
+        inputRef={lastNameRef}
       />
       <Input
         isRequired={true}

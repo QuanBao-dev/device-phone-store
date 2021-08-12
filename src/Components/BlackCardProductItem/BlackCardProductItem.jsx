@@ -10,6 +10,7 @@ const BlackCardProductItem = ({
   startingAt,
   originalPrice,
   subClassName,
+  url
 }) => {
   return (
     <div
@@ -20,7 +21,7 @@ const BlackCardProductItem = ({
       <img src={imageUrl} alt="Not found" />
       <div className="black-card-product-item__container-text">
         <div className="genre">{genre}</div>
-        <Link to={`/shop`} className="title">
+        <Link to={url} className="title">
           {title}
         </Link>
         <div className="start-at">{originalPrice || "Starting at"}</div>

@@ -1,6 +1,6 @@
 import "./CartShoppingNav.css";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { cartStream } from "../../Epics/Cart";
 import { useInitStream } from "../../Hooks/InitStream";
@@ -8,10 +8,11 @@ import HoverCart from "../HoverCart/HoverCart";
 import { parseCurrency } from "../../Epics/Share";
 import { userStream } from "../../Epics/User";
 import { Link } from "react-router-dom";
-
+let timeout;
 const CartShoppingNav = () => {
   const [cartState, setCartState] = useState(cartStream.currentState());
   const [userState, setUserState] = useState(userStream.currentState());
+  const addToCartAnimationContainerRef = useRef();
   useInitStream(setCartState, cartStream);
   useInitStream(setUserState, userStream);
   useEffect(() => {
@@ -22,6 +23,14 @@ const CartShoppingNav = () => {
       ),
     });
   }, []);
+  useEffect(() => {
+    addToCartAnimationContainerRef.current.className =
+      "add-to-cart-animation-container active";
+    setTimeout(() => {
+      addToCartAnimationContainerRef.current.className =
+        "add-to-cart-animation-container";
+    }, 500);
+  }, [cartState.newLatestProduct]);
   const subTotal = cartState.dataCart
     .map(({ newPrice, originalPrice, title }) => {
       let price = originalPrice;
@@ -38,7 +47,20 @@ const CartShoppingNav = () => {
   const { innerWidth } = userState;
   if (innerWidth > 1169)
     return (
-      <div className="header__cart-shopping-container">
+      <div
+        className="header__cart-shopping-container"
+        onMouseMove={() => {
+          clearTimeout(timeout);
+          document.querySelector(".header-container").style.overflow =
+            "inherit";
+        }}
+        onMouseLeave={() => {
+          timeout = setTimeout(() => {
+            document.querySelector(".header-container").style.overflow =
+              "hidden";
+          }, 400);
+        }}
+      >
         <div style={{ position: "relative", marginRight: "10px" }}>
           <i className="fas fa-shopping-cart"></i>
           <span className="number-product-in-cart">
@@ -55,6 +77,19 @@ const CartShoppingNav = () => {
           </div>
         )}
         <HoverCart cartState={cartState} subTotal={subTotal} />
+        <div
+          className="add-to-cart-animation-container"
+          ref={addToCartAnimationContainerRef}
+        >
+          <img
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            src={cartState.newLatestProduct.imageUrl}
+            alt={cartState.newLatestProduct.title}
+          ></img>
+        </div>
       </div>
     );
   else

@@ -20,7 +20,7 @@ const options = {
 };
 
 router.get("/", async (req, res) => {
-  const { kind, isSale, limit, page } = req.query;
+  const { kind, isSale, limit } = req.query;
   let queryObject = {};
   try {
     if (kind) queryObject.kinds = kind;
@@ -31,18 +31,13 @@ router.get("/", async (req, res) => {
         .lean()
         .limit(parseInt(limit))
         .select(options);
-    if (page)
-      allProducts = await Product.find(queryObject)
-        .lean()
-        .skip((+page - 1) * 9)
-        .limit(9)
-        .select(options);
-    if (!limit && !page)
-      allProducts = await Product.find(queryObject).lean().select(options);
+    if (!limit)
+      allProducts = await Product.find(queryObject).select(options).lean();
     res.send({
-      message: allProducts,
+      message: { products: allProducts },
     });
   } catch (error) {
+    console.log(error);
     catchError(error, res);
   }
 });
@@ -51,8 +46,8 @@ router.get("/:productId/reviews", async (req, res) => {
   const productId = req.params.productId;
   try {
     const product = await Product.findOne({ productId })
-      .lean()
-      .select({ _id: 0, reviews: 1 });
+      .select({ _id: 0, reviews: 1 })
+      .lean();
     const { reviews } = product;
     res.send({
       message: reviews || [],

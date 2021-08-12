@@ -12,7 +12,7 @@ export const fetchProductSubscription = (
     }`
   ).subscribe((res) => {
     if (!res.error) {
-      setProductData({ ...res.product, id: res.product.productId });
+      setProductData(res.product);
       if (isRelatedProductsIncluded)
         setDataRelatedProduct(res.dataRelatedProduct);
     }

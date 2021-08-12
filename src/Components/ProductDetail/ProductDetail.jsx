@@ -2,7 +2,7 @@ import "./ProductDetail.css";
 
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { addToCart } from "../../Epics/Cart";
 import { addToCompare } from "../../Epics/Compare";
@@ -108,6 +108,7 @@ const ProductDetail = ({ id, isRelatedProductIncluded, styleCss }) => {
                     imageUrl,
                   } = productData;
                   addToCart(
+                    id,
                     title,
                     description,
                     star,
@@ -137,7 +138,17 @@ const ProductDetail = ({ id, isRelatedProductIncluded, styleCss }) => {
             <tbody>
               <tr>
                 <th>Categories: </th>
-                <td>{productData.tags.join(", ")}</td>
+                <td>
+                  {productData.tags.map((tag, index) => (
+                    <Link
+                      key={index}
+                      to={"/shop/page/1?category=" + tag.replace(/ /g, "-")}
+                    >
+                      {tag}
+                      {index < productData.tags.length - 1 ? ", " : ""}
+                    </Link>
+                  ))}
+                </td>
               </tr>
               <tr>
                 <th>Share: </th>
@@ -167,18 +178,20 @@ const ProductDetail = ({ id, isRelatedProductIncluded, styleCss }) => {
       </div>
       <TabProductDetail tabNameList={tabNameList} productData={productData} />
       {Object.keys(dataRelatedProduct).filter(
-        (title) => dataRelatedProduct[title].id !== productData.id
+        (title) => dataRelatedProduct[title].productId !== productData.productId
       ).length > 0 && (
         <div className="container-related-product">
           <h1 className="title-related-product">Related products</h1>
           <div className="list-related-product">
             {Object.keys(dataRelatedProduct)
               .filter(
-                (title) => dataRelatedProduct[title].id !== productData.id
+                (title) =>
+                  dataRelatedProduct[title].productId !== productData.productId
               )
               .slice(0, 4)
               .map((title, key) => (
                 <CardProductNewItem
+                  productId={dataRelatedProduct[title].productId}
                   title={title}
                   description={dataRelatedProduct[title].description}
                   imageUrl={dataRelatedProduct[title].imageUrl}

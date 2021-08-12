@@ -7,12 +7,8 @@ import HeadLine from "../../Components/HeadLine/HeadLine";
 import PaginationProducts from "../../Components/PaginationProducts/PaginationProducts";
 import PriceAdjust from "../../Components/PriceAdjust/PriceAdjust";
 import { cartStream, removeFromCart } from "../../Epics/Cart";
-import { optionSelect, parseUrlTitle } from "../../Epics/Share";
-import {
-  filterByQuery,
-  shopStream,
-  fetchShopProducts$,
-} from "../../Epics/Shop";
+import { optionSelect } from "../../Epics/Share";
+import { filterByQuery, shopStream } from "../../Epics/Shop";
 import { useInitStream } from "../../Hooks/InitStream";
 import { useProductFilterBySelect } from "../../Hooks/productFilterBySelect";
 import { useSearchProduct } from "../../Hooks/searchProduct";
@@ -38,28 +34,14 @@ const Shop = (props) => {
     minPriceAdjust,
     keySearch
   );
-
   useEffect(() => {
-    fetchShopProducts$().subscribe((res) => {
-      if (!res.error) {
-        const { products } = res;
-        shopStream.updateData({
-          dataList: products,
-          dataOriginalList: products,
-          isLoading: false,
-        });
-        filterByQuery(
-          shopStream,
-          categoryQuery,
-          keySearch,
-          minPriceAdjust,
-          maxPriceAdjust
-        );    
-      }
+    shopStream.updateData({
+      categoryQuery,
+      keySearch,
+      minPriceAdjust,
+      maxPriceAdjust,
     });
-    return () => {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [categoryQuery, keySearch, maxPriceAdjust, minPriceAdjust]);
 
   useSearchProduct(
     inputSearchRef,
@@ -168,7 +150,10 @@ const Shop = (props) => {
               <div className="cart-list-product">
                 {cartState.dataCart.length > 0 &&
                   cartState.dataCart.map(
-                    ({ title, originalPrice, newPrice, imageUrl }, key) => (
+                    (
+                      { title, originalPrice, newPrice, imageUrl, productId },
+                      key
+                    ) => (
                       <div className="cart-item-product" key={key}>
                         <div className="image-container">
                           <img
@@ -185,7 +170,7 @@ const Shop = (props) => {
                               justifyContent: "space-between",
                             }}
                           >
-                            <Link to={`/product/${parseUrlTitle(title)}`}>
+                            <Link to={`/product/${productId}`}>
                               <h5>{title}</h5>
                             </Link>
                             <span

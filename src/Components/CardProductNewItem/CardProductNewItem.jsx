@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { addToCart } from "../../Epics/Cart";
 import { addToCompare } from "../../Epics/Compare";
-import { parseCurrency, parseUrlTitle } from "../../Epics/Share";
+import { parseCurrency } from "../../Epics/Share";
 import Stars from "../Stars/Stars";
 import { useInitStream } from "../../Hooks/InitStream";
 import { shopStream } from "../../Epics/Shop";
@@ -23,6 +23,7 @@ const CardProductNewItem = ({
   style,
   description,
   isSale,
+  productId
 }) => {
   const [triggerChangeState, setTriggerChangeState] = useState(false);
   const [isViewCart, setIsViewCart] = useState(false);
@@ -80,7 +81,7 @@ const CardProductNewItem = ({
             console.log(title);
             cardProductDetailStream.updateData({
               isActive: true,
-              currentId: parseUrlTitle(title)
+              currentId: productId
             })
           }}
         >
@@ -88,7 +89,7 @@ const CardProductNewItem = ({
         </div>
       </div>
       <Link
-        to={`/product/${parseUrlTitle(title)}`}
+        to={`/product/${productId}`}
         style={{ width: "95%", textAlign: "center" }}
       >
         <img
@@ -156,12 +157,13 @@ const CardProductNewItem = ({
           className="button-add-to-cart"
           onClick={() => {
             addToCart(
+              productId,
               title,
               description,
               star,
               originalPrice,
               newPrice,
-              imageUrl
+              imageUrl,
             );
             setTriggerChangeState(!triggerChangeState);
             setIsViewCart(true);

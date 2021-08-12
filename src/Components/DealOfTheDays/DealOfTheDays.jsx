@@ -21,6 +21,7 @@ const DealOfTheDays = ({ dataProduct }) => {
         <h1>Deal of the days</h1>
         <div className="container-deal-of-the-day">
           <CardProductSaleItem
+            productId={dataProduct.productId}
             imageUrl={dataProduct.imageUrl}
             star={dataProduct.star}
             newPrice={dataProduct.newPrice}
@@ -37,6 +38,7 @@ const DealOfTheDays = ({ dataProduct }) => {
             originalPrice={"$240"}
             startingAt={"$1199"}
             subClassName={"small"}
+            url={"/shop/page/1?category=IPhone"}
           />
         </div>
       </div>

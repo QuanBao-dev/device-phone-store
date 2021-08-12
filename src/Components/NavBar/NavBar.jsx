@@ -3,8 +3,13 @@ import "./NavBar.css";
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink as Link, useHistory } from "react-router-dom";
 import { fromEvent } from "rxjs";
-import { filter } from "rxjs/operators";
+import { debounceTime, filter, tap } from "rxjs/operators";
 
+import {
+  fetchShopProducts$,
+  filterByQuery,
+  shopStream,
+} from "../../Epics/Shop";
 import { fetchUserVm$, userStream } from "../../Epics/User";
 import { useInitStream } from "../../Hooks/InitStream";
 import CartShoppingNav from "../CartShoppingNav/CartShoppingNav";
@@ -12,6 +17,8 @@ import HeaderPhoneLogin from "../HeaderPhoneLogin/HeaderPhoneLogin";
 import HeaderSearch from "../HeaderSearch/HeaderSearch";
 import SearchMobile from "../SearchMobile/SearchMobile";
 
+let posY1 = 0;
+let posY2 = 0;
 const NavBar = () => {
   const history = useHistory();
   const selectRef = useRef();
@@ -21,7 +28,11 @@ const NavBar = () => {
   const [isActiveMenu, setIsActiveMenu] = useState(false);
   const [isActiveSearch, setIsActiveSearch] = useState(false);
   const [userState, setUserState] = useState(userStream.currentState());
+  const [shopState, setShopState] = useState(shopStream.currentState());
+  const { categoryQuery, keySearch, minPriceAdjust, maxPriceAdjust } =
+    shopState;
   useInitStream(setUserState, userStream);
+  useInitStream(setShopState, shopStream);
   useEffect(() => {
     const subscription = fromEvent(window, "resize").subscribe(() => {
       userStream.updateData({ innerWidth: window.innerWidth });
@@ -32,6 +43,52 @@ const NavBar = () => {
     };
   }, []);
   const { innerWidth } = userState;
+  useEffect(() => {
+    const subscription = fromEvent(window, "scroll")
+      .pipe(
+        filter(() => innerWidth > 1069),
+        tap(() => {
+          headerRef.current.style.transition = "0s";
+          posY2 = -posY1 + window.scrollY;
+          if (posY1 !== 0) {
+            const currentTop = headerRef.current.getBoundingClientRect().y;
+            const thresholdEnd = -220;
+            if (posY2 < 0) {
+              if(window.scrollY > 220){
+                headerRef.current.style.boxShadow = "0 0 6px 2px grey";
+              }
+              if (window.scrollY === 0) {
+                headerRef.current.style.boxShadow = "none";
+              }
+            }
+
+            if (posY2 > 0) {
+              if (window.scrollY < 220) {
+                headerRef.current.style.boxShadow = "none";
+              }
+            }
+
+            if (currentTop - posY2 <= 0 && currentTop - posY2 >= thresholdEnd) {
+              headerRef.current.style.top = `${currentTop - posY2}px`;
+            }
+
+            if (currentTop - posY2 < thresholdEnd) {
+              headerRef.current.style.top = `${thresholdEnd}px`;
+            }
+
+            if (currentTop - posY2 > 0) {
+              headerRef.current.style.top = `0px`;
+            }
+          }
+          posY1 = window.scrollY;
+        }),
+        debounceTime(50)
+      )
+      .subscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [innerWidth]);
   useEffect(() => {
     const subscription = fromEvent(window, "scroll")
       .pipe(filter(() => innerWidth <= 1069))
@@ -58,8 +115,37 @@ const NavBar = () => {
       subscription.unsubscribe();
     };
   }, [userState.triggerFetchUser]);
+
+  useEffect(() => {
+    const subscription = fetchShopProducts$().subscribe((res) => {
+      if (!res.error) {
+        const { products } = res;
+        shopStream.updateData({
+          dataList: products,
+          dataOriginalList: products,
+          isLoading: false,
+        });
+        if (
+          categoryQuery !== null &&
+          keySearch !== null &&
+          minPriceAdjust !== null &&
+          maxPriceAdjust !== null
+        )
+          filterByQuery(
+            shopStream,
+            categoryQuery,
+            keySearch,
+            minPriceAdjust,
+            maxPriceAdjust
+          );
+      }
+    });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [categoryQuery, keySearch, maxPriceAdjust, minPriceAdjust]);
   return (
-    <header ref={headerRef}>
+    <header ref={headerRef} className="header-container">
       {innerWidth <= 1169 && (
         <SearchMobile
           isActive={isActiveSearch}

@@ -93,7 +93,7 @@ const TabProductDetail = ({ tabNameList, productData }) => {
             reviewsData={productData.reviews}
             reviewsRef={reviewsRef}
             title={productData.title}
-            id={productData.id}
+            id={productData.productId}
             containerTabRef={containerTabRef}
             updateNumberOfReviews={updateNumberOfReviews}
           />

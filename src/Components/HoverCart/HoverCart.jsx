@@ -9,7 +9,12 @@ const HoverCart = ({ cartState, subTotal }) => {
   return (
     <div className="hover-cart-nav-wrapper">
       <div className="hover-cart-nav-container">
-        <div style={{ overflow: "auto", maxHeight: "360px" }}>
+        <div
+          style={{
+            overflow: "auto",
+            maxHeight: "360px",
+          }}
+        >
           {cartState.dataCart.map(
             ({ title, originalPrice, newPrice, imageUrl }, key) => (
               <div className="hover-cart-nav-item-container" key={key}>
@@ -47,7 +52,7 @@ const HoverCart = ({ cartState, subTotal }) => {
                     fontSize: "1.1rem",
                     color: "red",
                     cursor: "pointer",
-                    marginRight:"1rem"
+                    marginRight: "1rem",
                   }}
                   onClick={() => removeFromCart(title)}
                 >

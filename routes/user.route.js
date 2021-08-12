@@ -46,10 +46,11 @@ router.post("/login", verifyLogin, async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   try {
     validation(req.body, {
-      username: Joi.string().min(6).required(),
+      firstName: Joi.string().min(1).required(),
+      lastName: Joi.string().min(1).required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(6).required(),
     });
@@ -60,7 +61,12 @@ router.post("/register", async (req, res) => {
     }
     const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
-    const newUser = new User({ username, email, password: hashedPassword });
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
     await newUser.save();
     res.send({
       message: "sign up success",

@@ -10,7 +10,7 @@ const CardProductSaleList = ({dataList}) => {
   return (
     <ul className="card-product-sale-list" ref={cardProductSaleListRef}>
       {dataList.map(
-        ({ star, imageUrl, title, originalPrice, newPrice }, key) => (
+        ({ star, imageUrl, title, originalPrice, newPrice, productId }, key) => (
           <CardProductSaleItem
             key={key}
             star={star}
@@ -18,6 +18,7 @@ const CardProductSaleList = ({dataList}) => {
             title={title}
             originalPrice={originalPrice}
             newPrice={newPrice}
+            productId={productId}
           />
         )
       )}

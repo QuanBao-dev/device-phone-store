@@ -15,18 +15,20 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <CardProductDetail />
-      <ComparePopUp />
-      <Switch>
-        <Route component={Home} path="/" exact/>
-        <Route component={Cart} path="/cart" exact/>
-        <Route component={Checkout} path="/checkout" exact />
-        <Route component={Product} path="/product/:id" exact />
-        <Route component={Shop} path="/shop/page/:page" exact/>
-        <Route component={Shop} path="/shop" exact/>
-        <Route component={Login} path="/login" exact/>
-        <Route component={Register} path="/register" exact/>
-      </Switch>
+      <main className="main-content">
+        <CardProductDetail />
+        <ComparePopUp />
+        <Switch>
+          <Route component={Home} path="/" exact />
+          <Route component={Cart} path="/cart" exact />
+          <Route component={Checkout} path="/checkout" exact />
+          <Route component={Product} path="/product/:id" exact />
+          <Route component={Shop} path="/shop/page/:page" exact />
+          <Route component={Shop} path="/shop" exact />
+          <Route component={Login} path="/login" exact />
+          <Route component={Register} path="/register" exact />
+        </Switch>
+      </main>
       <Footer />
     </BrowserRouter>
   );

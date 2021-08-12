@@ -11,9 +11,12 @@ import {
   parseCurrency,
 } from "../../Epics/Share";
 import { useInitStream } from "../../Hooks/InitStream";
+import { userStream } from "../../Epics/User";
 
 const Checkout = (props) => {
   const [cartState, setCartState] = useState(cartStream.currentState());
+  const [termOfUseState, setTermOfUseState] = useState(false);
+  const [userState, setUserState] = useState(userStream.currentState());
   const termOfUseCheckBoxRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -28,14 +31,20 @@ const Checkout = (props) => {
   const createAccountRef = useRef();
   const orderNotesRef = useRef();
   const checkBoxCreateAccountRef = useRef();
-  const [termOfUseState, setTermOfUseState] = useState(false);
   const { dataCart, cartNumberOfProduct } = cartState;
   useInitStream(setCartState, cartStream);
+  useInitStream(setUserState, userStream);
   useEffect(() => {
+    if (userState.userVm) {
+      firstNameRef.current.value = userState.userVm.firstName;
+      lastNameRef.current.value = userState.userVm.lastName;
+      emailAddressRef.current.value = userState.userVm.email;
+    }
     window.scroll({
       top: 0,
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userState.userVm]);
   return (
     <div style={{ maxWidth: "1210px", margin: "auto", padding: "0 10px" }}>
       <HeadLine pathLocation={props.location.pathname} />
@@ -48,12 +57,14 @@ const Checkout = (props) => {
               isRequired={true}
               type={"input"}
               inputRef={firstNameRef}
+              isDisable={userState.userVm}
             />
             <Input
               label={"Last Name"}
               isRequired={true}
               type={"input"}
               inputRef={lastNameRef}
+              isDisable={userState.userVm}
             />
             <Input
               label={"Company Name"}
@@ -103,12 +114,14 @@ const Checkout = (props) => {
               type={"input"}
               label={"Email address"}
               inputRef={emailAddressRef}
+              isDisable={userState.userVm}
             />
             <Input
               type={"checkbox"}
               label={"Create an account?"}
               inputRef={createAccountRef}
               checkBoxRef={checkBoxCreateAccountRef}
+              isDisable={userState.userVm}
             />
           </div>
           <div className="additional-information-area">
@@ -232,21 +245,47 @@ const Checkout = (props) => {
                 return;
               }
               e.preventDefault();
-              alert("success");
-              // console.log({
-              //   firstName: firstNameRef.current.value,
-              //   lastName: lastNameRef.current.value,
-              //   companyName: companyNameRef.current.value,
-              //   countryRegion: countryRegionRef.current.value,
-              //   streetAddress: streetAddressRef.current.value,
-              //   apartment: apartmentRef.current.value,
-              //   townCity: townCityRef.current.value,
-              //   postcode: postcodeRef.current.value,
-              //   phone: phoneRef.current.value,
-              //   emailAddress: emailAddressRef.current.value,
-              //   createAccount: createAccountRef.current.value,
-              //   isAgreed: termOfUseCheckBoxRef.current.checked,
-              // });
+              const body = {
+                lineItems: dataCart.map(
+                  ({ newPrice, originalPrice, title }) => {
+                    const officialPrice = newPrice ? newPrice : originalPrice;
+                    const unit_amount = parseFloat(
+                      officialPrice.replace("$", "")
+                    );
+                    return {
+                      quantity: cartNumberOfProduct[title],
+                      price_data: {
+                        currency: "usd",
+                        product_data: {
+                          name: title,
+                        },
+                        unit_amount,
+                      },
+                    };
+                  }
+                ),
+                firstName: userState.userVm
+                  ? userState.userVm.firstName
+                  : firstNameRef.current.value,
+                lastName: userState.userVm
+                  ? userState.userVm.lastName
+                  : lastNameRef.current.value,
+                emailAddress: userState.userVm
+                  ? userState.userVm.email
+                  : emailAddressRef.current.value,
+                password: createAccountRef.current.value,
+                orderNotes: orderNotesRef.current.value,
+                isAgreed: termOfUseCheckBoxRef.current.checked,
+                companyName: companyNameRef.current.value,
+                countryRegion: countryRegionRef.current.value,
+                streetAddress: streetAddressRef.current.value,
+                apartment: apartmentRef.current.value,
+                townCity: townCityRef.current.value,
+                postcode: postcodeRef.current.value,
+                phone: phoneRef.current.value,
+              };
+              console.log(body);
+              alert("Success");
             }}
           >
             Place order

@@ -2,7 +2,6 @@ import "./CardProductSaleItem.css";
 
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { parseUrlTitle } from "../../Epics/Share";
 import TimeCountDown from "../TimeCountDown/TimeCountDown";
 import { fromEvent } from "rxjs";
 
@@ -14,6 +13,7 @@ const CardProductSaleItem = ({
   newPrice,
   description,
   isBigSize,
+  productId
 }) => {
   const cardProductSaleItemRef = useRef();
   const imageProductRef = useRef();
@@ -68,7 +68,7 @@ const CardProductSaleItem = ({
   return (
     <Link
       className={`card-product-sale-item${isBigSize ? " large" : ""}`}
-      to={"/product/" + parseUrlTitle(title)}
+      to={"/product/" + productId}
       style={{ display: "block", textDecoration: "none" }}
     >
       {isBigSize && <div className="large-sale-active">Sale!</div>}

@@ -3,6 +3,7 @@ import { BehaviorSubject } from "rxjs";
 const initialState = {
   dataCart: [],
   cartNumberOfProduct:{},
+  newLatestProduct: {}
 };
 const behaviorSubject = new BehaviorSubject(initialState);
 

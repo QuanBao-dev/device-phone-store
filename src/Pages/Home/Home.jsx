@@ -1,6 +1,6 @@
 import "./Home.css";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import BenefitList from "../../Components/BenefitList/BenefitList";
 import BestSeller from "../../Components/BestSeller/BestSeller";
@@ -26,6 +26,7 @@ const dataBlackCardList = [
     startingAt: "$599",
     imageUrl:
       "https://devicer.cmsmasters.net/wp-content/uploads/2017/12/featured-2-2.jpg",
+    url: "/shop/page/1?category=IPhone"
   },
   {
     genre: "One Shot",
@@ -33,6 +34,7 @@ const dataBlackCardList = [
     startingAt: "$5199",
     imageUrl:
       "https://devicer.cmsmasters.net/wp-content/uploads/2017/12/featured-1-1-2.jpg",
+    url: "/shop/page/1?category=Apple-iMac"
   },
 ];
 const Home = () => {

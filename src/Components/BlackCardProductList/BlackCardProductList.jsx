@@ -9,13 +9,14 @@ function BlackCardProductList({ dataList }) {
   useAnimationViewport(blackCardProductListRef);
   return (
     <ul className="black-card-product-list" ref={blackCardProductListRef}>
-      {dataList.map(({ title, genre, startingAt, imageUrl }, key) => (
+      {dataList.map(({ title, genre, startingAt, imageUrl, url }, key) => (
         <BlackCardProductItem
           title={title}
           genre={genre}
           startingAt={startingAt}
           imageUrl={imageUrl}
           key={key}
+          url={url}
         />
       ))}
     </ul>

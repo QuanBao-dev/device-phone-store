@@ -25,16 +25,16 @@ export const searchSubmit = (inputRef, selectRef, history) => {
         "&key=" +
         inputRef.current.value.trim().replace(/ /g, "-")
     );
-    selectRef.current.value = "";
-    inputRef.current.value = "";
+    // selectRef.current.value = "";
+    // inputRef.current.value = "";
     return;
   }
   if (inputRef.current.value.trim() !== "") {
     history.push(
       "/shop/page/1?key=" + inputRef.current.value.trim().replace(/ /g, "-")
     );
-    selectRef.current.value = "";
-    inputRef.current.value = "";
+    // selectRef.current.value = "";
+    // inputRef.current.value = "";
     return;
   }
   if (selectRef.current.value.trim() !== "") {
@@ -43,15 +43,16 @@ export const searchSubmit = (inputRef, selectRef, history) => {
         selectRef.current.value.trim().replace(/ /g, "-")
     );
   }
-  selectRef.current.value = "";
-  inputRef.current.value = "";
+  // selectRef.current.value = "";
+  // inputRef.current.value = "";
 };
 
 export const registerHandling$ = (
   registerButtonRef,
   emailRef,
   passwordRef,
-  usernameRef
+  firstNameRef,
+  lastNameRef
 ) => {
   return fromEvent(registerButtonRef.current, "click").pipe(
     tap((e) => {
@@ -59,7 +60,8 @@ export const registerHandling$ = (
         ![
           emailRef.current.value,
           passwordRef.current.value,
-          usernameRef.current.value,
+          firstNameRef.current.value,
+          lastNameRef.current.value,
         ].includes("")
       )
         e.preventDefault();
@@ -67,7 +69,8 @@ export const registerHandling$ = (
     map(() => ({
       email: emailRef.current.value,
       password: passwordRef.current.value,
-      username: usernameRef.current.value,
+      firstName: firstNameRef.current.value,
+      lastName: lastNameRef.current.value,
     })),
     switchMap((body) =>
       ajax({

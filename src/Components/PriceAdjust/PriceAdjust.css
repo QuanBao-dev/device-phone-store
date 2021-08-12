@@ -29,6 +29,7 @@
   z-index: 5;
   background-color: black;
   cursor: pointer;
+  transform: translateX(-50%);
 }
 
 .button-filter-product{

@@ -3,10 +3,17 @@
   top: 200%;
   right: 0;
   padding-top: 20px;
-  z-index: -1;
   opacity: 0;
   transition: 0.4s ease-in-out;
   width: 350px;
+  z-index: -10;
+}
+
+.header__cart-shopping-container:hover .hover-cart-nav-wrapper{
+  opacity: 1;
+  z-index: 1;
+  display: block;
+  top: 100%;
 }
 
 .hover-cart-nav-container{
@@ -39,8 +46,6 @@
   background-color: rgba(228, 228, 228, 0.788);
 }
 
-
-
 .hover-cart-nav-item img{
   width: 50px;
   height: 50px;
@@ -72,6 +77,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.5s;
+}
+
+.hover-cart-nav-container .container-button-item:hover{
+  color: white;
+  background-color: blue;
 }
 
 .hover-cart-nav-container .container-button a{

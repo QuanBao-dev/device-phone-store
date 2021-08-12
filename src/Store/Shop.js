@@ -10,6 +10,7 @@ const initialState = {
   tabIndex: null,
   maxPage: null,
   isLoading: true,
+  categoryQuery: null,
 };
 const behaviorSubject = new BehaviorSubject(initialState);
 

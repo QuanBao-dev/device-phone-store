@@ -263,6 +263,7 @@ const Input = ({
   checkBoxRef,
   typeInput = "text",
   errorMessage,
+  isDisable
 }) => {
   const id =
     label.toLocaleLowerCase && label
@@ -292,6 +293,7 @@ const Input = ({
             required={isRequired}
             placeholder={placeholder}
             ref={inputRef}
+            disabled={isDisable}
           />
         )}
         {type === "textarea" && (
@@ -324,6 +326,7 @@ const Input = ({
                 type="checkbox"
                 ref={checkBoxRef}
                 onChange={() => setIsChecked(checkBoxRef.current.checked)}
+                disabled={isDisable}
               />
             )}
             {label !== "Create an account?" && (
@@ -336,6 +339,7 @@ const Input = ({
               }}
               onClick={(e) => {
                 e.preventDefault();
+                if(isDisable) return;
                 let element = checkBoxRef ? checkBoxRef.current : undefined;
                 if (!element) element = inputRef.current;
                 if (element) {

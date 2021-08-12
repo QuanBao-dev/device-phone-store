@@ -96,6 +96,7 @@ const CardProductNewList = ({
             originalPrice,
             isSale,
             description,
+            productId
           },
           key
         ) => (
@@ -109,6 +110,7 @@ const CardProductNewList = ({
             isSale={isSale}
             description={description}
             key={key}
+            productId={productId}
             style={{
               width: !isWrap ? stream.currentState().widthItem : null,
               minWidth: !isWrap ? "auto" : null,
